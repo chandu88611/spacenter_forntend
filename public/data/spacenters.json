@@ -1,0 +1,310 @@
+[
+  {
+    "name": "Serenity Spa & Wellness",
+    "rating": 4.8,
+    "reviewCount": 95,
+    "status": "Open",
+    "openUntil": "9:00 PM",
+    "imageUrl": "https://hyperli.com/cdn/shop/files/2-Hour_20Couples_20Pamper_20Session_20at_20Graceful_20Serenity_20Wellness_20Spa.jpg?v=1722145521",
+    "review": "Serenity Spa offers a tranquil atmosphere and outstanding massages. The therapists are professional and attentive to your needs. The aroma therapy and hot stone massage are must-tries for a truly relaxing experience. Perfect for unwinding after a stressful week.",
+    "services": [
+      "Aroma Therapy",
+      "Hot Stone Massage",
+      "Facial Treatment",
+      "Deep Tissue Massage"
+    ],
+    "position": [12.9716, 77.5946],
+    "address": "MG Road, Bengaluru"
+  },
+  {
+    "name": "Blissful Retreat Spa",
+    "rating": 4.5,
+    "reviewCount": 75,
+    "status": "Closed",
+    "opensAt": "10:00 AM",
+    "imageUrl": "https://img.grouponcdn.com/deal/rGXphB3jBLR6NEupFbRWyuu3vUz/rG-2000x1200/v1/t2100x1260.webp",
+    "review": "Blissful Retreat Spa is known for its serene setting and skilled staff. Their facial treatments left my skin glowing and refreshed. The ambiance is calming, with soft music and aromatic scents filling the air.",
+    "services": ["Swedish Massage", "Facials", "Reflexology", "Steam Bath"],
+    "position": [12.9352, 77.6146],
+    "address": "Koramangala, Bengaluru"
+  },
+  {
+    "name": "Zen Garden Spa",
+    "rating": 4.6,
+    "reviewCount": 130,
+    "status": "Open",
+    "openUntil": "10:30 PM",
+    "imageUrl": "https://mir-s3-cdn-cf.behance.net/project_modules/1400/1b0c98180730747.6510048b54123.jpg",
+    "review": "Zen Garden Spa provides a beautiful garden ambiance along with holistic treatments. The couples massage is a favorite! The herbal teas served after treatments add to the peaceful vibe. Truly rejuvenating.",
+    "services": ["Couples Massage", "Shiatsu", "Body Scrub", "Herbal Therapy"],
+    "position": [13.0285, 77.5897],
+    "address": "Hebbal, Bengaluru"
+  },
+  {
+    "name": "Ocean Breeze Spa",
+    "rating": 4.4,
+    "reviewCount": 60,
+    "status": "Open",
+    "openUntil": "8:00 PM",
+    "imageUrl": "https://s3-media0.fl.yelpcdn.com/bphoto/47IWzpAc6-5XUnfMD0u8Lw/348s.jpg",
+    "review": "Ocean Breeze Spa offers beachfront views with excellent body scrubs and hydrotherapy sessions. The sea salt scrubs and ocean-scented oils make every treatment extra special.",
+    "services": [
+      "Hydrotherapy",
+      "Sea Salt Scrub",
+      "Aroma Therapy",
+      "Thai Massage"
+    ],
+    "position": [12.925, 77.5938],
+    "address": "BTM Layout, Bengaluru"
+  },
+  {
+    "name": "Heavenly Touch Spa",
+    "rating": 4.9,
+    "reviewCount": 150,
+    "status": "Open",
+    "openUntil": "11:00 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeHUcF3gOEIk_PchPtUx5soIj2Za7BWTc69Q&s",
+    "review": "The Heavenly Touch Spa exceeded all expectations. The deep tissue massage worked wonders on my back pain. Highly skilled therapists and premium oils used. A must-visit.",
+    "services": ["Deep Tissue Massage", "Reflexology", "Facials", "Hot Stones"],
+    "position": [12.9896, 77.5534],
+    "address": "Rajajinagar, Bengaluru"
+  },
+  {
+    "name": "Tranquil Waters Spa",
+    "rating": 4.3,
+    "reviewCount": 85,
+    "status": "Closed",
+    "opensAt": "9:30 AM",
+    "imageUrl": "https://static.wixstatic.com/media/a82425_ed4b319fbf74468c8bd5b356d59c6922~mv2.png/v1/fill/w_280,h_241,q_90,enc_avif,quality_auto/a82425_ed4b319fbf74468c8bd5b356d59c6922~mv2.png",
+    "review": "Tranquil Waters Spa specializes in aquatic therapies and body wraps. The calming water features and soothing atmosphere make it an ideal spot for relaxation.",
+    "services": [
+      "Hydrotherapy",
+      "Mud Wrap",
+      "Aromatherapy",
+      "Lymphatic Massage"
+    ],
+    "position": [13.0108, 77.5552],
+    "address": "Yeshwanthpur, Bengaluru"
+  },
+  {
+    "name": "Lotus Blossom Spa",
+    "rating": 4.7,
+    "reviewCount": 110,
+    "status": "Open",
+    "openUntil": "9:00 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpiochZPYF_T4jU6jp9KMyD3wpsxSdMbulHQ&s",
+    "review": "Lotus Blossom Spa offers a serene escape with signature herbal massages. The staff is welcoming and the environment is clean and relaxing. I loved their flower-scented body oils.",
+    "services": [
+      "Herbal Massage",
+      "Body Scrub",
+      "Hot Stone Therapy",
+      "Shiatsu"
+    ],
+    "position": [12.9718, 77.6411],
+    "address": "Indiranagar, Bengaluru"
+  },
+  {
+    "name": "Pure Escape Wellness",
+    "rating": 4.6,
+    "reviewCount": 102,
+    "status": "Open",
+    "openUntil": "10:00 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKqh7GoTJti4bj3vFoJO6VLP6zu_eKSwFE2g&s",
+    "review": "Pure Escape Wellness delivers top-notch spa services. Their skin detox treatments and relaxing aromatherapy helped me feel fully rejuvenated. The spa has a clean, modern aesthetic.",
+    "services": [
+      "Detox Facial",
+      "Swedish Massage",
+      "Aroma Therapy",
+      "Scalp Treatment"
+    ],
+    "position": [12.9344, 77.6266],
+    "address": "Ejipura, Bengaluru"
+  },
+  {
+    "name": "Elysian Spa Lounge",
+    "rating": 4.8,
+    "reviewCount": 135,
+    "status": "Closed",
+    "opensAt": "11:00 AM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA6DDBp8dLAP38DuyTP9qMuegyTdzOfXCUbQ&s",
+    "review": "Elysian Spa Lounge feels like a luxury getaway. From calming herbal teas to premium massage techniques, this spa pampers you from start to finish. Perfect for self-care days.",
+    "services": [
+      "Couples Massage",
+      "Deep Tissue",
+      "Body Wraps",
+      "Hot Oil Massage"
+    ],
+    "position": [12.957, 77.701],
+    "address": "Whitefield, Bengaluru"
+  },
+  {
+    "name": "Cloud Nine Day Spa",
+    "rating": 4.4,
+    "reviewCount": 70,
+    "status": "Open",
+    "openUntil": "8:30 PM",
+    "imageUrl": "https://content.jdmagicbox.com/comp/haldwani/a3/9999p5946.5946.190930134805.j3a3/catalogue/the-cloud-9-spa-bhotia-parao-haldwani-body-massage-centres-03a6ii9r5b.jpg",
+    "review": "Cloud Nine Day Spa specializes in day packages including full-body massages and facial therapies. The relaxing environment makes it great for unwinding after a busy week.",
+    "services": [
+      "Day Spa Packages",
+      "Facials",
+      "Hot Stone",
+      "Relaxation Massage"
+    ],
+    "position": [12.998, 77.592],
+    "address": "Malleshwaram, Bengaluru"
+  },
+  {
+    "name": "Harmony Healing Spa",
+    "rating": 4.3,
+    "reviewCount": 55,
+    "status": "Closed",
+    "opensAt": "10:00 AM",
+    "imageUrl": "https://content3.jdmagicbox.com/v2/comp/hubli/j9/0836px836.x836.250225204306.d3j9/catalogue/helling-harmony-spa-gokul-road-hubli-body-massage-centres-nv3e7e15p6.jpg",
+    "review": "Harmony Healing Spa offers reiki and holistic treatments. Their calming decor and expert staff help relieve stress and promote inner peace. Loved their energy balancing session.",
+    "services": ["Reiki", "Shiatsu", "Energy Healing", "Herbal Facial"]
+  },
+  {
+    "name": "Calm Oasis Spa",
+    "rating": 4.5,
+    "reviewCount": 90,
+    "status": "Open",
+    "openUntil": "9:00 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdz_Ae1snClnbclHR11MM2qA0qRxXhF1d3ag&s",
+    "review": "Calm Oasis Spa delivers relaxing massages with an emphasis on client wellness. The aromatherapy-infused rooms and gentle background music set the perfect mood.",
+    "services": [
+      "Aroma Therapy",
+      "Deep Tissue Massage",
+      "Reflexology",
+      "Body Polish"
+    ],
+    "position": [12.9358, 77.5354],
+    "address": "Banashankari, Bengaluru"
+  },
+  {
+    "name": "The Relaxation Hub",
+    "rating": 4.6,
+    "reviewCount": 98,
+    "status": "Open",
+    "openUntil": "10:00 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2hlMYJRtwR4NeeVdPmAW3e7dF5-lMJ-DeQQ&s",
+    "review": "The Relaxation Hub combines modern techniques with traditional therapies. Their signature bamboo massage left me feeling fully refreshed. Highly recommend their evening sessions.",
+    "services": [
+      "Bamboo Massage",
+      "Foot Reflexology",
+      "Mud Wraps",
+      "Steam Bath"
+    ],
+    "position": [12.9166, 77.6101],
+    "address": "JP Nagar, Bengaluru"
+  },
+  {
+    "name": "Glow & Go Spa",
+    "rating": 4.2,
+    "reviewCount": 62,
+    "status": "Closed",
+    "opensAt": "9:00 AM",
+    "imageUrl": "https://images.fresha.com/locations/location-profile-images/958448/2204697/d5f7dbe5-39d5-4486-b8f8-358afafce1de.jpg?class=gallery-modal-large",
+    "review": "Glow & Go Spa is perfect for a quick skin refresh or a deep cleansing facial. Their express services are affordable and well-executed. Ideal for busy professionals.",
+    "services": [
+      "Express Facial",
+      "Mini Massage",
+      "Detox Wrap",
+      "Hand Therapy"
+    ],
+    "position": [12.8452, 77.66],
+    "address": "Electronic City, Bengaluru"
+  },
+  {
+    "name": "Zenith Wellness Spa",
+    "rating": 4.7,
+    "reviewCount": 112,
+    "status": "Open",
+    "openUntil": "9:30 PM",
+    "imageUrl": "https://www.vsportsclub.com/sites/default/files/about_divider03_0.jpg",
+    "review": "Zenith Wellness Spa features expert massages in a peaceful, candle-lit environment. The staff focuses on personalized care and offers herbal teas post-session.",
+    "services": ["Shiatsu", "Deep Tissue", "Reflexology", "Aromatherapy"],
+    "position": [12.9719, 77.75],
+    "address": "KR Puram, Bengaluru"
+  },
+  {
+    "name": "Blue Lagoon Spa",
+    "rating": 4.4,
+    "reviewCount": 74,
+    "status": "Open",
+    "openUntil": "8:00 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSe7_iTrRJ3eXFp737r8UcgV5FO4EtctMJQQ&s",
+    "review": "Blue Lagoon Spa specializes in aquatic therapies and calming massages. The hydrotherapy pool is the highlight, making you feel like you're floating in serenity.",
+    "services": [
+      "Hydrotherapy",
+      "Full Body Massage",
+      "Facials",
+      "Seaweed Wrap"
+    ],
+    "position": [13.0358, 77.597],
+    "address": "RT Nagar, Bengaluru"
+  },
+  {
+    "name": "Nature’s Touch Spa",
+    "rating": 4.5,
+    "reviewCount": 83,
+    "status": "Closed",
+    "opensAt": "10:30 AM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPbx-IwhOGJwoJ7uhU96CoNGV9mU4fpqRAOA&s",
+    "review": "Nature’s Touch Spa uses organic products for all treatments. Their signature nature-inspired therapies left me feeling grounded and refreshed. Excellent service and clean facilities.",
+    "services": [
+      "Organic Facial",
+      "Nature Massage",
+      "Body Scrub",
+      "Hot Oil Treatment"
+    ],
+    "position": [12.8828, 77.6022],
+    "address": "Arekere, Bengaluru"
+  },
+  {
+    "name": "Moonlight Wellness Center",
+    "rating": 4.6,
+    "reviewCount": 99,
+    "status": "Open",
+    "openUntil": "10:00 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHkzsIcl9xslIAjGtPLbRuwu5_4hHRAXN8xg&s",
+    "review": "Moonlight Wellness Center offers late-night massages and relaxation therapies. The ambient lighting and calming music create a peaceful retreat for evening relaxation.",
+    "services": [
+      "Evening Massage",
+      "Shiatsu",
+      "Deep Relaxation",
+      "Foot Reflexology"
+    ],
+    "position": [13.023, 77.64],
+    "address": "Nagawara, Bengaluru"
+  },
+  {
+    "name": "Vitality Spa & Massage",
+    "rating": 4.5,
+    "reviewCount": 65,
+    "status": "Open",
+    "openUntil": "9:00 PM",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/1c/cc/17/28/the-relaxing-massage.jpg",
+    "review": "Vitality Spa offers sports recovery massages and invigorating body wraps. Ideal for athletes or anyone needing muscle relief after a workout.",
+    "services": [
+      "Sports Massage",
+      "Detox Wrap",
+      "Reflexology",
+      "Cupping Therapy"
+    ],
+    "position": [12.9796, 77.7192],
+    "address": "Marathahalli, Bengaluru"
+  },
+  {
+    "name": "Aura Bliss Spa",
+    "rating": 4.8,
+    "reviewCount": 142,
+    "status": "Open",
+    "openUntil": "11:00 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmAFLYSkjfqggaHp1kHkpxbDdUGFNGqI5yqg&s",
+    "review": "Aura Bliss Spa provides a luxurious spa experience with premium services like crystal therapy and energy healing. The staff was incredibly attentive and knowledgeable.",
+    "services": ["Crystal Healing", "Reiki", "Deep Tissue Massage", "Facials"],
+    "position": [12.9376, 77.6951],
+    "address": "Bellandur, Bengaluru"
+  }
+]

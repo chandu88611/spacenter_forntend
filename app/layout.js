@@ -25,12 +25,11 @@ export default function RootLayout({ children, metadata = defaultMetadata }) {
           type="text/css"
           href="/assets/css/style6572.css"
         />
-        <link href="/images/fav.png" type="img/x-icon" rel="shortcut icon" />
+        <link href="" type="img/x-icon" rel="shortcut icon" />
         <meta
           name="google-site-verification"
           content="DAG0zrPA2NMfIdfK6lMRhL_5AZDx0EoK9D8u2gC2fVc"
         />
-
         {/* Google Analytics */}
         <script
           async
@@ -46,7 +45,6 @@ export default function RootLayout({ children, metadata = defaultMetadata }) {
             `,
           }}
         ></script>
-
         Facebook Pixel
         <script
           dangerouslySetInnerHTML={{

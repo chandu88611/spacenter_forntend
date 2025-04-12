@@ -1,0 +1,297 @@
+[
+  {
+    "name": "The Gourmet Spot",
+    "rating": 4.5,
+    "reviewCount": 124,
+    "status": "Open",
+    "openUntil": "10:00 PM",
+    "imageUrl": "https://the-gourmet-spot.com/wp-content/uploads/2023/02/sanch-rub-768x512.jpg",
+    "review": "The Gourmet Spot offers an exceptional dining experience. The food was cooked to perfection, with balanced flavors and fresh ingredients. The staff were very attentive and ensured we had everything we needed. Highly recommend the desserts! The ambiance is modern yet cozy, making it a perfect place for both casual outings and special occasions. Will definitely return!",
+    "dishes": [
+      "Grilled Salmon",
+      "Pasta Primavera",
+      "Chocolate Lava Cake",
+      "Caesar Salad"
+    ],
+    "position": [12.9716, 77.5946],
+    "address": "MG Road, Bengaluru"
+  },
+  {
+    "name": "Urban Bites",
+    "rating": 3.8,
+    "reviewCount": 89,
+    "status": "Closed",
+    "opensAt": "11:00 AM",
+    "imageUrl": "https://lh3.googleusercontent.com/p/AF1QipPK6eiHRUqFtDZ44iFjRH373uVM3Ac1Chn5erYn=s1360-w1360-h1020",
+    "review": "Urban Bites has a vibrant atmosphere with a great variety of dishes to choose from. The burgers were juicy and well-seasoned, while the fries were crisp and golden. Service was a bit slow during peak hours but overall worth the wait. The decor adds a funky charm, perfect for hanging out with friends. Definitely coming back soon.",
+    "dishes": ["Beef Burger", "Truffle Fries", "Milkshake", "BBQ Wings"],
+    "position": [12.9352, 77.6146],
+    "address": "Koramangala, Bengaluru"
+  },
+  {
+    "name": "Casa Bella",
+    "rating": 4.7,
+    "reviewCount": 210,
+    "status": "Open",
+    "openUntil": "11:30 PM",
+    "imageUrl": "https://lh3.googleusercontent.com/p/AF1QipNo9Adire53WY1WxXEWU6XnWg0MfSSnSUcUwTDw=s1360-w1360-h1020",
+    "review": "Casa Bella delivers an authentic Italian experience. The wood-fired pizzas were delicious, and the handmade pasta was al dente and flavorful. The wine selection perfectly complemented the meals. The servers were friendly and knowledgeable about the menu. A hidden gem for Italian cuisine lovers. Will recommend it to all my friends!",
+    "dishes": [
+      "Margherita Pizza",
+      "Spaghetti Carbonara",
+      "Tiramisu",
+      "Garlic Bread"
+    ],
+    "position": [13.0285, 77.5897],
+    "address": "Hebbal, Bengaluru"
+  },
+  {
+    "name": "Spice & Herbs",
+    "rating": 4.2,
+    "reviewCount": 157,
+    "status": "Open",
+    "openUntil": "9:00 PM",
+    "imageUrl": "https://lh3.googleusercontent.com/p/AF1QipPxX4Q1rzOSusov1msuFY3HhoUscoauCdlREwvs=s1360-w1360-h1020",
+    "review": "Spice & Herbs offers a fantastic range of international flavors. The curries were rich and aromatic, and the naan was soft and buttery. The spice level was adjustable, which was great for everyone at the table. The service was top-notch and made us feel right at home. A must-visit for foodies looking for authentic flavors!",
+    "dishes": ["Butter Chicken", "Paneer Tikka", "Mango Lassi", "Garlic Naan"],
+    "position": [12.925, 77.5938],
+    "address": "BTM Layout, Bengaluru"
+  },
+  {
+    "name": "Sunset Diner",
+    "rating": 4.0,
+    "reviewCount": 132,
+    "status": "Closed",
+    "opensAt": "8:00 AM",
+    "imageUrl": "https://lh3.googleusercontent.com/p/AF1QipPZLxJg3PcpFQ6JN-LT6wd7hbKbgMXHue2zKckG=s1360-w1360-h1020",
+    "review": "Sunset Diner gives off a nostalgic vibe with its classic American diner menu. The pancakes were fluffy, and the coffee was strong. The servers are friendly and efficient, always wearing a smile. Great spot for weekend brunches or late-night cravings. I would recommend trying the milkshakes!",
+    "dishes": [
+      "Pancakes",
+      "Cheeseburger",
+      "Vanilla Milkshake",
+      "Club Sandwich"
+    ],
+    "position": [12.9896, 77.5534],
+    "address": "Rajajinagar, Bengaluru"
+  },
+  {
+    "name": "Bistro Verde",
+    "rating": 4.6,
+    "reviewCount": 180,
+    "status": "Open",
+    "openUntil": "10:30 PM",
+    "imageUrl": "https://images.squarespace-cdn.com/content/v1/6282cd620d5f7962b3560537/ccbb45ff-7a06-45ea-998e-04a2362e71e7/Bistro_Verde_CPH.jpg?format=2500w",
+    "review": "Bistro Verde impressed me with its farm-to-table philosophy. Everything tasted fresh and vibrant. The salads were creative, and the mains were plated beautifully. The open-air patio is a great touch, perfect for sunny afternoons. The staff were kind and offered great wine pairings. Will come back soon!",
+    "dishes": [
+      "Grilled Chicken Salad",
+      "Risotto Verde",
+      "Lemon Tart",
+      "Herb Roasted Vegetables"
+    ],
+    "position": [13.0108, 77.5552],
+    "address": "Yeshwanthpur, Bengaluru"
+  },
+  {
+    "name": "Curry House",
+    "rating": 4.1,
+    "reviewCount": 95,
+    "status": "Open",
+    "openUntil": "11:00 PM",
+    "imageUrl": "https://lh3.googleusercontent.com/p/AF1QipP-WGIpIoWso1X74CQBDR7U3Sg6tHlsSXUPcXWb=s1360-w1360-h1020",
+    "review": "Curry House is my go-to for spicy Indian comfort food. Their lamb curry and biryani are absolutely spot on. The spice levels can be adjusted, which is a plus. The interior has traditional decor that creates a warm and inviting atmosphere. Prices are reasonable too. A solid choice for family dinners.",
+    "dishes": ["Lamb Biryani", "Chicken Korma", "Samosas", "Masala Chai"],
+    "position": [12.9718, 77.6411],
+    "address": "Indiranagar, Bengaluru"
+  },
+  {
+    "name": "Sushi Zen",
+    "rating": 4.8,
+    "reviewCount": 223,
+    "status": "Closed",
+    "opensAt": "12:00 PM",
+    "imageUrl": "https://lh3.googleusercontent.com/p/AF1QipOlVuINGIHvx4q_u_qiNPP4VZoASA5W44WNMPav=s1360-w1360-h1020",
+    "review": "Sushi Zen is a paradise for sushi lovers. The fish was incredibly fresh, and the rolls were expertly crafted. The omakase experience is a must-try. The minimalist design and serene environment make dining here a pleasure. The chefs are very skilled and respectful of tradition.",
+    "dishes": ["Dragon Roll", "Nigiri Set", "Miso Soup", "Tempura Udon"],
+    "position": [12.9344, 77.6266],
+    "address": "Ejipura, Bengaluru"
+  },
+  {
+    "name": "Taco Fiesta",
+    "rating": 4.3,
+    "reviewCount": 140,
+    "status": "Open",
+    "openUntil": "9:30 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdyuVl1Vxhea6TGIFXSQm2Pqoer7zH4RxlEg&s",
+    "review": "Taco Fiesta has some of the best street-style tacos in town! The meats were tender and well-marinated, and the salsas were bursting with flavor. The casual and colorful setting makes it a fun place to visit. Quick service and great prices. Highly recommend the al pastor tacos!",
+    "dishes": ["Al Pastor Tacos", "Nachos", "Quesadilla", "Horchata"],
+    "position": [12.957, 77.701],
+    "address": "Whitefield, Bengaluru"
+  },
+  {
+    "name": "The Vegan Bowl",
+    "rating": 4.4,
+    "reviewCount": 115,
+    "status": "Closed",
+    "opensAt": "9:00 AM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlLiC9qKCV42uSoxMO6E_GtW7ifTInNZzfvQ&s",
+    "review": "The Vegan Bowl is a haven for plant-based eaters. The bowls are creative, nutritious, and filling. Everything is beautifully presented and bursting with colors. The smoothies and juices are fresh and packed with flavor. Friendly staff and great vibes all around. Highly recommended!",
+    "dishes": [
+      "Quinoa Power Bowl",
+      "Avocado Toast",
+      "Green Smoothie",
+      "Vegan Brownie"
+    ],
+    "position": [12.998, 77.592],
+    "address": "Malleshwaram, Bengaluru"
+  },
+  {
+    "name": "Sunset Grill",
+    "rating": 4.0,
+    "reviewCount": 142,
+    "status": "Closed",
+    "opensAt": "5:00 PM",
+    "imageUrl": "https://tb-static.uber.com/prod/image-proc/processed_images/7dd16bad31aa5829ecdda9c833bca650/30be7d11a3ed6f6183354d1933fbb6c7.jpeg",
+    "review": "Sunset Grill is a perfect place to enjoy a relaxing evening. The grilled seafood platter is fresh and flavorful. The view during sunset is breathtaking. Service is courteous but sometimes a bit slow when it gets busy. The cocktails are creative and well-balanced, adding to the overall positive experience.",
+    "dishes": [
+      "Grilled Shrimp",
+      "Seafood Platter",
+      "Margarita",
+      "Key Lime Pie"
+    ],
+    "position": [12.9358, 77.5354],
+    "address": "Banashankari, Bengaluru"
+  },
+  {
+    "name": "Burger Haven",
+    "rating": 3.5,
+    "reviewCount": 95,
+    "status": "Open",
+    "openUntil": "12:00 AM",
+    "imageUrl": "https://imgmediagumlet.lbb.in/media/2025/01/6790b9b0e59da653ef5df1de_1737537968281.jpg",
+    "review": "Burger Haven serves classic American-style burgers that hit the spot every time. The buns are soft, and the patties are well-seasoned and juicy. Their special sauce elevates the flavor even more. The casual setting and fast service make it a popular spot for late-night bites.",
+    "dishes": [
+      "Classic Cheeseburger",
+      "Onion Rings",
+      "Vanilla Shake",
+      "Chicken Tenders"
+    ],
+    "position": [12.9166, 77.6101],
+    "address": "JP Nagar, Bengaluru"
+  },
+  {
+    "name": "Vegan Delights",
+    "rating": 4.6,
+    "reviewCount": 198,
+    "status": "Open",
+    "openUntil": "9:00 PM",
+    "imageUrl": "http://www.vegandelights.org/wp-content/uploads/2025/03/All-Vegan-Delights-Sandwiches_Purple-Official-2048x1077.jpg",
+    "review": "Vegan Delights is a paradise for plant-based eaters. The variety of dishes is impressive, from jackfruit tacos to vegan mac and cheese. Everything is fresh and bursting with flavor. The staff is knowledgeable about vegan alternatives and very welcoming. Great atmosphere for health-conscious diners.",
+    "dishes": [
+      "Jackfruit Tacos",
+      "Vegan Mac & Cheese",
+      "Quinoa Salad",
+      "Vegan Brownie"
+    ],
+    "position": [12.8452, 77.66],
+    "address": "Electronic City, Bengaluru"
+  },
+  {
+    "name": "Curry Junction",
+    "rating": 4.1,
+    "reviewCount": 134,
+    "status": "Closed",
+    "opensAt": "12:00 PM",
+    "imageUrl": "https://content.jdmagicbox.com/v2/comp/bangalore/c3/080pxx80.xx80.170921192640.q4c3/catalogue/curry-junction-bangalore-restaurants-8yjou.jpg",
+    "review": "Curry Junction never disappoints when it comes to flavorful Indian cuisine. The butter chicken is rich and creamy, while the biryani is aromatic and well-spiced. The portions are generous, and the garlic naan is always a must-order. A perfect place for a comforting meal with family.",
+    "dishes": [
+      "Butter Chicken",
+      "Chicken Biryani",
+      "Garlic Naan",
+      "Mango Lassi"
+    ],
+    "position": [12.9719, 77.75],
+    "address": "KR Puram, Bengaluru"
+  },
+  {
+    "name": "Sushi World",
+    "rating": 4.8,
+    "reviewCount": 289,
+    "status": "Open",
+    "openUntil": "10:00 PM",
+    "imageUrl": "https://tb-static.uber.com/prod/image-proc/processed_images/d1e86bb2d1a7e9f2d22ccfe9015cbe1f/0e8f477e8f858732b95bd74b5e07a538.jpeg",
+    "review": "Sushi World offers some of the freshest sushi in town. The rolls are beautifully presented and bursting with flavor. The wasabi and soy sauce pair perfectly with the expertly cut sashimi. The minimalist decor and quick service make it a fantastic dining spot for sushi lovers.",
+    "dishes": ["Dragon Roll", "Tuna Sashimi", "Miso Soup", "Edamame"],
+    "position": [13.0358, 77.597],
+    "address": "RT Nagar, Bengaluru"
+  },
+  {
+    "name": "The Pancake House",
+    "rating": 4.0,
+    "reviewCount": 115,
+    "status": "Open",
+    "openUntil": "3:00 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ6ilsgBscVug3s7GJu2JKbwZ1fqQN9CdWNQ&s",
+    "review": "The Pancake House is the go-to spot for breakfast lovers. The pancakes are fluffy and served with a variety of syrups and toppings. The coffee is strong and pairs perfectly with their signature omelets. A cozy spot to kick off the weekend mornings.",
+    "dishes": [
+      "Blueberry Pancakes",
+      "Omelet Deluxe",
+      "Hash Browns",
+      "French Toast"
+    ],
+    "position": [12.8828, 77.6022],
+    "address": "Arekere, Bengaluru"
+  },
+  {
+    "name": "BBQ Pit",
+    "rating": 4.3,
+    "reviewCount": 178,
+    "status": "Closed",
+    "opensAt": "4:00 PM",
+    "imageUrl": "https://b.zmtcdn.com/data/pictures/8/20538028/91cb6a6c75e79acda7d65f432ec692a0_featured_v2.jpg",
+    "review": "BBQ Pit is a haven for barbecue enthusiasts. The brisket melts in your mouth, and the ribs are fall-off-the-bone tender. The house-made sauces add just the right kick. The rustic vibe and friendly service complete the authentic BBQ experience. Highly recommended for meat lovers!",
+    "dishes": ["Smoked Brisket", "BBQ Ribs", "Coleslaw", "Cornbread"],
+    "position": [13.023, 77.64],
+    "address": "Nagawara, Bengaluru"
+  },
+  {
+    "name": "frittata Fiesta",
+    "rating": 3.9,
+    "reviewCount": 106,
+    "status": "Open",
+    "openUntil": "11:00 PM",
+    "imageUrl": "https://countryatheartrecipes.com/wp-content/uploads/2024/04/Breakfast-Frittata-Mini-Tarts-12.jpg",
+    "review": "frittata Fiesta brings bold and spicy flavors to the table. The tacos are filled with well-marinated meats and fresh toppings. The nachos are loaded and perfect for sharing. The lively ambiance makes it a fun hangout spot, especially during happy hour.",
+    "dishes": ["Chicken Tacos", "Loaded Nachos", "Guacamole", "Churros"],
+    "position": [12.9796, 77.7192],
+    "address": "Marathahalli, Bengaluru"
+  },
+  {
+    "name": "Noodle House",
+    "rating": 4.4,
+    "reviewCount": 160,
+    "status": "Closed",
+    "opensAt": "1:00 PM",
+    "imageUrl": "https://lh5.googleusercontent.com/p/AF1QipMeL7stDAoDmSZPBRCJDQL9oG-629oBGky0GyGQ=w390-h262-n-k-no",
+    "review": "Noodle House is an underrated gem for Asian noodle dishes. The ramen broth is rich and flavorful, and the portions are generous. The dumplings are handmade and steamed to perfection. The casual setting and reasonable prices make it a favorite among locals.",
+    "dishes": [
+      "Tonkotsu Ramen",
+      "Steamed Dumplings",
+      "Fried Rice",
+      "Bubble Tea"
+    ],
+    "position": [12.9376, 77.6951],
+    "address": "Bellandur, Bengaluru"
+  },
+  {
+    "name": "Mediterranean Breeze",
+    "rating": 4.2,
+    "reviewCount": 150,
+    "status": "Open",
+    "openUntil": "10:30 PM",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxwOGYnaZbOavb2p_muVmoTXc8n3A_vsSDFw&s",
+    "review": "Mediterranean Breeze serves fresh and vibrant dishes with Mediterranean flair. The falafel is crispy, and the hummus is creamy and rich. The grilled kebabs are juicy and well-spiced. The outdoor seating is a plus, especially in the evenings.",
+    "dishes": ["Falafel Wrap", "Lamb Kebab", "Hummus Platter", "Baklava"],
+    "position": [13.0878, 77.6209],
+    "address": "Yelahanka, Bengaluru"
+  }
+]
