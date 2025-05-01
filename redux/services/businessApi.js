@@ -1,8 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "./baseQuery";
 
-
-
 export const BUSINESS_API = "businessApi";
 
 export const businessApi = createApi({
@@ -13,8 +11,8 @@ export const businessApi = createApi({
   endpoints: (builder) => ({
     // **1. Get All Businesses (With Pagination, Search, Filters)**
     getAllBusinesses: builder.query({
-      query: ({ page = 1, limit = 10, search = "", category = "" }) => ({
-        url: `businesses?page=${page}&limit=${limit}&search=${search}&category=${category}`,
+      query: ({ category = "" }) => ({
+        url: `businesses?category=${category}`,
         method: "GET",
       }),
       providesTags: ["Business"],

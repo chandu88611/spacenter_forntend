@@ -6,20 +6,24 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import { ChevronDown } from "lucide-react";
 import { FiInfo } from "react-icons/fi";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
+import { useGetAllBusinessesQuery } from "../../../redux/services/businessApi";
 
 import MapMarker from "@/components/BusinessMap";
 import FilterPanel from "@/components/FilterPanel";
-import RestaurantList from "@/components/RestaurantList";
+import BusinessList from "@/components/BusinessList";
 import SpaCenterList from "@/components/SpaCenters";
 
 export default function ListingPage({ category }) {
   const [sort, setSort] = useState("Recommended");
   const location = "Bangalore, KA";
   const type = "Takeout";
-
+  const { data, isLoading, error } = useGetAllBusinessesQuery({
+    category: category || "",
+  });
   const renderList = () => {
-    if (category === "restaurant") return <RestaurantList />;
-    if (category === "beauty-spa") return <SpaCenterList />;
+    // if (category === "restaurant")
+    return <BusinessList businessData={data} />;
+    // if (category === "beauty-spa") return <SpaCenterList />;
     return (
       <div className="text-gray-500">No listings found for this category.</div>
     );

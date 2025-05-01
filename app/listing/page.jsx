@@ -8,7 +8,7 @@ import { FiInfo } from "react-icons/fi";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import MapMarker from "@/components/BusinessMap";
 import FilterPanel from "@/components/FilterPanel";
-import RestaurantList from "@/components/RestaurantList";
+import RestaurantList from "@/components/BusinessList";
 // import SpaCenterList from "@/components/SpaCenters";
 
 function Page() {
