@@ -11,8 +11,8 @@ export const businessApi = createApi({
   endpoints: (builder) => ({
     // **1. Get All Businesses (With Pagination, Search, Filters)**
     getAllBusinesses: builder.query({
-      query: ({ category = "" }) => ({
-        url: `businesses?category=${category}`,
+      query: ({ page = 1, limit = 10, search = "", category = "" }) => ({
+        url: `businesses?page=${page}&limit=${limit}&search=${search}&category=${category}`,
         method: "GET",
       }),
       providesTags: ["Business"],
@@ -93,6 +93,14 @@ export const businessApi = createApi({
       }),
       invalidatesTags: ["Business"],
     }),
+    // 10. Get all businesses by category
+    getAllBusinessesByCategory: builder.query({
+      query: ({ category = "" }) => ({
+        url: `businesses/category?category=${category}`,
+        method: "GET",
+      }),
+      providesTags: ["Business"],
+    }),
   }),
 });
 
@@ -106,4 +114,5 @@ export const {
   useAddReviewMutation,
   useGetBusinessReviewsQuery,
   useUploadBusinessPhotosMutation,
+  useGetAllBusinessesByCategoryQuery,
 } = businessApi;

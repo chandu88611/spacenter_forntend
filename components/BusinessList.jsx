@@ -179,7 +179,7 @@ import { Star, MessageSquare, ChevronLeft, ChevronRight } from "lucide-react";
 import { getOperatingStatus } from "@/utils/getOperatingStatus";
 
 export default function BusinessList({ businessData }) {
-  const businesses = businessData?.data?.data || [];
+  const businesses = businessData?.data || [];
   const [currentPage, setCurrentPage] = useState(1);
   const businessPerPage = 5;
   const totalPages = Math.ceil(businesses.length / businessPerPage);
@@ -211,7 +211,6 @@ export default function BusinessList({ businessData }) {
       )
     );
   };
-  console.log(currentBusiness);
   return (
     <div className="space-y-6">
       {currentBusiness.map((list, index) => {

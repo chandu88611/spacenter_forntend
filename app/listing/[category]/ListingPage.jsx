@@ -6,27 +6,31 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import { ChevronDown } from "lucide-react";
 import { FiInfo } from "react-icons/fi";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
-import { useGetAllBusinessesQuery } from "../../../redux/services/businessApi";
+import { useGetAllBusinessesByCategoryQuery } from "../../../redux/services/businessApi";
 
 import MapMarker from "@/components/BusinessMap";
 import FilterPanel from "@/components/FilterPanel";
 import BusinessList from "@/components/BusinessList";
-import SpaCenterList from "@/components/SpaCenters";
 
 export default function ListingPage({ category }) {
   const [sort, setSort] = useState("Recommended");
   const location = "Bangalore, KA";
   const type = "Takeout";
-  const { data, isLoading, error } = useGetAllBusinessesQuery({
+  const { data, isLoading, error } = useGetAllBusinessesByCategoryQuery({
     category: category || "",
   });
   const renderList = () => {
-    // if (category === "restaurant")
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error loading businesses.</div>;
+    if (!data || data.length === 0)
+      return (
+        <div className="text-gray-500">
+          No listings found for this category.
+        </div>
+      );
+
+    // Dynamically render BusinessList for both restaurant and spa categories
     return <BusinessList businessData={data} />;
-    // if (category === "beauty-spa") return <SpaCenterList />;
-    return (
-      <div className="text-gray-500">No listings found for this category.</div>
-    );
   };
 
   return (
@@ -97,7 +101,7 @@ export default function ListingPage({ category }) {
 
       <div className="h-full sticky top-[100px] hidden lg:block">
         <div className="h-full w-full min-h-[400px] overflow-hidden border rounded">
-          <MapMarker selectedType={category} />
+          <MapMarker selectedType={category} businessData={data} />
         </div>
       </div>
     </div>
