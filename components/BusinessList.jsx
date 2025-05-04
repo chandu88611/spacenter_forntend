@@ -180,6 +180,7 @@ import { getOperatingStatus } from "@/utils/getOperatingStatus";
 
 export default function BusinessList({ businessData }) {
   const businesses = businessData?.data || [];
+  console.log(businesses);
   const [currentPage, setCurrentPage] = useState(1);
   const businessPerPage = 5;
   const totalPages = Math.ceil(businesses.length / businessPerPage);
@@ -223,7 +224,6 @@ export default function BusinessList({ businessData }) {
         const { status, message } = getOperatingStatus(
           list.operatingHours?.timings || {}
         );
-
         return (
           <div
             id="business-section"

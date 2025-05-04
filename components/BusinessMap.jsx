@@ -166,7 +166,6 @@ const Tooltip = dynamic(
 const MapMarker = ({ selectedType, businessData = [] }) => {
   const businesses = businessData?.data || [];
 
-  console.log(businesses);
   const [mapReady, setMapReady] = useState(false);
   const [L, setL] = useState(null);
   const [locations, setLocations] = useState([]);
@@ -210,7 +209,6 @@ const MapMarker = ({ selectedType, businessData = [] }) => {
           };
         });
 
-      console.log("cleanedData:", cleanedData);
       setLocations(cleanedData);
     }
   }, [businessData, selectedType]);
