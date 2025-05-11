@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  output: 'export',
+  // output: 'export',
   reactStrictMode: true,
   images: {
     unoptimized: true,
@@ -12,14 +12,14 @@ const nextConfig = {
     return [
       // Redirect non-www to www
       {
-        source: '/:path*',
+        source: "/:path*",
         has: [
           {
-            type: 'host',
-            value: 'algotradingelite.com',
+            type: "host",
+            value: "algotradingelite.com",
           },
         ],
-        destination: 'https://www.algotradingelite.com/:path*',
+        destination: "https://www.algotradingelite.com/:path*",
         permanent: true,
       },
 

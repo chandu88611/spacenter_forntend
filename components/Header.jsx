@@ -67,32 +67,78 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
   const menuItems = [
     { name: "Home", link: "/" },
     {
       name: "Services",
       submenu: [
-        { name: "Business", link: "/business" },
-        {
-          name: "Business Listings",
-          submenu: [
-            { name: "Restaurant", link: "/listing/restaurant" },
-            { name: "Beauty & Spa", link: "/listing/beauty-spa" },
-          ],
-        },
+        { name: "Restaurant", link: "/listing/restaurant" },
+        { name: "Beauty & Spa", link: "/listing/beauty-spa" },
       ],
     },
     { name: "About", link: "/about" },
     { name: "Blog", link: "/blog" },
   ];
 
+  const handleOpen = (index) => {
+    setOpenDropdown(index);
+  };
+
+  const handleClose = () => {
+    setOpenDropdown(null);
+  };
+
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#0f336d] via-[#073d80] to-[#023fa0] text-white shadow-lg backdrop-blur-sm border-b border-white/10 transition-all duration-300">
       <div className="w-full px-6 py-4 flex items-center justify-between">
         <div className="text-2xl font-bold">Yelp Clone</div>
-
         <div className="hidden lg:flex space-x-6" ref={dropdownRef}>
+          {menuItems.map((item, index) => (
+            <div
+              key={index}
+              className="relative"
+              onMouseEnter={() => handleOpen(index)}
+              onMouseLeave={handleClose}
+            >
+              {item.submenu ? (
+                <>
+                  <button
+                    onClick={() => handleOpen(index)}
+                    className="flex items-center gap-1 text-white font-medium hover:text-gray-300"
+                  >
+                    {item.name}
+                    <FiChevronDown
+                      className={openDropdown === index ? "rotate-180" : ""}
+                    />
+                  </button>
+                  {openDropdown === index && (
+                    <div className="absolute left-0 top-full bg-white text-gray-800 shadow-lg rounded-lg p-2 w-56 z-50">
+                      {item.submenu.map((sub, subIndex) => (
+                        <Link
+                          key={subIndex}
+                          href={sub.link}
+                          onClick={handleClose}
+                          className="block px-4 py-2 !text-gray-700 hover:!bg-gray-100 hover:text-black"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Link
+                  href={item.link}
+                  className="text-white font-medium hover:text-gray-300"
+                >
+                  {item.name}
+                </Link>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* <div className="hidden lg:flex space-x-6" ref={dropdownRef}>
           {menuItems.map((item, index) => (
             <div key={index} className="relative">
               {item.submenu ? (
@@ -155,7 +201,7 @@ const Navbar = () => {
               )}
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* Search Input with Location Field (Hidden in Mobile) */}
         <div className="hidden lg:flex w-1/3">

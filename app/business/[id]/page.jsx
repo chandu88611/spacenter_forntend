@@ -50,9 +50,29 @@ import ProductSlider from "@/components/ProductSlider";
 import MapMarker from "@/components/BusinessMap";
 import { motion } from "framer-motion";
 import Reviews from "@/components/Review";
+import { notFound } from "next/navigation";
 import { MdOutlineSpa } from "react-icons/md";
+import {
+  useGetBusinessByIdQuery,
+  useGetAllBusinessesQuery,
+} from "../../../redux/services/businessApi";
+import { getBackendUrl } from "@/utils/getBackendUrl";
 
-export default function Business() {
+// export async function generateStaticParams() {
+//   const res = await fetch("http://localhost:5000/api/businesses");
+//   const businesses = await res.json();
+
+//   return businesses.map((business) => ({
+//     id: business.id,
+//   }));
+// }
+
+export default function Business({ params }) {
+  const { id } = params;
+
+  const { data, isLoading, error } = useGetBusinessByIdQuery(id);
+  const business = data?.data;
+  console.log(business);
   const [activeTab, setActiveTab] = useState("contact");
   const keywords = ["Study", "Education", "Coaching", "University", "Classes"];
   const [isOpen, setIsOpen] = useState(false);
@@ -104,6 +124,12 @@ export default function Business() {
     };
   }, []);
 
+  const raw = data?.data?.services || [];
+
+  // Join the malformed array and extract quoted strings using regex
+  const combined = raw.join("");
+  const cleanedServices = [...combined.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+
   return (
     <>
       <div className="pattern-img">
@@ -115,7 +141,7 @@ export default function Business() {
                 <div className="col-xl-8 col-lg-12 col-md-12 d-block mx-auto">
                   <div className="text-center text-white">
                     <h1 className="mb-2 text-white font-semibold">
-                      Goozer Beauty & Spa
+                      {data?.data?.businessName}
                     </h1>
                     <div className="flex items-center justify-center space-x-2 md:space-x-3 mb-4">
                       <StarRating rating={4.5} />
@@ -123,7 +149,7 @@ export default function Business() {
                         className="text-white text-sm md:text-base hover:underline"
                         href="javascript:void(0)"
                       >
-                        4 reviews
+                        {data?.data?.reviewCount} reviews
                       </a>
                     </div>
                     <ul className="flex flex-wrap justify-center sm:justify-center items-center gap-1 sm:gap-2 mb-4">
@@ -213,7 +239,7 @@ export default function Business() {
                 <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#283653]">
                   <IoLocationOutline className="text-white text-sm" />
                 </span>
-                Mp-214, New York, NY 10012, US-52014
+                {data?.data?.address1}, {data?.data?.address2}
               </a>
               <a
                 href="javascript:void(0)"
@@ -222,7 +248,7 @@ export default function Business() {
                 <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#3b4c70]">
                   <FaPhoneAlt className="text-white text-sm" />
                 </span>
-                +154 256-635-654
+                {data?.data?.phone}
               </a>
             </div>
           </div>
@@ -263,17 +289,17 @@ export default function Business() {
                 <div className="card-body">
                   <div className="item-det mb-4">
                     <a href="javascript:void(0)" className="text-dark">
-                      <h3>Goozer Beauty & Spa</h3>
+                      <h3>{data?.data?.businessName}</h3>
                     </a>
                     <div className="d-md-flex mt-2">
                       <ul className="d-md-flex mb-0 flex-wrap text-gray-600 text-sm">
                         <li className="me-5 flex items-center gap-1">
                           <MdOutlineSpa className="text-gray-500 w-4 h-4" />
-                          Beauty & Spa
+                          {data?.data?.businessType}
                         </li>
                         <li className="me-5 flex items-center gap-1">
                           <IoLocationOutline className="text-gray-500" />
-                          USA
+                          {data?.data?.country}
                         </li>
                         <li className="me-5 flex items-center gap-1">
                           <SlCalender className="text-gray-500" />5 hours ago
@@ -284,7 +310,8 @@ export default function Business() {
                         </li>
                         {/* Rating & Likes (Same Alignment) */}
                         <li className="me-5 flex items-center gap-1">
-                          <StarRating rating={4.5} /> 4.0
+                          <StarRating rating={data?.data?.averageRating} />
+                          {data?.data?.reviewCount}
                         </li>
                       </ul>
 
@@ -296,7 +323,15 @@ export default function Business() {
                       </div>
                     </div>
                   </div>
-                  <ProductSlider />
+                  <ProductSlider
+                    imageUrls={
+                      business?.galleries?.length > 0
+                        ? business.galleries.map(
+                            (g) => `${getBackendUrl()}${g.photoUrl}`
+                          )
+                        : ["/images/default.jpg"]
+                    }
+                  />
                 </div>
               </div>
               <div className="bg-white shadow-lg rounded-lg overflow-hidden mt-4">
@@ -310,22 +345,8 @@ export default function Business() {
                 {/* Card Body */}
                 <div className="p-6 text-gray-700">
                   {/* Description */}
-                  <p className="text-black">
-                    At vero eos et accusamus et iusto odio dignissimos ducimus
-                    qui blanditiis praesentium voluptatum deleniti atcorrupti
-                    quos dolores et quas molestias excepturi sint occaecati
-                    cupiditate non provident, similique sunt in culpa qui
-                    officia deserunt mollitia animi, id est laborum et dolorum
-                    fuga.
-                  </p>
-                  <p className="mt-4 text-black">
-                    On the other hand, we denounce with righteous indignation
-                    and dislike men who are so beguiled and demoralized by the
-                    charms of pleasure of the moment, so blinded by desire, that
-                    they cannot foresee the pain and trouble that are bound to
-                    ensue; and equal blame belongs to those who fail in their
-                    duty through weakness of will.
-                  </p>
+                  <p className="text-black">{data?.data?.description}</p>
+                  <p className="mt-4 text-black">{data?.data?.overview}</p>
 
                   {/* Business Details Section */}
 
@@ -338,7 +359,9 @@ export default function Business() {
                       <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-200">
                         <FaBuilding className="text-gray-500 text-lg" />
                       </div>
-                      <span className="text-black">Goozer Spa center</span>
+                      <span className="text-black">
+                        {data?.data?.businessName}
+                      </span>
                     </div>
 
                     {/* Industry */}
@@ -347,7 +370,9 @@ export default function Business() {
                         <FaUserGraduate className="text-gray-500 text-lg" />
                       </div>
 
-                      <span className="text-black">Beauty & saloon</span>
+                      <span className="text-black">
+                        {data?.data?.businessType}
+                      </span>
                     </div>
 
                     {/* Established Year */}
@@ -356,7 +381,9 @@ export default function Business() {
                         <FaCalendarAlt className="text-gray-500 text-lg" />
                       </div>
 
-                      <span className="text-black">Established: 2017</span>
+                      <span className="text-black">
+                        Established: {data?.data?.establishedYear}
+                      </span>
                     </div>
 
                     {/* Employee Count */}
@@ -365,7 +392,9 @@ export default function Business() {
                         <FaUsers className="text-gray-500 text-lg" />
                       </div>
 
-                      <span className="text-black">Employees: 10+</span>
+                      <span className="text-black">
+                        Employees: {data?.data?.employeeCount}+
+                      </span>
                     </div>
                   </div>
 
@@ -383,7 +412,7 @@ export default function Business() {
                         href="#"
                         className="text-black hover:text-blue-600 transition duration-200"
                       >
-                        Mp-214, New York, NY 10012, US-52014
+                        {data?.data?.address1},{data?.data?.address2}
                       </a>
                     </div>
 
@@ -396,7 +425,7 @@ export default function Business() {
                         href="mailto:spruko123@gmail.com"
                         className="text-black hover:text-blue-600 transition duration-200"
                       >
-                        goozer123@gmail.com
+                        {data?.data?.email}
                       </a>
                     </div>
 
@@ -409,7 +438,7 @@ export default function Business() {
                         href="tel:+123456789"
                         className="text-black hover:text-blue-600 transition duration-200"
                       >
-                        +1 234 567 890
+                        {data?.data?.phone}
                       </a>
                     </div>
 
@@ -419,12 +448,12 @@ export default function Business() {
                         <FaGlobe className="text-gray-500 text-lg" />
                       </div>
                       <a
-                        href="https://www.bizdire.com"
+                        href={data?.data?.webite}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-black hover:text-blue-600 transition duration-200"
                       >
-                        www.goozer.com
+                        {data?.data?.website}
                       </a>
                     </div>
                   </div>
@@ -438,14 +467,26 @@ export default function Business() {
                           <td className="font-medium py-2 px-4 bg-gray-100">
                             Established Year
                           </td>
-                          <td className="py-2 px-4">2017</td>
+                          <td className="py-2 px-4">
+                            {data?.data?.establishedYear}
+                          </td>
                         </tr>
                         <tr className="border-b">
                           <td className="font-medium py-2 px-4 bg-gray-100">
                             Services
                           </td>
-                          <td className="py-2 px-4">Beauty, Training</td>
+                          <td className="py-2 px-4 flex flex-wrap gap-2">
+                            {cleanedServices.map((service, idx) => (
+                              <div
+                                key={idx}
+                                className="border border-gray-300 px-2 py-1 rounded-sm text-sm text-gray-800 hover:border-gray-500 hover:shadow-md transition duration-200 cursor-pointer"
+                              >
+                                {service}
+                              </div>
+                            ))}
+                          </td>
                         </tr>
+
                         <tr className="border-b">
                           <td className="font-medium py-2 px-4 bg-gray-100">
                             Payment Methods
@@ -861,7 +902,7 @@ export default function Business() {
                     </>
                   )}
 
-                  {activeTab === "timings" && (
+                  {/* {activeTab === "timings" && (
                     <div>
                       <h4 className="text-xl font-semibold mb-4">
                         Business Hours
@@ -899,29 +940,92 @@ export default function Business() {
                         </tbody>
                       </table>
                     </div>
-                  )}
+                  )} */}
+                  {activeTab === "timings" &&
+                    data?.data?.operatingHours?.timings && (
+                      <div>
+                        <h4 className="text-xl font-semibold mb-4">
+                          Business Hours
+                        </h4>
+                        <table className="w-full border-collapse border border-gray-300">
+                          <thead>
+                            <tr className="bg-gray-100">
+                              <th className="border border-gray-300 px-4 py-2 text-left">
+                                Day
+                              </th>
+                              <th className="border border-gray-300 px-4 py-2 text-left">
+                                Opening Hours
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Object.entries(
+                              data.data.operatingHours.timings
+                            ).map(([day, { open, close }]) => {
+                              const openTime = new Date(
+                                open
+                              ).toLocaleTimeString("en-US", {
+                                hour: "numeric",
+                                minute: "2-digit",
+                                hour12: true,
+                              });
+                              const closeTime = new Date(
+                                close
+                              ).toLocaleTimeString("en-US", {
+                                hour: "numeric",
+                                minute: "2-digit",
+                                hour12: true,
+                              });
+
+                              // Check if the current day is a holiday
+                              const isHoliday = data?.data?.holiday?.some(
+                                (holiday) =>
+                                  holiday.name.toLowerCase() ===
+                                    day.toLowerCase() && holiday.isClosed
+                              );
+
+                              return (
+                                <tr key={day}>
+                                  <td className="border border-gray-300 px-4 py-2 capitalize">
+                                    {day}
+                                  </td>
+                                  <td className="border border-gray-300 px-4 py-2">
+                                    {isHoliday
+                                      ? "Closed"
+                                      : `${openTime} - ${closeTime}`}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
                 </div>
               </div>
               <div className="max-w-lg mx-auto mt-4 bg-white shadow-lg rounded-lg overflow-hidden">
                 {/* Header Section */}
                 <div className="text-white py-4 px-6 border-b mb-4 border-gray-200 text-left">
-                  <h3 className="text-lg font-semibold">Listing Location</h3>
+                  <h3 className="text-lg font-semibold">Business Location</h3>
                 </div>
                 {/* Map Section */}
-                <div className="w-95 ml-2 h-80 bg-gray-200 flex items-center justify-center">
-                  <MapMarker />
+                <div className="relative z-10 w-full h-56 bg-gray-200 overflow-hidden">
+                  <MapMarker
+                    selectedType={business?.businessType}
+                    businessData={business}
+                  />
                 </div>
 
                 {/* Address Section */}
-                <div className="p-6">
-                  <div className="space-y-4">
+                <div className="px-6 py-3">
+                  <div className="space-y-3">
                     {/* Address */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <div className="w-6 h-6 bg-gray-200 text-blue-500 rounded-full flex items-center justify-center">
                         <FaMapMarkerAlt className="w-4 h-4" />
                       </div>
                       <p className="text-gray-700">
-                        123 Main Street, New York, USA
+                        {data?.data?.address1},{data?.data?.address2}
                       </p>
                     </div>
                   </div>
@@ -930,10 +1034,10 @@ export default function Business() {
                 {/* Get Directions Button */}
                 <div className="p-4 text-center">
                   <a
-                    href="https://www.google.com/maps"
+                    href={`https://www.google.com/maps?q=${business?.latitude},${business?.longitude}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-blue-600  px-4 py-2 rounded-md flex items-center justify-center gap-2 shadow-md hover:bg-blue-700 transition"
+                    className="bg-blue-600 px-4 py-2 rounded-md flex items-center justify-center gap-2 shadow-md hover:bg-blue-700 transition"
                   >
                     <FaDirections className="w-4 h-4" />
                     Get Directions
