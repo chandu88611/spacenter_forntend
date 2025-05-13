@@ -126,9 +126,18 @@ export default function Business({ params }) {
 
   const raw = data?.data?.services || [];
 
-  // Join the malformed array and extract quoted strings using regex
-  const combined = raw.join("");
-  const cleanedServices = [...combined.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  const cleanedServices = raw
+    .map((item) => (typeof item === "string" ? item : item?.name))
+    .filter(Boolean)
+    .map((name) => name.replace(/[\[\]"]+/g, "").trim());
+
+  function decodeAndStripHtml(htmlString) {
+    const decoded = new DOMParser().parseFromString(htmlString, "text/html")
+      .documentElement.textContent;
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = decoded;
+    return tempDiv.textContent || "";
+  }
 
   return (
     <>
@@ -346,7 +355,9 @@ export default function Business({ params }) {
                 <div className="p-6 text-gray-700">
                   {/* Description */}
                   <p className="text-black">{data?.data?.description}</p>
-                  <p className="mt-4 text-black">{data?.data?.overview}</p>
+                  <p className="mt-4 text-black">
+                    {decodeAndStripHtml(data?.data?.overview || "")}
+                  </p>
 
                   {/* Business Details Section */}
 

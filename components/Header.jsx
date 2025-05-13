@@ -10,6 +10,7 @@ import {
   FiX,
 } from "react-icons/fi";
 import { TbCurrentLocation } from "react-icons/tb";
+import { useGetAllCategoriesQuery } from "../redux/services/businessApi";
 
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -22,7 +23,10 @@ const Navbar = () => {
   const [expanded, setExpanded] = useState(null);
   const dropdownRef = useRef(null); // Reference for detecting outside clicks
   const menuRef = useRef(null);
+  const { data: categoryData } = useGetAllCategoriesQuery();
+  const categories = categoryData?.data || [];
 
+  console.log(categories);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -67,14 +71,23 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   const menuItems = [
     { name: "Home", link: "/" },
     {
       name: "Services",
-      submenu: [
-        { name: "Restaurant", link: "/listing/restaurant" },
-        { name: "Beauty & Spa", link: "/listing/beauty-spa" },
-      ],
+      submenu: categories.map((category) => {
+        const formattedName = category.name
+          .replace("-", " & ") // Replace - with ' & '
+          .split(" ") // Split into words
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+          .join(" "); // Join back with space
+
+        return {
+          name: formattedName,
+          link: `/listing/${category.name}`, // URL remains unchanged
+        };
+      }),
     },
     { name: "About", link: "/about" },
     { name: "Blog", link: "/blog" },

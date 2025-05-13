@@ -3173,9 +3173,9 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <RecentActivity />
+      {/* <RecentActivity /> */}
       <CategoriesList />
-      <section className="sptb bg-patterns bg-white">
+      {/* <section className="sptb bg-patterns bg-white">
         <div className="container">
           <div className="section-title center-block text-center">
             <h2>Featured Listings</h2>
@@ -3189,7 +3189,7 @@ export default function Home() {
             className="owl-carousel owl-carousel-icons2 owl-loaded owl-drag"
           >
             {/* Wrapper for carousel items */}
-            <div className="owl-stage-outer">
+      {/* <div className="owl-stage-outer">
               <div
                 className="owl-stage"
                 style={{
@@ -4288,7 +4288,7 @@ export default function Home() {
             <div className="owl-dots disabled" />
           </div>
         </div>
-      </section>
+      </section> */}
       <section>
         <div
           className="about-1 cover-image sptb bg-background-color"

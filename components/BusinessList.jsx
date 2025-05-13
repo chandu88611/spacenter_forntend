@@ -222,9 +222,19 @@ export default function BusinessList({ businessData }) {
         const businessUrl = `/business/${list.id}`; // use slug or _id
         const rating = parseFloat(list.averageRating || 0);
         const reviewCount = list.reviewCount || 0;
+        // const services = Array.isArray(list.services)
+        //   ? list.services.map((s) => s.replace(/[\[\]"]+/g, "").trim())
+        //   : [];
         const services = Array.isArray(list.services)
-          ? list.services.map((s) => s.replace(/[\[\]"]+/g, "").trim())
+          ? list.services
+              .map((s) =>
+                typeof s.name === "string"
+                  ? s.name.replace(/[\[\]"]+/g, "").trim()
+                  : ""
+              )
+              .filter(Boolean)
           : [];
+
         const { status, message } = getOperatingStatus(
           list.operatingHours?.timings || {}
         );

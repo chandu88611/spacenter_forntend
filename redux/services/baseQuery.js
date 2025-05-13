@@ -14,7 +14,7 @@ let interceptorsSet = false;
 // Function to set up interceptors
 const setUpInterceptors = () => {
   if (interceptorsSet) return;
-  
+
   axiosInstance.interceptors.request.use(
     (config) => {
       const token = localStorage.getItem("authToken");
@@ -35,7 +35,13 @@ const setUpInterceptors = () => {
 };
 
 // Axios Base Query for RTK Query
-const axiosBaseQuery = async ({ url, method = "GET", body, params, headers }) => {
+const axiosBaseQuery = async ({
+  url,
+  method = "GET",
+  body,
+  params,
+  headers,
+}) => {
   setUpInterceptors();
 
   try {
@@ -43,7 +49,7 @@ const axiosBaseQuery = async ({ url, method = "GET", body, params, headers }) =>
       url,
       method,
       data: body, // Body for POST/PUT
-      params,     // Params for GET/DELETE
+      params, // Params for GET/DELETE
       headers,
     });
 
