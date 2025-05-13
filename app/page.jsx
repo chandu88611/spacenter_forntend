@@ -161,8 +161,10 @@ export default function Home() {
           <div className="section-title center-block text-center">
             <h2>Latest Listings</h2>
             <p>
-              Mauris ut cursus nunc. Morbi eleifend, ligula at consectetur
-              vehicula
+              Discover the latest business listings near you, including
+              top-rated restaurants, relaxing beauty & spa centers, luxurious
+              hotels & resorts, and trusted pet stores. Stay updated with new
+              additions and explore services tailored to your needs.
             </p>
           </div>
           <div
