@@ -284,6 +284,9 @@ import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import { getOperatingStatus } from "@/utils/getOperatingStatus"; // Adjust path as needed
 import { getBackendUrl } from "@/utils/getBackendUrl";
+import { FaPhoneAlt } from "react-icons/fa";
+import { PhoneCall } from "lucide-react";
+import Link from "next/link";
 
 // Dynamically import leaflet components
 const MapContainer = dynamic(
@@ -338,11 +341,12 @@ const MapMarker = ({ selectedType, businessData = [] }) => {
         const { status, message } = getOperatingStatus(
           item.timings || item.operatingHours?.timings || {}
         );
-
+        console.log(item.latitude, item.longitude);
         return {
           id: item.id,
           name: item.businessName,
           address: `${item.address1 || ""}, ${item.city || ""}`,
+          phone: item.phone,
           rating: item.averageRating || "N/A",
           reviewCount: item.reviewCount || 0,
           position: [parseFloat(item.latitude), parseFloat(item.longitude)],
@@ -354,7 +358,6 @@ const MapMarker = ({ selectedType, businessData = [] }) => {
           type: item.businessType || selectedType,
         };
       });
-
     setLocations(cleanedData);
   }, [businessData, selectedType, businesses]);
 
@@ -392,28 +395,34 @@ const MapMarker = ({ selectedType, businessData = [] }) => {
           position={loc.position}
           icon={getCustomIcon(loc.type)}
         >
-          <Tooltip direction="top" offset={[0, -10]}>
+          <Tooltip direction="top" offset={[0, -5]}>
             {loc.name}
           </Tooltip>
           <Popup>
-            <div className="p-2 rounded-md shadow bg-white w-[180px] space-y-1">
-              <img
-                crossOrigin="anonymous"
-                src={loc.imageUrl}
-                alt={loc.name}
-                className="rounded w-full h-20 object-cover mb-1"
-              />
-              <h3 className="font-semibold text-sm text-gray-800">
-                {loc.name}
-              </h3>
-              <p className="text-xs text-gray-600">{loc.address}</p>
-              <p className="text-xs text-gray-500 italic">
-                ⭐ {loc.rating} ({loc.reviewCount} reviews)
-              </p>
-              <p className="text-xs text-green-600 font-medium">
-                {loc.status} – until {loc.openUntil}
-              </p>
-            </div>
+            <Link href={`/business/${loc.id}`} passHref>
+              <div className="p-3 rounded-lg shadow-lg bg-white w-72 space-y-2 cursor-pointer hover:scale-105 hover:ring-2 hover:ring-blue-300 transition-all duration-200">
+                <img
+                  crossOrigin="anonymous"
+                  src={loc.imageUrl}
+                  alt={loc.name}
+                  className="rounded-md w-full h-32 object-cover"
+                />
+                <h3 className="font-semibold text-base text-gray-800">
+                  {loc.name}
+                </h3>
+                <p className="text-sm text-gray-600">{loc.address}</p>
+                <div className="flex items-center text-sm text-gray-600">
+                  <PhoneCall className="w-4 h-4 mr-2 text-gray-500" />
+                  {loc.phone}
+                </div>
+                <p className="text-xs text-gray-500 italic">
+                  ⭐ {loc.rating} ({loc.reviewCount} reviews)
+                </p>
+                <p className="text-xs text-green-600 font-medium">
+                  {loc.status} – until {loc.openUntil}
+                </p>
+              </div>
+            </Link>
           </Popup>
         </Marker>
       ))}

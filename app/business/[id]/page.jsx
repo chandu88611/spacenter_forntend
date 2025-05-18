@@ -72,7 +72,6 @@ export default function Business({ params }) {
 
   const { data, isLoading, error } = useGetBusinessByIdQuery(id);
   const business = data?.data;
-  console.log(business);
   const [activeTab, setActiveTab] = useState("contact");
   const keywords = ["Study", "Education", "Coaching", "University", "Classes"];
   const [isOpen, setIsOpen] = useState(false);

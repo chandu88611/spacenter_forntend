@@ -183,6 +183,7 @@ import { getBackendUrl } from "@/utils/getBackendUrl";
 export default function BusinessList({ businessData }) {
   const businesses = businessData?.data || [];
   console.log(businesses);
+
   const [currentPage, setCurrentPage] = useState(1);
   const businessPerPage = 5;
   const totalPages = Math.ceil(businesses.length / businessPerPage);
@@ -214,6 +215,27 @@ export default function BusinessList({ businessData }) {
       )
     );
   };
+
+  function decodeAndStripHtml(htmlString) {
+    if (!htmlString) return "";
+
+    // Step 1: Create a temporary DOM element to decode HTML entities
+    const temp = document.createElement("div");
+    temp.innerHTML = htmlString;
+
+    // Step 2: Get the decoded HTML as a string
+    let decoded = temp.textContent || temp.innerText || "";
+
+    // Step 3: Sometimes nested tags remain, so decode again if needed
+    // Repeat decoding until no more tags are present
+    while (/<[^>]+>/.test(decoded)) {
+      temp.innerHTML = decoded;
+      decoded = temp.textContent || temp.innerText || "";
+    }
+
+    return decoded.trim();
+  }
+
   return (
     <div className="space-y-6">
       {currentBusiness.map((list, index) => {
@@ -295,18 +317,30 @@ export default function BusinessList({ businessData }) {
                     <div>
                       <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
                         "
-                        {list.overview?.length > 100 && !list.showFullReview
-                          ? `${list.overview.slice(0, 100)}...`
-                          : list.overview || "No description provided."}
+                        {list.overview
+                          ? (() => {
+                              const cleanText = decodeAndStripHtml(
+                                list.overview
+                              );
+                              if (
+                                cleanText.length > 100 &&
+                                !list.showFullReview
+                              ) {
+                                return `${cleanText.slice(0, 100)}...`;
+                              }
+                              return cleanText || "No description provided.";
+                            })()
+                          : "No description provided."}
                         "
-                        {list.overview?.length > 100 && (
-                          <span
-                            onClick={() => toggleReadMore(index)}
-                            className="text-gray-500 cursor-pointer hover:underline text-xs md:text-sm ml-1"
-                          >
-                            {list.showFullReview ? "Show less" : "Read more"}
-                          </span>
-                        )}
+                        {list.overview &&
+                          decodeAndStripHtml(list.overview).length > 100 && (
+                            <span
+                              onClick={() => toggleReadMore(index)}
+                              className="text-gray-500 cursor-pointer hover:underline text-xs md:text-sm ml-1"
+                            >
+                              {list.showFullReview ? "Show less" : "Read more"}
+                            </span>
+                          )}
                       </p>
                     </div>
                   </div>
