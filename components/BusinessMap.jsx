@@ -341,7 +341,6 @@ const MapMarker = ({ selectedType, businessData = [] }) => {
         const { status, message } = getOperatingStatus(
           item.timings || item.operatingHours?.timings || {}
         );
-        console.log(item.latitude, item.longitude);
         return {
           id: item.id,
           name: item.businessName,

@@ -422,7 +422,7 @@ export default function Business({ params }) {
                         href="#"
                         className="text-black hover:text-blue-600 transition duration-200"
                       >
-                        {data?.data?.address1},{data?.data?.address2}
+                        {data?.data?.address1},{data?.data?.address2},
                       </a>
                     </div>
 
