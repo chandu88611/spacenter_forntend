@@ -7,6 +7,6 @@ export const getBackendUrl = () => {
     return "http://localhost:5000";
   } else {
     // Production environment, use your production server
-    return "http://97.74.87.147"; // Replace with your production URL
+    return "https://97.74.87.147"; // Replace with your production URL
   }
 };
