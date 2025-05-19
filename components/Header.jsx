@@ -251,7 +251,7 @@ const Navbar = () => {
         </button>
       </div>
       {/* Mobile Drawer Menu */}
-      <Drawer
+      {/* <Drawer
         placement="left"
         onClose={() => setOpen(false)}
         open={open}
@@ -266,20 +266,20 @@ const Navbar = () => {
       >
         <div ref={menuRef} className="flex flex-col space-y-4 p-4">
           {/* Login Section Before Navigation Items */}
-          <div className="flex items-center space-x-3 text-white">
+      {/* <div className="flex items-center space-x-3 text-white">
             <FiUser size={20} />
             <Link href="#" className="text-blue-400 hover:text-blue-300">
               Login / Signup
             </Link>
-          </div>
+          </div> */}
 
-          {/* Navigation Items */}
-          {menuItems.map((item, index) => (
+      {/* Navigation Items */}
+      {/* {menuItems.map((item, index) => (
             <div key={index}>
               {item.submenu ? (
-                <>
-                  {/* Main Dropdown Button */}
-                  <button
+                <> */}
+      {/* Main Dropdown Button */}
+      {/* <button
                     className="font-medium text-blue-400 flex justify-between items-center w-full px-3 py-2 rounded-md hover:bg-gray-800 transition"
                     onClick={() => handleDropdownToggle(index)}
                   >
@@ -292,24 +292,23 @@ const Navbar = () => {
                   </button>
 
                   {/* Dropdown Content */}
-                  {expanded === index && (
+      {/* {expanded === index && (
                     <div className="ml-4 flex flex-col">
                       {item.submenu.map((sub, subIndex) => (
                         <div key={subIndex} className="relative">
                           {sub.submenu ? (
-                            <>
-                              {/* Submenu Button */}
-                              <button
+                            <> */}
+      {/* Submenu Button */}
+      {/* <button
                                 onClick={() =>
                                   handleSubmenuToggle(index, subIndex)
                                 }
                                 className="w-full flex justify-between items-center px-4 py-2 text-gray-300 hover:text-blue-400 transition border-b border-white/50 last:border-none"
                               >
                                 {sub.name} <FiChevronRight />
-                              </button>
-
-                              {/* Nested Submenu */}
-                              {openSubmenus[`${index}-${subIndex}`] && (
+                              </button> */}
+      {/* Nested Submenu */}
+      {/*  {openSubmenus[`${index}-${subIndex}`] && (
                                 <div className="ml-6 flex flex-col space-y-2">
                                   {sub.submenu.map((nested, nestedIndex) => (
                                     <Link
@@ -340,6 +339,109 @@ const Navbar = () => {
                 <Link
                   href={item.link}
                   className="text-blue-400 font-medium hover:text-blue-300 transition px-3 py-2"
+                >
+                  {item.name}
+                </Link>
+              )}
+            </div>
+          ))}
+        </div>
+      </Drawer> */}
+      <Drawer
+        placement="left"
+        onClose={() => setOpen(false)}
+        open={open}
+        ref={dropdownRef}
+        className="lg:hidden custom-drawer"
+        closeIcon={
+          <FiX
+            size={24}
+            className="text-blue-600 absolute top-4 right-4 cursor-pointer"
+          />
+        }
+      >
+        <div ref={menuRef} className="flex flex-col space-y-4 p-4">
+          {/* Login Section */}
+          <div className="flex items-center space-x-3 text-white">
+            <FiUser size={20} />
+            <Link href="#" className="text-white hover:text-blue-400">
+              Login / Signup
+            </Link>
+          </div>
+
+          {/* Navigation Items */}
+          {menuItems.map((item, index) => (
+            <div key={index}>
+              {item.submenu ? (
+                <>
+                  {/* Main Dropdown Button */}
+                  <button
+                    className="text-white flex justify-between items-center w-full px-3 py-2 rounded-md hover:bg-gray-700 transition"
+                    onClick={() =>
+                      setOpenDropdown(openDropdown === index ? null : index)
+                    }
+                  >
+                    {item.name}
+                    <FiChevronDown
+                      className={`transition-transform ${
+                        openDropdown === index ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {/* Dropdown Content */}
+                  {openDropdown === index && (
+                    <div className="ml-4 flex flex-col bg-white rounded-md shadow-md">
+                      {item.submenu.map((sub, subIndex) => (
+                        <div key={subIndex} className="relative">
+                          {sub.submenu ? (
+                            <>
+                              {/* Submenu Button */}
+                              <button
+                                onClick={() => {
+                                  setOpenDropdown(null); // Close dropdown
+                                  setOpen(false); // Close drawer
+                                }}
+                                className="w-full flex justify-between items-center px-4 py-2 hover:text-blue-500 transition border-b border-gray-200"
+                              >
+                                {sub.name}
+                                <FiChevronRight />
+                              </button>
+
+                              {/* Nested Submenu */}
+                              {openSubmenus[`${index}-${subIndex}`] && (
+                                <div className="ml-4 flex flex-col space-y-1 bg-white rounded-md shadow-md">
+                                  {sub.submenu.map((nested, nestedIndex) => (
+                                    <Link
+                                      key={nestedIndex}
+                                      href={nested.link || "#"}
+                                      onClick={() => setOpen(false)} // ✅ close drawer when clicked
+                                      className="block px-4 py-2 text-gray-600 hover:text-blue-600 border-b border-gray-200"
+                                    >
+                                      {nested.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <Link
+                              href={sub.link || "#"}
+                              onClick={() => setOpen(false)} // ✅ close drawer on direct submenu
+                              className="block px-4 py-2 !text-gray-600 !hover:text-gray-300 border-b border-gray-200"
+                            >
+                              {sub.name}
+                            </Link>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Link
+                  href={item.link}
+                  className="text-white px-3 py-2 hover:text-blue-400"
                 >
                   {item.name}
                 </Link>
