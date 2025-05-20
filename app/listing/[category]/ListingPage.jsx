@@ -34,7 +34,7 @@ export default function ListingPage({ category }) {
   };
 
   return (
-    <div className="w-screen h-[calc(100vh-100px)] mt-[100px] grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-4 bg-white px-4 md:px-0">
+    <div className="w-screen min-h-[calc(100vh-100px)] mt-[100px] grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-4 bg-white px-4 md:px-0">
       <div className="h-full overflow-y-auto pl-0 md:pl-12 md:pr-6 py-6 space-y-6 scrollbar-hidden">
         <div className="flex items-center space-x-1 mb-1 text-sm md:text-base">
           <span className="font-semibold text-gray-800 cursor-pointer">

@@ -137,7 +137,7 @@ export default function Business({ params }) {
     tempDiv.innerHTML = decoded;
     return tempDiv.textContent || "";
   }
-
+  console.log(business);
   return (
     <>
       <div className="pattern-img">
@@ -147,7 +147,7 @@ export default function Business({ params }) {
             <div className="container">
               <div className="row">
                 <div className="col-xl-8 col-lg-12 col-md-12 d-block mx-auto">
-                  <div className="text-center text-white">
+                  <div className="text-center mt-4 text-white">
                     <h1 className="mb-2 text-white font-semibold">
                       {data?.data?.businessName}
                     </h1>
@@ -239,24 +239,29 @@ export default function Business({ params }) {
             </div>
           </div>
           <div className="details-absolute">
-            <div className="container flex flex-col sm:flex-row items-center justify-between text-white text-xs sm:text-sm">
+            <div className="container flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 text-white text-xs sm:text-sm px-4 py-2">
               <a
                 href="javascript:void(0)"
-                className="flex items-center gap-2 text-white"
+                className="flex items-start gap-2 text-white w-full sm:w-auto"
               >
-                <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#283653]">
+                <span className="w-6 h-6 mt-1 flex items-center justify-center rounded-full bg-[#283653] shrink-0">
                   <IoLocationOutline className="text-white text-sm" />
                 </span>
-                {data?.data?.address1}, {data?.data?.address2}
+                <span className="leading-snug">
+                  {data?.data?.address1}, {data?.data?.address2}
+                  <br />
+                  {data?.data?.city}, {data?.data?.country}
+                </span>
               </a>
+
               <a
                 href="javascript:void(0)"
-                className="flex items-center gap-2 mt-2 sm:mt-0 text-white"
+                className="flex items-center gap-2 text-white w-full sm:w-auto"
               >
-                <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#3b4c70]">
+                <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#3b4c70] shrink-0">
                   <FaPhoneAlt className="text-white text-sm" />
                 </span>
-                {data?.data?.phone}
+                <span>{data?.data?.phone}</span>
               </a>
             </div>
           </div>
@@ -422,7 +427,9 @@ export default function Business({ params }) {
                         href="#"
                         className="text-black hover:text-blue-600 transition duration-200"
                       >
-                        {data?.data?.address1},{data?.data?.address2},
+                        {data?.data?.address1}, {data?.data?.address2},
+                        <br />
+                        {data?.data?.city},{data?.data?.country}{" "}
                       </a>
                     </div>
 
@@ -458,12 +465,17 @@ export default function Business({ params }) {
                         <FaGlobe className="text-gray-500 text-lg" />
                       </div>
                       <a
-                        href={data?.data?.webite}
+                        href={data?.data?.website}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-black hover:text-blue-600 transition duration-200"
                       >
-                        {data?.data?.website}
+                        {data?.data?.website
+                          ? `www.${new URL(data.data.website).hostname.replace(
+                              /^www\./,
+                              ""
+                            )}`
+                          : ""}
                       </a>
                     </div>
                   </div>
@@ -1035,7 +1047,9 @@ export default function Business({ params }) {
                         <FaMapMarkerAlt className="w-4 h-4" />
                       </div>
                       <p className="text-gray-700">
-                        {data?.data?.address1},{data?.data?.address2}
+                        {data?.data?.address1}, {data?.data?.address2}
+                        <br />
+                        {data?.data?.city}, {data?.data?.country}
                       </p>
                     </div>
                   </div>
@@ -1094,14 +1108,14 @@ export default function Business({ params }) {
                   </motion.div>
                 </div>
               </motion.div>
-              <div className="max-w-lg mx-auto bg-white shadow-sm mt-4 rounded-lg overflow-hidden">
+              {/* <div className="max-w-lg mx-auto bg-white shadow-sm mt-4 rounded-lg overflow-hidden">
                 {/* Header */}
-                <div className="text-white border-b border-gray-200 py-4 px-6 text-left">
+              {/* <div className="text-white border-b border-gray-200 py-4 px-6 text-left">
                   <h3 className="text-lg font-semibold">Listing Owner</h3>
-                </div>
+                </div> */}
 
-                {/* Profile Section */}
-                <div className="flex flex-col items-center border-b border-gray-200 py-4">
+              {/* Profile Section */}
+              {/* <div className="flex flex-col items-center border-b border-gray-200 py-4">
                   <img
                     src="../assets/images/faces/female/13.jpg"
                     className="w-32 h-32 rounded-full  shadow-md"
@@ -1113,10 +1127,10 @@ export default function Business({ params }) {
                   >
                     Lilly Jones
                   </a>
-                  <span className="text-gray-500">Listing Owner</span>
+                  <span className="text-gray-500">Listing Owner</span> */}
 
-                  {/* Social Icons */}
-                  <div className="flex gap-3 mt-4">
+              {/* Social Icons */}
+              {/* <div className="flex gap-3 mt-4">
                     {[
                       FaFacebookF,
                       FaTwitter,
@@ -1133,10 +1147,10 @@ export default function Business({ params }) {
                       </a>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
-                {/* Footer */}
-                <div className="py-4 flex justify-center gap-3">
+              {/* Footer */}
+              {/* <div className="py-4 flex justify-center gap-3">
                   <a
                     href="javascript:void(0)"
                     className="px-4 py-1.5 bg-gray-200 text-gray-700 rounded-lg flex items-center gap-2 hover:bg-gray-300 transition text-sm shadow-md"
@@ -1153,7 +1167,7 @@ export default function Business({ params }) {
                     All Listings
                   </a>
                 </div>
-              </div>
+              </div> */}
               <div className="max-w-lg mx-auto bg-white shadow-sm mt-4 rounded-lg overflow-hidden">
                 {/* Header Section */}
                 <div className="py-3 px-6 text-left border-b border-gray-200">

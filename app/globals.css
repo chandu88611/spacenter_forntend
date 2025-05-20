@@ -163,19 +163,6 @@ section {
   display: block;
 }
 
-.custom-drawer .ant-drawer-content,
-.custom-drawer .ant-drawer-header,
-.custom-drawer .ant-drawer-body {
-  background: linear-gradient(to right, #0f336d, #073d80, #023fa0) !important;
-  color: white; /* Ensures text remains visible */
-}
-.custom-drawer .ant-drawer-close {
-  color: white !important;
-  cursor: pointer !important;
-}
-
-
-
 @layer utilities {
   .scrollbar-hidden {
     scrollbar-width: none; /* Firefox */

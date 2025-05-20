@@ -1,32 +1,46 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { Drawer } from "antd";
+import { FiChevronDown, FiMenu, FiSearch, FiUser, FiX } from "react-icons/fi";
 import {
-  FiChevronDown,
-  FiChevronRight,
-  FiMenu,
-  FiSearch,
-  FiUser,
-  FiX,
-} from "react-icons/fi";
+  Drawer,
+  Box,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Collapse,
+  Divider,
+} from "@mui/material";
+import {
+  Menu as MenuIcon,
+  Close as CloseIcon,
+  ExpandLess,
+  ExpandMore,
+  AccountCircle,
+  Facebook,
+  Instagram,
+  Twitter,
+} from "@mui/icons-material";
+
 import { TbCurrentLocation } from "react-icons/tb";
 import { useGetAllCategoriesQuery } from "../redux/services/businessApi";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [openSubmenus, setOpenSubmenus] = useState({});
+  const [openDrawer, setOpenDrawer] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [expanded, setExpanded] = useState(null);
   const dropdownRef = useRef(null); // Reference for detecting outside clicks
-  const menuRef = useRef(null);
   const { data: categoryData } = useGetAllCategoriesQuery();
   const categories = categoryData?.data || [];
+  const router = useRouter();
 
-  console.log(categories);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -36,29 +50,15 @@ const Navbar = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggleDropdown = (index) => {
+  const toggleDrawer = (open) => () => {
+    setOpenDrawer(open);
+    if (!open) setOpenDropdown(null);
+  };
+
+  const handleDropdown = (index) => {
     setOpenDropdown(openDropdown === index ? null : index);
-    setOpenSubmenus({});
   };
 
-  const handleDropdownToggle = (index) => {
-    setExpanded(expanded === index ? null : index);
-    setOpenSubmenus({}); // Reset submenus when switching main menu
-  };
-
-  const handleSubmenuToggle = (parentIndex, subIndex) => {
-    setOpenSubmenus((prev) => ({
-      ...prev,
-      [`${parentIndex}-${subIndex}`]: !prev[`${parentIndex}-${subIndex}`],
-    }));
-  };
-
-  const toggleSubmenu = (parentIndex, subIndex) => {
-    setOpenSubmenus((prev) => ({
-      ...prev,
-      [`${parentIndex}-${subIndex}`]: !prev[`${parentIndex}-${subIndex}`],
-    }));
-  };
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -99,6 +99,11 @@ const Navbar = () => {
 
   const handleClose = () => {
     setOpenDropdown(null);
+  };
+  const isActive = (link) => {
+    if (!link) return false;
+    if (!router.pathname || typeof router.pathname !== "string") return false;
+    return router.pathname === link || router.pathname.startsWith(link + "/");
   };
 
   return (
@@ -151,71 +156,6 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* <div className="hidden lg:flex space-x-6" ref={dropdownRef}>
-          {menuItems.map((item, index) => (
-            <div key={index} className="relative">
-              {item.submenu ? (
-                <>
-                  <button
-                    onClick={() => toggleDropdown(index)}
-                    className="flex items-center gap-1 text-white font-medium hover:text-gray-300"
-                  >
-                    {item.name}{" "}
-                    <FiChevronDown
-                      className={openDropdown === index ? "rotate-180" : ""}
-                    />
-                  </button>
-                  {openDropdown === index && (
-                    <div className="absolute left-0 top-full bg-white text-gray-800 shadow-lg rounded-lg p-2 w-56">
-                      {item.submenu.map((sub, subIndex) => (
-                        <div key={subIndex} className="relative">
-                          {sub.submenu ? (
-                            <>
-                              <button
-                                onClick={() => toggleSubmenu(index, subIndex)}
-                                className="w-full flex justify-between items-center px-4 py-2 hover:bg-gray-100"
-                              >
-                                {sub.name} <FiChevronRight />
-                              </button>
-                              {openSubmenus[`${index}-${subIndex}`] && (
-                                <div className="absolute left-full top-0 bg-white text-gray-800 shadow-lg rounded-lg p-2 w-56">
-                                  {sub.submenu.map((nested, nestedIndex) => (
-                                    <Link
-                                      key={nestedIndex}
-                                      href={nested.link}
-                                      className="block px-4 py-2 hover:bg-gray-100"
-                                    >
-                                      {nested.name}
-                                    </Link>
-                                  ))}
-                                </div>
-                              )}
-                            </>
-                          ) : (
-                            <Link
-                              href={sub.link}
-                              className="block px-4 py-2 hover:bg-gray-100"
-                            >
-                              {sub.name}
-                            </Link>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <Link
-                  href={item.link}
-                  className="text-white font-medium hover:text-gray-300"
-                >
-                  {item.name}
-                </Link>
-              )}
-            </div>
-          ))}
-        </div> */}
-
         {/* Search Input with Location Field (Hidden in Mobile) */}
         <div className="hidden lg:flex w-1/3">
           <div className="flex w-full bg-gray-100 rounded-md overflow-hidden">
@@ -244,212 +184,190 @@ const Navbar = () => {
             </button>
           </div>
         </div>
+        <Box sx={{ display: { xs: "block", lg: "none" } }}>
+          {/* Menu Icon */}
+          <IconButton onClick={toggleDrawer(true)} sx={{ color: "white" }}>
+            <MenuIcon />
+          </IconButton>
 
-        {/* Mobile Menu Button */}
-        <button className="lg:hidden text-white" onClick={() => setOpen(true)}>
-          <FiMenu size={24} />
-        </button>
-      </div>
-      {/* Mobile Drawer Menu */}
-      {/* <Drawer
-        placement="left"
-        onClose={() => setOpen(false)}
-        open={open}
-        ref={dropdownRef}
-        className="lg:hidden custom-drawer" // Custom class
-        closeIcon={
-          <FiX
-            size={24}
-            className="text-blue-600 absolute top-4 right-4 cursor-pointer"
-          />
-        }
-      >
-        <div ref={menuRef} className="flex flex-col space-y-4 p-4">
-          {/* Login Section Before Navigation Items */}
-      {/* <div className="flex items-center space-x-3 text-white">
-            <FiUser size={20} />
-            <Link href="#" className="text-blue-400 hover:text-blue-300">
-              Login / Signup
-            </Link>
-          </div> */}
-
-      {/* Navigation Items */}
-      {/* {menuItems.map((item, index) => (
-            <div key={index}>
-              {item.submenu ? (
-                <> */}
-      {/* Main Dropdown Button */}
-      {/* <button
-                    className="font-medium text-blue-400 flex justify-between items-center w-full px-3 py-2 rounded-md hover:bg-gray-800 transition"
-                    onClick={() => handleDropdownToggle(index)}
-                  >
-                    {item.name}
-                    <FiChevronDown
-                      className={`transform transition-transform ${
-                        expanded === index ? "rotate-180" : "rotate-0"
-                      }`}
-                    />
-                  </button>
-
-                  {/* Dropdown Content */}
-      {/* {expanded === index && (
-                    <div className="ml-4 flex flex-col">
-                      {item.submenu.map((sub, subIndex) => (
-                        <div key={subIndex} className="relative">
-                          {sub.submenu ? (
-                            <> */}
-      {/* Submenu Button */}
-      {/* <button
-                                onClick={() =>
-                                  handleSubmenuToggle(index, subIndex)
-                                }
-                                className="w-full flex justify-between items-center px-4 py-2 text-gray-300 hover:text-blue-400 transition border-b border-white/50 last:border-none"
-                              >
-                                {sub.name} <FiChevronRight />
-                              </button> */}
-      {/* Nested Submenu */}
-      {/*  {openSubmenus[`${index}-${subIndex}`] && (
-                                <div className="ml-6 flex flex-col space-y-2">
-                                  {sub.submenu.map((nested, nestedIndex) => (
-                                    <Link
-                                      key={nestedIndex}
-                                      href={nested.link || "#"}
-                                      className="block text-gray-300 hover:text-blue-400 px-4 py-2 transition border-b border-white/50 last:border-none"
-                                    >
-                                      {nested.name}
-                                    </Link>
-                                  ))}
-                                </div>
-                              )}
-                            </>
-                          ) : (
-                            <Link
-                              href={sub.link || "#"}
-                              className="block text-gray-300 hover:text-blue-400 px-4 py-2 transition border-b border-white/50 last:border-none"
-                            >
-                              {sub.name}
-                            </Link>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <Link
-                  href={item.link}
-                  className="text-blue-400 font-medium hover:text-blue-300 transition px-3 py-2"
+          {/* Drawer */}
+          <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer(false)}>
+            <Box
+              sx={{
+                width: 280,
+                height: "100%",
+                background:
+                  "linear-gradient(to right, #0f336d, #073d80, #023fa0)",
+                color: "white",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              {/* Top Close Button */}
+              <Box display="flex" justifyContent="flex-end" p={2}>
+                <IconButton
+                  onClick={toggleDrawer(false)}
+                  sx={{ color: "white" }}
                 >
-                  {item.name}
-                </Link>
-              )}
-            </div>
-          ))}
-        </div>
-      </Drawer> */}
-      <Drawer
-        placement="left"
-        onClose={() => setOpen(false)}
-        open={open}
-        ref={dropdownRef}
-        className="lg:hidden custom-drawer"
-        closeIcon={
-          <FiX
-            size={24}
-            className="text-blue-600 absolute top-4 right-4 cursor-pointer"
-          />
-        }
-      >
-        <div ref={menuRef} className="flex flex-col space-y-4 p-4">
-          {/* Login Section */}
-          <div className="flex items-center space-x-3 text-white">
-            <FiUser size={20} />
-            <Link href="#" className="text-white hover:text-blue-400">
-              Login / Signup
-            </Link>
-          </div>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
 
-          {/* Navigation Items */}
-          {menuItems.map((item, index) => (
-            <div key={index}>
-              {item.submenu ? (
-                <>
-                  {/* Main Dropdown Button */}
-                  <button
-                    className="text-white flex justify-between items-center w-full px-3 py-2 rounded-md hover:bg-gray-700 transition"
-                    onClick={() =>
-                      setOpenDropdown(openDropdown === index ? null : index)
-                    }
-                  >
-                    {item.name}
-                    <FiChevronDown
-                      className={`transition-transform ${
-                        openDropdown === index ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
+              {/* Main Nav */}
+              <Box flexGrow={1}>
+                <List>
+                  {/* Login / Signup */}
+                  <ListItem button component={Link} href="#">
+                    <ListItemIcon sx={{ color: "white" }}>
+                      <AccountCircle />
+                    </ListItemIcon>
+                    <ListItemText primary="Login / Signup" />
+                  </ListItem>
 
-                  {/* Dropdown Content */}
-                  {openDropdown === index && (
-                    <div className="ml-4 flex flex-col bg-white rounded-md shadow-md">
-                      {item.submenu.map((sub, subIndex) => (
-                        <div key={subIndex} className="relative">
-                          {sub.submenu ? (
-                            <>
-                              {/* Submenu Button */}
-                              <button
-                                onClick={() => {
-                                  setOpenDropdown(null); // Close dropdown
-                                  setOpen(false); // Close drawer
+                  <Divider
+                    sx={{ borderColor: "rgba(255,255,255,0.2)", my: 1 }}
+                  />
+
+                  {/* Nav Links */}
+                  {menuItems.map((item, index) => {
+                    const parentActive =
+                      isActive(item.link) ||
+                      (item.submenu &&
+                        item.submenu.some((si) => isActive(si.link)));
+
+                    return (
+                      <Box key={index}>
+                        {item.submenu ? (
+                          <>
+                            <ListItem
+                              button
+                              onClick={() => handleDropdown(index)}
+                              sx={{
+                                px: 3,
+                                color: parentActive
+                                  ? "#e3f2fd"
+                                  : "rgba(255,255,255,0.7)",
+                                bgcolor: parentActive
+                                  ? "rgba(255,255,255,0.1)"
+                                  : "transparent",
+                                fontWeight: parentActive ? "bold" : "normal",
+                                "&:hover": {
+                                  bgcolor: "rgba(255,255,255,0.15)",
+                                },
+                              }}
+                            >
+                              <ListItemText primary={item.name} />
+                              {openDropdown === index ? (
+                                <ExpandLess sx={{ color: "#e3f2fd" }} />
+                              ) : (
+                                <ExpandMore sx={{ color: "#e3f2fd" }} />
+                              )}
+                            </ListItem>
+
+                            <Collapse
+                              in={openDropdown === index}
+                              timeout="auto"
+                              unmountOnExit
+                            >
+                              <List
+                                component="div"
+                                disablePadding
+                                sx={{
+                                  bgcolor: "white",
+                                  borderLeft: "4px solid #0f336d",
                                 }}
-                                className="w-full flex justify-between items-center px-4 py-2 hover:text-blue-500 transition border-b border-gray-200"
                               >
-                                {sub.name}
-                                <FiChevronRight />
-                              </button>
+                                {item.submenu.map((subItem, subIndex) => (
+                                  <ListItem
+                                    key={subIndex}
+                                    button
+                                    component={Link}
+                                    href={subItem.link}
+                                    onClick={() => {
+                                      toggleDrawer(false)();
+                                      handleDropdown(null);
+                                    }}
+                                    sx={{
+                                      pl: 4,
+                                      bgcolor: isActive(subItem.link)
+                                        ? "#e3f2fd"
+                                        : "white",
+                                      color: isActive(subItem.link)
+                                        ? "#0f336d"
+                                        : "gray",
+                                      fontWeight: isActive(subItem.link)
+                                        ? "bold"
+                                        : "normal",
+                                      "&:hover": { bgcolor: "#f5f5f5" },
+                                    }}
+                                  >
+                                    <ListItemText primary={subItem.name} />
+                                  </ListItem>
+                                ))}
+                              </List>
+                            </Collapse>
+                          </>
+                        ) : (
+                          <ListItem
+                            button
+                            component={Link}
+                            href={item.link}
+                            onClick={() => {
+                              toggleDrawer(false)();
+                              handleDropdown(null);
+                            }}
+                            sx={{
+                              color: isActive(item.link)
+                                ? "#e3f2fd"
+                                : "rgba(255,255,255,0.7)",
+                              bgcolor: isActive(item.link)
+                                ? "rgba(255,255,255,0.1)"
+                                : "transparent",
+                              px: 3,
+                              fontWeight: isActive(item.link)
+                                ? "bold"
+                                : "normal",
+                              "&:hover": { bgcolor: "rgba(255,255,255,0.15)" },
+                            }}
+                          >
+                            <ListItemText primary={item.name} />
+                          </ListItem>
+                        )}
+                      </Box>
+                    );
+                  })}
+                </List>
+              </Box>
 
-                              {/* Nested Submenu */}
-                              {openSubmenus[`${index}-${subIndex}`] && (
-                                <div className="ml-4 flex flex-col space-y-1 bg-white rounded-md shadow-md">
-                                  {sub.submenu.map((nested, nestedIndex) => (
-                                    <Link
-                                      key={nestedIndex}
-                                      href={nested.link || "#"}
-                                      onClick={() => setOpen(false)} // ✅ close drawer when clicked
-                                      className="block px-4 py-2 text-gray-600 hover:text-blue-600 border-b border-gray-200"
-                                    >
-                                      {nested.name}
-                                    </Link>
-                                  ))}
-                                </div>
-                              )}
-                            </>
-                          ) : (
-                            <Link
-                              href={sub.link || "#"}
-                              onClick={() => setOpen(false)} // ✅ close drawer on direct submenu
-                              className="block px-4 py-2 !text-gray-600 !hover:text-gray-300 border-b border-gray-200"
-                            >
-                              {sub.name}
-                            </Link>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <Link
-                  href={item.link}
-                  className="text-white px-3 py-2 hover:text-blue-400"
+              {/* Bottom Social Links */}
+              <Box p={2} display="flex" justifyContent="center" gap={2}>
+                <IconButton
+                  href="https://facebook.com"
+                  target="_blank"
+                  sx={{ color: "white" }}
                 >
-                  {item.name}
-                </Link>
-              )}
-            </div>
-          ))}
-        </div>
-      </Drawer>
+                  <Facebook />
+                </IconButton>
+                <IconButton
+                  href="https://twitter.com"
+                  target="_blank"
+                  sx={{ color: "white" }}
+                >
+                  <Twitter />
+                </IconButton>
+                <IconButton
+                  href="https://instagram.com"
+                  target="_blank"
+                  sx={{ color: "white" }}
+                >
+                  <Instagram />
+                </IconButton>
+              </Box>
+            </Box>
+          </Drawer>
+        </Box>
+      </div>
     </nav>
   );
 };

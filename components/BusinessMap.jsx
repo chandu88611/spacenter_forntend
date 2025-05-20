@@ -321,14 +321,24 @@ const MapMarker = ({ selectedType, businessData = [] }) => {
   const [L, setL] = useState(null);
   const [locations, setLocations] = useState([]);
 
+  // Effect to load leaflet only once
   useEffect(() => {
     if (typeof window !== "undefined") {
       const leaflet = require("leaflet");
       setL(leaflet);
       setMapReady(true);
     }
+  }, []); // run once on mount
 
-    // Handle business data whether it's a single business or an array of businesses
+  // Effect to process businesses when businessData or selectedType changes
+  useEffect(() => {
+    // Determine businesses inside effect (to avoid businesses as dep)
+    const isSingleBusiness =
+      businessData && businessData.latitude && businessData.longitude;
+    const businesses = isSingleBusiness
+      ? [businessData]
+      : businessData?.data || [];
+
     const cleanedData = businesses
       .filter((item) => {
         const lat = parseFloat(item.latitude);
@@ -357,8 +367,17 @@ const MapMarker = ({ selectedType, businessData = [] }) => {
           type: item.businessType || selectedType,
         };
       });
-    setLocations(cleanedData);
-  }, [businessData, selectedType, businesses]);
+
+    // Only update locations if data changed (compare IDs)
+    setLocations((prev) => {
+      const prevIds = prev.map((loc) => loc.id).join(",");
+      const newIds = cleanedData.map((loc) => loc.id).join(",");
+      if (prevIds !== newIds) {
+        return cleanedData;
+      }
+      return prev;
+    });
+  }, [businessData, selectedType]);
 
   const getCustomIcon = (type) =>
     L?.icon({
