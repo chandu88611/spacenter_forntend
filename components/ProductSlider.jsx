@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Thumbs } from "swiper/modules";
+import { Navigation, Thumbs, Autoplay } from "swiper/modules";
 import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "swiper/css";
@@ -42,7 +42,12 @@ export default function ProductSlider({ imageUrls = [] }) {
             prevEl: ".main-prev",
           }}
           thumbs={{ swiper: thumbsSwiper }}
-          modules={[Navigation, Thumbs]}
+          modules={[Navigation, Thumbs, Autoplay]}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
           className="rounded-lg shadow-md h-full"
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
         >
