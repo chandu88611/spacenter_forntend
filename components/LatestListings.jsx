@@ -20,7 +20,6 @@ import { FaLocationDot } from "react-icons/fa6";
 
 const LatestListings = ({ listings = [] }) => {
   if (!Array.isArray(listings)) return null;
-  console.log(listings);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
@@ -30,7 +29,7 @@ const LatestListings = ({ listings = [] }) => {
       minute: "2-digit",
       hour12: true,
     });
-
+  console.log("GLARY    :::: ", listings);
   return (
     <div
       className="w-full relative overflow-visible"
@@ -87,7 +86,7 @@ const LatestListings = ({ listings = [] }) => {
           640: { slidesPerView: 1, spaceBetween: 15 },
           768: { slidesPerView: 2, spaceBetween: 20 },
           1024: { slidesPerView: 3, spaceBetween: 25 },
-          1280: { slidesPerView: 4, spaceBetween: 25 },
+          1280: { slidesPerView: 3, spaceBetween: 25 },
         }}
         navigation={{
           prevEl: prevRef.current,
@@ -131,9 +130,11 @@ const LatestListings = ({ listings = [] }) => {
                 <div className="card rounded-lg shadow-lg flex flex-col w-full h-full">
                   {/* Image Section */}
                   <div className="relative group h-[180px] sm:h-[160px] overflow-hidden rounded-t-lg w-full">
+                    {/* city-businessName-zip-id */}
                     <a
-                      href={`/business/${listing.id}`}
+                      href={`/business/${listing?.city}/${listing?.businessName}/${listing?.zip}/${listing?.id}`}
                       className="absolute-link"
+                      aria-label={`View ${listing?.businessName} details`}
                     />
                     <img
                       crossOrigin="anonymous"
@@ -152,8 +153,9 @@ const LatestListings = ({ listings = [] }) => {
                   {/* Details Section */}
                   <div className="flex flex-col flex-grow px-4 py-4 gap-2">
                     <a
-                      href={`/business/${listing.id}`}
+                      href={`/business/${listing?.city}/${listing?.businessName}/${listing?.zip}/${listing?.id}`}
                       className="text-dark no-underline hover:underline w-full"
+                      aria-label={`View ${listing?.businessName} details`}
                     >
                       <h4 className="text-lg font-semibold truncate">
                         {listing.businessName}

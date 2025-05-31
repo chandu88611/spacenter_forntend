@@ -241,7 +241,7 @@ export default function BusinessList({ businessData }) {
       {currentBusiness.map((list, index) => {
         const realIndex = (currentPage - 1) * businessPerPage + index;
         // const businessUrl = `/business/${list.slug || list._id}`; // use slug or _id
-        const businessUrl = `/business/${list.id}`; // use slug or _id
+        const businessUrl = `/business/${list?.city}/${list?.businessName}/${list?.zip}/${list?.id}`; // use slug or _id
         const rating = parseFloat(list.averageRating || 0);
         const reviewCount = list.reviewCount || 0;
         // const services = Array.isArray(list.services)

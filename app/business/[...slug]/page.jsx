@@ -40,6 +40,7 @@ import {
   FaChevronDown,
   FaPencilAlt,
   FaSpa,
+  FaInstagram,
 } from "react-icons/fa";
 import { SlBriefcase, SlCalender } from "react-icons/sl";
 import { CiHeart, CiShare2, CiUser } from "react-icons/ci";
@@ -57,6 +58,8 @@ import {
   useGetAllBusinessesQuery,
 } from "../../../redux/services/businessApi";
 import { getBackendUrl } from "@/utils/getBackendUrl";
+import { GiPlagueDoctorProfile } from "react-icons/gi";
+import { FaXTwitter } from "react-icons/fa6";
 
 // export async function generateStaticParams() {
 //   const res = await fetch("http://localhost:5000/api/businesses");
@@ -68,7 +71,13 @@ import { getBackendUrl } from "@/utils/getBackendUrl";
 // }
 
 export default function Business({ params }) {
-  const { id } = params;
+  const [city, businessName, zip, id] = params.slug;
+  console.log("{ city, businessName, zip, id } :::: ", {
+    city,
+    businessName,
+    zip,
+    id,
+  });
 
   const { data, isLoading, error } = useGetBusinessByIdQuery(id);
   const business = data?.data;
@@ -137,7 +146,7 @@ export default function Business({ params }) {
     tempDiv.innerHTML = decoded;
     return tempDiv.textContent || "";
   }
-  console.log(business);
+  console.log("business   :::: ", business);
   return (
     <>
       <div className="pattern-img">
@@ -174,7 +183,7 @@ export default function Business({ params }) {
                           href="#"
                           className="flex items-center justify-center w-full h-full"
                         >
-                          <FaTwitter className="text-white text-sm sm:text-md" />
+                          <FaXTwitter className="text-white text-sm sm:text-md" />
                         </a>
                       </li>
                       <li className="w-6 h-6 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#001f3f]">
@@ -182,7 +191,7 @@ export default function Business({ params }) {
                           href="#"
                           className="flex items-center justify-center w-full h-full"
                         >
-                          <FaRss className="text-white text-sm sm:text-md" />
+                          <FaInstagram className="text-white text-sm sm:text-md" />
                         </a>
                       </li>
                       <li className="w-6 h-6 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#001f3f]">
@@ -201,14 +210,14 @@ export default function Business({ params }) {
                           <FaLinkedinIn className="text-white text-sm sm:text-md" />
                         </a>
                       </li>
-                      <li className="w-6 h-6 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#001f3f]">
+                      {/* <li className="w-6 h-6 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-[#001f3f]">
                         <a
                           href="#"
                           className="flex items-center justify-center w-full h-full"
                         >
                           <FaGooglePlusG className="text-white text-sm sm:text-md" />
                         </a>
-                      </li>
+                      </li> */}
                     </ul>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-2">
                       <a
@@ -225,13 +234,13 @@ export default function Business({ params }) {
                         <FaStar className="text-white text-xs sm:text-sm" />
                         Write Review
                       </a>
-                      <a
+                      {/* <a
                         href="javascript:void(0)"
                         className="flex items-center gap-1 px-3 py-2 rounded-lg !bg-red-500 hover:!bg-red-600 text-white text-xs sm:text-sm shadow-md transition w-fit"
                       >
                         <FaExclamationCircle className="text-white text-xs sm:text-sm" />
                         Report Abuse
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>
@@ -261,7 +270,9 @@ export default function Business({ params }) {
                 <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#3b4c70] shrink-0">
                   <FaPhoneAlt className="text-white text-sm" />
                 </span>
-                <span>{data?.data?.phone}</span>
+                <span>
+                  <b>{data?.data?.phone}</b>
+                </span>
               </a>
             </div>
           </div>
@@ -270,7 +281,9 @@ export default function Business({ params }) {
       <div className="bg-white shadow-md rounded-lg mx-auto mt-2">
         <div className="container mx-auto">
           <div className="page-header">
-            <h4 className="text-lg font-semibold text-gray-800">Business</h4>
+            <h4 className="text-lg font-semibold text-gray-800">
+              {business?.businessType}
+            </h4>
             <nav className="mt-2">
               <ol className="flex items-center space-x-2 text-sm text-gray-600">
                 <li>
@@ -797,10 +810,11 @@ export default function Business({ params }) {
                 {/* Profile Section */}
                 <div className="flex flex-col items-center py-4 border-b border-gray-200">
                   <img
-                    src="../assets/images/other/logo.png"
-                    className="w-40 h-40 rounded-full shadow-md"
+                    src="/assets/images/other/logo.png"
+                    className="w-40 rounded-full shadow-md  object-cover"
                     alt="User"
                   />
+                  {/* <GiPlagueDoctorProfile /> */}
                   <a
                     href="userprofile.html"
                     className="mt-3 text-lg font-semibold !text-gray-900"
@@ -1215,21 +1229,21 @@ export default function Business({ params }) {
                   ))}
                 </div>
               </div>
-              <div className="max-w-lg mx-auto bg-white shadow-sm mt-4 rounded-lg overflow-hidden">
-                {/* Card Header */}
-                <div className="bg-gray-100 px-5 py-3 border-b border-gray-200">
+              {/* <div className="max-w-lg mx-auto bg-white shadow-sm mt-4 rounded-lg overflow-hidden"> */}
+              {/* Card Header */}
+              {/* <div className="bg-gray-100 px-5 py-3 border-b border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-700">
                     Search Listings
                   </h3>
-                </div>
+                </div> */}
 
-                {/* Card Body */}
+              {/* Card Body */}
 
-                <div className="max-w-lg mx-auto bg-white mt-4 rounded-lg overflow-visible p-5">
-                  {/* Search Input */}
-                  <div className="relative w-full max-w-xs" ref={dropdownRef}>
-                    {/* Search Input */}
-                    <div className="relative mb-4">
+              {/* <div className="max-w-lg mx-auto bg-white mt-4 rounded-lg overflow-visible p-5"> */}
+              {/* Search Input */}
+              {/* <div className="relative w-full max-w-xs" ref={dropdownRef}> */}
+              {/* Search Input */}
+              {/* <div className="relative mb-4">
                       <input
                         type="text"
                         placeholder="What are you looking for?"
@@ -1238,10 +1252,10 @@ export default function Business({ params }) {
                       <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-600 transition">
                         <FaSearch className="w-5 h-5" />
                       </button>
-                    </div>
+                    </div> */}
 
-                    {/* Dropdown Button */}
-                    <button
+              {/* Dropdown Button */}
+              {/* <button
                       onClick={handleDropdownClick}
                       className="w-full flex items-center justify-between px-4 py-2 border rounded-full border-gray-300  bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition overflow-hidden"
                     >
@@ -1251,24 +1265,24 @@ export default function Business({ params }) {
                           isOpen ? "rotate-180" : ""
                         }`}
                       />
-                    </button>
+                    </button> */}
 
-                    {/* Dropdown List (with Search Bar) */}
-                    {isOpen && (
-                      <div className="absolute left-0 top-full w-full bg-white border border-gray-300 shadow-lg z-50 rounded-lg">
-                        {/* 🔍 Search Input for Filtering */}
-                        <div className="p-2 border-b">
+              {/* Dropdown List (with Search Bar) */}
+              {/* {isOpen && ( */}
+              {/* // <div className="absolute left-0 top-full w-full bg-white border border-gray-300 shadow-lg z-50 rounded-lg"> */}
+              {/* 🔍 Search Input for Filtering */}
+              {/* <div className="p-2 border-b">
                           <input
                             type="text"
                             placeholder="Search..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                          />
-                        </div>
+                          /> */}
+              {/* </div> */}
 
-                        {/* Dropdown Items */}
-                        <ul className="max-h-60 overflow-y-auto">
+              {/* Dropdown Items */}
+              {/* <ul className="max-h-60 overflow-y-auto">
                           {filteredCategories.length > 0 ? (
                             filteredCategories.map((category, index) => (
                               <li
@@ -1289,14 +1303,14 @@ export default function Business({ params }) {
                         </ul>
                       </div>
                     )}
-                  </div>
+                  </div> */}
 
-                  {/* Search Button (Now Always Visible) */}
-                  <button className="px-4 py-2 bg-blue-500 mt-2 text-white rounded-full hover:bg-blue-600 transition">
+              {/* Search Button (Now Always Visible) */}
+              {/* <button className="px-4 py-2 bg-blue-500 mt-2 text-white rounded-full hover:bg-blue-600 transition">
                     Search
-                  </button>
-                </div>
-              </div>
+                  </button> */}
+              {/* </div> */}
+              {/* </div> */}
               <div className="max-w-lg mx-auto bg-white shadow-sm mt-4 rounded-lg overflow-hidden">
                 <div className="py-3 px-3 text-left border-b border-gray-200">
                   <h3 className="text-lg font-semibold">

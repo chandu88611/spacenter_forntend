@@ -11,6 +11,8 @@ import {
   ListItemText,
   Collapse,
   Divider,
+  Typography,
+  styled,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -24,12 +26,34 @@ import {
 } from "@mui/icons-material";
 
 import { TbCurrentLocation } from "react-icons/tb";
-import { useGetAllCategoriesQuery } from "../redux/services/businessApi";
+import {
+  useGetAllCategoriesQuery,
+  useGetAllCitiesQuery,
+} from "../redux/services/businessApi";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { IoLocationSharp } from "react-icons/io5";
 
 import { motion } from "framer-motion";
+import CitiesDialog from "./CitiesDialog";
+
+const LocationDetails = styled(Box)(({ theme }) => ({
+  "&>button": {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    padding: "5px",
+    borderRadius: "5px",
+    boxShadow: "0px 0px 5px rgba(0,0,0,0.5)",
+    "&>p": {
+      marginLeft: "5px",
+    },
+  },
+  // [theme.breakpoints.down("md")]: {},
+}));
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -38,7 +62,12 @@ const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const dropdownRef = useRef(null); // Reference for detecting outside clicks
   const { data: categoryData } = useGetAllCategoriesQuery();
+  const { data: citiesData } = useGetAllCitiesQuery();
   const categories = categoryData?.data || [];
+  const cities = citiesData?.data || [];
+  const [openCity, setOpenCity] = useState(false);
+  const [cityLocation, setCityLocation] = useState("Location");
+
   const router = useRouter();
 
   useEffect(() => {
@@ -97,6 +126,10 @@ const Navbar = () => {
     setOpenDropdown(index);
   };
 
+  const handleClickOpenCity = () => {
+    console.log("ATTACK ", categories);
+    setOpenCity(true);
+  };
   const handleClose = () => {
     setOpenDropdown(null);
   };
@@ -105,7 +138,7 @@ const Navbar = () => {
     if (!router.pathname || typeof router.pathname !== "string") return false;
     return router.pathname === link || router.pathname.startsWith(link + "/");
   };
-
+  console.log("CITIES ::: ", cities);
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#0f336d] via-[#073d80] to-[#023fa0] text-white shadow-lg backdrop-blur-sm border-b border-white/10 transition-all duration-300">
       <div className="w-full px-6 py-4 flex items-center justify-between">
@@ -184,6 +217,15 @@ const Navbar = () => {
             </button>
           </div>
         </div>
+        <LocationDetails>
+          <button
+            className="px-3 bg-blue-600 text-white"
+            onClick={() => handleClickOpenCity()}
+          >
+            <IoLocationSharp size={18} />
+            <Typography>{cityLocation}</Typography>
+          </button>
+        </LocationDetails>
         <Box sx={{ display: { xs: "block", lg: "none" } }}>
           {/* Menu Icon */}
           <IconButton onClick={toggleDrawer(true)} sx={{ color: "white" }}>
@@ -368,6 +410,12 @@ const Navbar = () => {
           </Drawer>
         </Box>
       </div>
+      <CitiesDialog
+        open={openCity}
+        setOpen={setOpenCity}
+        categories={cities}
+        setCityLocation={setCityLocation}
+      />
     </nav>
   );
 };
