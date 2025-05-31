@@ -16,6 +16,7 @@ export default function ListingPage({ category }) {
   const [sort, setSort] = useState("Recommended");
   const location = "Bangalore, KA";
   const type = "Takeout";
+  const decodedCategory = decodeURIComponent(category);
   const { data, isLoading, error } = useGetAllBusinessesByCategoryQuery({
     category: category || "",
   });
@@ -38,7 +39,7 @@ export default function ListingPage({ category }) {
       <div className="h-full overflow-y-auto pl-0 md:pl-12 md:pr-6 py-6 space-y-6 scrollbar-hidden">
         <div className="flex items-center space-x-1 mb-1 text-sm md:text-base">
           <span className="font-semibold text-gray-800 cursor-pointer">
-            {category}
+            {decodedCategory}
           </span>
           <ChevronRightIcon className="w-3 h-3 md:w-4 md:h-4 text-gray-400" />
           <span className="font-medium text-gray-500 cursor-pointer">

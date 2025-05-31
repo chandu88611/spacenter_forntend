@@ -76,10 +76,10 @@ export default function FilterSidebar() {
         </div>
 
         {/* Price with dropdown */}
-        <div className="flex items-center gap-1 px-4 py-2 rounded-full text-black border border-gray-300 cursor-pointer hover:bg-gray-200 hover:shadow-sm transition">
+        {/* <div className="flex items-center gap-1 px-4 py-2 rounded-full text-black border border-gray-300 cursor-pointer hover:bg-gray-200 hover:shadow-sm transition">
           <span>Price</span>
           <FiChevronDown className="w-3.5 h-3.5" />
-        </div>
+        </div> */}
 
         {/* Suggested Chips */}
         {suggestedOptions.slice(0, 5).map((option, idx) => (
