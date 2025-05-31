@@ -118,6 +118,15 @@ export const businessApi = createApi({
       }),
       providesTags: ["Category"],
     }),
+
+    // **13. Get All Cities**
+    getAllCities: builder.query({
+      query: () => ({
+        url: "businesses/cities",
+        method: "GET",
+      }),
+      providesTags: ["Business"],
+    }),
   }),
 });
 
@@ -133,5 +142,6 @@ export const {
   useUploadBusinessPhotosMutation,
   useGetAllBusinessesByCategoryQuery,
   useGetAllCategoriesQuery,
+  useGetAllCitiesQuery,
   useGetLatestBusinessesQuery,
 } = businessApi;

@@ -417,7 +417,10 @@ const MapMarker = ({ selectedType, businessData = [] }) => {
             {loc.name}
           </Tooltip>
           <Popup>
-            <Link href={`/business/${loc.id}`} passHref>
+            <Link
+              href={`/business/${loc?.city}/${loc?.businessName}/${loc?.zip}/${loc?.id}`}
+              passHref
+            >
               <div className="p-3 rounded-lg shadow-lg bg-white w-72 space-y-2 cursor-pointer hover:scale-105 hover:ring-2 hover:ring-blue-300 transition-all duration-200">
                 <img
                   crossOrigin="anonymous"

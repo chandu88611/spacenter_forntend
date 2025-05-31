@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import React from "react";
 
 import { FiSearch, FiPlay, FiPause, FiHeart } from "react-icons/fi";
+import { IoLocationSharp } from "react-icons/io5";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {

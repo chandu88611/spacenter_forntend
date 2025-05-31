@@ -28,10 +28,10 @@ export default function ProductSlider({ imageUrls = [] }) {
   return (
     <div className="relative w-full max-w-3xl mx-auto">
       {/* Price Tag */}
-      <div className="absolute top-0 left-0 bg-[#1b09bd] text-white px-3 py-2 text-sm font-semibold shadow-lg z-10 flex items-center">
+      {/* <div className="absolute top-0 left-0 bg-[#1b09bd] text-white px-3 py-2 text-sm font-semibold shadow-lg z-10 flex items-center">
         <span>$539</span>
         <div className="absolute top-0 right-[-10px] w-0 h-0 border-l-[10px] border-l-[#1b09bd] border-t-[18px] border-t-transparent border-b-[18px] border-b-transparent" />
-      </div>
+      </div> */}
 
       {/* Main Slider */}
       <div className="relative group h-[450px]">
