@@ -1,198 +1,58 @@
-// import { useState } from "react";
-// import { Star, MessageSquare } from "lucide-react";
-// import { ChevronLeft, ChevronRight } from "lucide-react";
-// import restaurants from "../public/data/restaurants.json";
+"use client";
 
-// export default function RestaurantList(businessData) {
-//   console.log(businessData);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [loading, setLoading] = useState(false);
-//   const restaurantsPerPage = 5;
-//   const totalPages = Math.ceil(restaurants.length / restaurantsPerPage);
-//   const [restaurant, setRestaurant] = useState(
-//     restaurants.map((r) => ({ ...r, showFullReview: false }))
-//   );
-//   const indexOfLast = currentPage * restaurantsPerPage;
-//   const indexOfFirst = indexOfLast - restaurantsPerPage;
-//   const currentRestaurants = restaurant.slice(indexOfFirst, indexOfLast);
-
-//   const handleNext = () => {
-//     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-//   };
-
-//   const handlePrev = () => {
-//     if (currentPage > 1) setCurrentPage(currentPage - 1);
-//   };
-
-//   const handlePageChange = (page) => {
-//     setCurrentPage(page);
-//     // Scroll to top of list or section (optional)
-//     const section = document.getElementById("business-section");
-//     section?.scrollIntoView({ behavior: "smooth" });
-//   };
-
-//   const toggleReadMore = (index) => {
-//     setRestaurant((prev) =>
-//       prev.map((r, i) =>
-//         i === index ? { ...r, showFullReview: !r.showFullReview } : r
-//       )
-//     );
-//   };
-
-//   return (
-//     <div className="space-y-6">
-//       {currentRestaurants.map((rest, index) => {
-//         const realIndex = (currentPage - 1) * restaurantsPerPage + index;
-//         return (
-//           <div
-//             id="business-section"
-//             key={realIndex}
-//             className="flex flex-col md:flex-row bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition duration-300"
-//           >
-//             <div className="w-full md:w-1/2 h-40 md:h-60 overflow-hidden rounded-xl">
-//               <img
-//                 src={rest.imageUrl}
-//                 alt={rest.name}
-//                 className="w-full h-full object-cover"
-//               />
-//             </div>
-
-//             {/* Right Details */}
-//             <div className="w-full md:w-2/3 p-4 flex flex-col justify-between">
-//               <div>
-//                 <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-1">
-//                   {rest.name}
-//                 </h3>
-//                 <div className="flex items-center mb-2">
-//                   {[1, 2, 3, 4, 5].map((star, i) => (
-//                     <Star
-//                       key={i}
-//                       className={`w-3 h-3 md:w-4 md:h-4 mr-1 ${
-//                         i < Math.round(rest.rating)
-//                           ? "text-yellow-500"
-//                           : "text-gray-300"
-//                       }`}
-//                     />
-//                   ))}
-//                   <span className="text-xs md:text-sm font-semibold text-gray-700">
-//                     {rest.rating}{" "}
-//                     <span className="text-gray-500">
-//                       ({rest.reviewCount} reviews)
-//                     </span>
-//                   </span>
-//                 </div>
-//                 <p
-//                   className={`text-xs md:text-sm mb-2 ${
-//                     rest.status === "Open" ? "text-green-600" : "text-red-600"
-//                   }`}
-//                 >
-//                   {rest.status === "Open"
-//                     ? `Open until ${rest.openUntil}`
-//                     : `Closed - Opens at ${rest.opensAt}`}
-//                 </p>
-
-//                 {/* Review Section */}
-//                 <div className="flex items-start gap-3 mb-3">
-//                   <MessageSquare className="w-3 h-3 md:w-4 md:h-4 text-gray-500 mt-1 flex-shrink-0" />
-//                   <div>
-//                     <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
-//                       "
-//                       {rest.review.length > 100 && !rest.showFullReview
-//                         ? `${rest.review.slice(0, 100)}...`
-//                         : rest.review}
-//                       "
-//                       {rest.review.length > 100 && (
-//                         <span
-//                           onClick={() => toggleReadMore(index)}
-//                           className="text-gray-500 cursor-pointer hover:underline text-xs md:text-sm ml-1"
-//                         >
-//                           {rest.showFullReview ? "Show less" : "Read more"}
-//                         </span>
-//                       )}
-//                     </p>
-//                   </div>
-//                 </div>
-
-//                 {/* Dishes Section */}
-//                 <div className="flex flex-wrap gap-2">
-//                   {rest.dishes.map((dish, i) => (
-//                     <span
-//                       key={i}
-//                       className="px-2 py-1 md:py-2 text-xs md:text-sm rounded-full border border-gray-300 text-black cursor-pointer hover:bg-gray-200 hover:text-gray-900 hover:scale-y-105 transition-all duration-200 ease-in-out inline-block"
-//                     >
-//                       {dish}
-//                     </span>
-//                   ))}
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         );
-//       })}
-
-//       {/* Pagination */}
-//       <div className="flex justify-center items-center space-x-1 mt-6">
-//         {/* Prev button */}
-//         <div
-//           onClick={handlePrev}
-//           className={`flex items-center justify-center w-8 h-8 cursor-pointer transition ${
-//             currentPage === 1
-//               ? "text-gray-400 cursor-not-allowed"
-//               : "hover:underline text-gray-700"
-//           }`}
-//         >
-//           <ChevronLeft className="w-4 h-4" />
-//         </div>
-
-//         {/* Numbered buttons */}
-//         {[...Array(totalPages)].map((_, i) => (
-//           <div
-//             key={i}
-//             onClick={() => handlePageChange(i + 1)}
-//             className={`w-8 h-8 text-xs md:text-sm flex items-center justify-center cursor-pointer transition ${
-//               currentPage === i + 1
-//                 ? "bg-blue-600 text-white rounded-md"
-//                 : "text-gray-700 hover:underline"
-//             }`}
-//           >
-//             {i + 1}
-//           </div>
-//         ))}
-
-//         {/* Next button */}
-//         <div
-//           onClick={handleNext}
-//           className={`flex items-center justify-center w-8 h-8 cursor-pointer transition ${
-//             currentPage === totalPages
-//               ? "text-gray-400 cursor-not-allowed"
-//               : "hover:underline text-gray-700"
-//           }`}
-//         >
-//           <ChevronRight className="w-4 h-4" />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-import Link from "next/link"; // if using Next.js
-import { useState } from "react";
+import Link from "next/link";
+import { useState, useEffect } from "react";
 import { Star, MessageSquare, ChevronLeft, ChevronRight } from "lucide-react";
 import { getOperatingStatus } from "@/utils/getOperatingStatus";
 import { getBackendUrl } from "@/utils/getBackendUrl";
 
-export default function BusinessList({ businessData }) {
-  const businesses = businessData?.data || [];
-  console.log(businesses);
-
+export default function BusinessList({ 
+  businessData, 
+  searchQuery = '', 
+  locationQuery = '',
+  sortOption = 'Recommended'
+}) {
+  const [filteredBusinesses, setFilteredBusinesses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const businessPerPage = 5;
-  const totalPages = Math.ceil(businesses.length / businessPerPage);
-  const [business, setBusiness] = useState(
-    businesses.map((r) => ({ ...r, showFullReview: false }))
+  console.log("buss ::: ",businessData)
+
+  // Apply sorting and filtering
+  useEffect(() => {
+        let results = []
+    if (!businessData?.data) return;
+    if (businessData?.data && !businessData?.data?.data){
+results = [...businessData?.data];
+    }else{
+results = [...businessData?.data?.data];
+    }
+    
+    
+    // Apply sorting
+    switch(sortOption) {
+      case "Highest Rated":
+        results.sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0));
+        break;
+      case "Most Viewed":
+        // Assuming you have a viewCount property
+        results.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
+        break;
+      default: // "Recommended"
+        // Default sorting (could be based on your backend logic)
+        break;
+    }
+
+    setFilteredBusinesses(results);
+    setCurrentPage(1);
+  }, [businessData, sortOption]);
+
+  const totalPages = Math.ceil(filteredBusinesses.length / businessPerPage);
+  const [businesses, setBusinesses] = useState(
+    filteredBusinesses.map(b => ({ ...b, showFullReview: false }))
   );
   const indexOfLast = currentPage * businessPerPage;
   const indexOfFirst = indexOfLast - businessPerPage;
-  const currentBusiness = businesses.slice(indexOfFirst, indexOfLast);
+  const currentBusinesses = filteredBusinesses.slice(indexOfFirst, indexOfLast);
 
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -204,153 +64,121 @@ export default function BusinessList({ businessData }) {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    const section = document.getElementById("business-section");
-    section?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("business-section")?.scrollIntoView({ behavior: "smooth" });
   };
 
   const toggleReadMore = (index) => {
-    setBusiness((prev) =>
-      prev.map((r, i) =>
-        i === index ? { ...r, showFullReview: !r.showFullReview } : r
-      )
-    );
+    setBusinesses(prev => prev.map((b, i) => 
+      i === index ? { ...b, showFullReview: !b.showFullReview } : b
+    ));
   };
 
-  function decodeAndStripHtml(htmlString) {
+  const decodeAndStripHtml = (htmlString) => {
     if (!htmlString) return "";
-
-    // Step 1: Create a temporary DOM element to decode HTML entities
     const temp = document.createElement("div");
     temp.innerHTML = htmlString;
-
-    // Step 2: Get the decoded HTML as a string
     let decoded = temp.textContent || temp.innerText || "";
-
-    // Step 3: Sometimes nested tags remain, so decode again if needed
-    // Repeat decoding until no more tags are present
     while (/<[^>]+>/.test(decoded)) {
       temp.innerHTML = decoded;
       decoded = temp.textContent || temp.innerText || "";
     }
-
     return decoded.trim();
+  };
+
+  if (!businessData) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (filteredBusinesses.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <h3 className="text-lg font-medium text-gray-700">
+          {searchQuery || locationQuery 
+            ? "No businesses match your search"
+            : "No businesses available"}
+        </h3>
+        <p className="text-gray-500 mt-2">
+          Try adjusting your search or filters
+        </p>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
-      {currentBusiness.map((list, index) => {
-        const realIndex = (currentPage - 1) * businessPerPage + index;
-        // const businessUrl = `/business/${list.slug || list._id}`; // use slug or _id
-        const businessUrl = `/business/${list?.city}/${list?.businessName}/${list?.zip}/${list?.id}`; // use slug or _id
-        const rating = parseFloat(list.averageRating || 0);
-        const reviewCount = list.reviewCount || 0;
-        // const services = Array.isArray(list.services)
-        //   ? list.services.map((s) => s.replace(/[\[\]"]+/g, "").trim())
-        //   : [];
-        const services = Array.isArray(list.services)
-          ? list.services
-              .map((s) =>
-                typeof s.name === "string"
-                  ? s.name.replace(/[\[\]"]+/g, "").trim()
-                  : ""
-              )
-              .filter(Boolean)
-          : [];
+      {(searchQuery || locationQuery) && (
+        <div className="bg-blue-50 p-3 rounded-lg">
+          <p className="text-sm text-gray-700">
+            Showing {filteredBusinesses.length} business{filteredBusinesses.length !== 1 ? 'es' : ''}
+            {searchQuery && <> for "<span className="font-semibold">{searchQuery}</span>"</>}
+            {locationQuery && <> in <span className="font-semibold">{locationQuery}</span></>}
+          </p>
+          <p className="text-xs text-gray-500 mt-1">
+            Sorted by: {sortOption}
+          </p>
+        </div>
+      )}
 
-        const { status, message } = getOperatingStatus(
-          list.operatingHours?.timings || {}
-        );
+      {currentBusinesses.map((business, index) => {
+        const businessUrl = `/business/${business.city}/${business.businessName}/${business.zip}/${business.id}`;
+        const rating = parseFloat(business.averageRating || 0);
+        const services = Array.isArray(business.services)
+          ? business.services.map(s => s.name?.replace(/[\[\]"]+/g, "").trim()).filter(Boolean)
+          : [];
+        const { status, message } = getOperatingStatus(business.operatingHours?.timings || {});
+
         return (
-          <Link href={businessUrl} key={realIndex}>
-            <div
-              id="business-section"
-              className="cursor-pointer flex flex-col mb-4 md:flex-row bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:ring-2 hover:ring-gray-200 transition duration-300"
-            >
+          <Link href={businessUrl} key={business.id} passHref>
+            <div className="cursor-pointer flex flex-col mb-4 md:flex-row bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:ring-2 hover:ring-gray-200 transition duration-300">
               <div className="w-full md:w-1/2 h-40 md:h-60 overflow-hidden rounded-xl">
                 <img
-                  crossOrigin="anonymous"
-                  src={`${getBackendUrl()}${
-                    list.galleries?.[0]?.photoUrl || "/images/default.jpg"
-                  }`}
-                  alt={list.imageAltText || list.businessName}
+                  src={`${getBackendUrl()}${business.galleries?.[0]?.photoUrl || "/images/default.jpg"}`}
+                  alt={business.imageAltText || business.businessName}
                   className="w-full h-full object-cover"
+                  crossOrigin="anonymous"
                 />
               </div>
 
               <div className="w-full md:w-2/3 p-4 flex flex-col justify-between">
                 <div>
                   <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-1">
-                    {list.businessName}
+                    {business.businessName}
                   </h3>
                   <div className="flex items-center mb-2">
                     {[1, 2, 3, 4, 5].map((_, i) => (
                       <Star
                         key={i}
                         className={`w-3 h-3 md:w-4 md:h-4 mr-1 ${
-                          i < Math.round(rating)
-                            ? "text-yellow-500"
-                            : "text-gray-300"
+                          i < Math.round(rating) ? "text-yellow-500" : "text-gray-300"
                         }`}
                       />
                     ))}
                     <span className="text-xs md:text-sm font-semibold text-gray-700">
-                      {rating}{" "}
-                      <span className="text-gray-500">
-                        ({reviewCount} reviews)
-                      </span>
+                      {rating.toFixed(1)} <span className="text-gray-500">({business.reviewCount} reviews)</span>
                     </span>
                   </div>
-                  {/* <p className="text-xs md:text-sm mb-2 text-green-600">
-                  {list.operatingHours?.timings?.statusText ||
-                    "Operating hours info coming soon"}
-                </p> */}
-                  <p
-                    className={`text-xs md:text-sm mb-2 ${
-                      status === "Open" ? "text-green-600" : "text-red-600"
-                    }`}
-                  >
+                  <p className={`text-xs md:text-sm mb-2 ${status === "Open" ? "text-green-600" : "text-red-600"}`}>
                     {message}
                   </p>
-                  {/* Review/Overview Section */}
+                  
                   <div className="flex items-start gap-3 mb-3">
                     <MessageSquare className="w-3 h-3 md:w-4 md:h-4 text-gray-500 mt-1 flex-shrink-0" />
                     <div>
                       <p className="text-xs md:text-sm text-gray-700 leading-relaxed">
-                        "
-                        {list.overview
-                          ? (() => {
-                              const cleanText = decodeAndStripHtml(
-                                list.overview
-                              );
-                              if (
-                                cleanText.length > 100 &&
-                                !list.showFullReview
-                              ) {
-                                return `${cleanText.slice(0, 100)}...`;
-                              }
-                              return cleanText || "No description provided.";
-                            })()
-                          : "No description provided."}
-                        "
-                        {list.overview &&
-                          decodeAndStripHtml(list.overview).length > 100 && (
-                            <span
-                              onClick={() => toggleReadMore(index)}
-                              className="text-gray-500 cursor-pointer hover:underline text-xs md:text-sm ml-1"
-                            >
-                              {list.showFullReview ? "Show less" : "Read more"}
-                            </span>
-                          )}
+                        {business.overview 
+                          ? decodeAndStripHtml(business.overview).slice(0, 150) + (decodeAndStripHtml(business.overview).length > 150 ? "..." : "")
+                          : "No description available"}
                       </p>
                     </div>
                   </div>
-                  {/* Services instead of Dishes */}
+                  
                   <div className="flex flex-wrap gap-2">
-                    {services.map((service, i) => (
-                      <span
-                        key={i}
-                        className="px-2 py-1 md:py-2 text-xs md:text-sm rounded-full border border-gray-300 text-black cursor-pointer hover:bg-gray-200 hover:text-gray-900 hover:scale-y-105 transition-all duration-200 ease-in-out inline-block"
-                      >
+                    {services.slice(0, 5).map((service, i) => (
+                      <span key={i} className="px-2 py-1 text-xs rounded-full border border-gray-300 hover:bg-gray-100 transition-all">
                         {service}
                       </span>
                     ))}
@@ -362,44 +190,35 @@ export default function BusinessList({ businessData }) {
         );
       })}
 
-      {/* Pagination Controls */}
-      <div className="flex justify-center items-center space-x-1 mt-6">
-        <div
-          onClick={handlePrev}
-          className={`flex items-center justify-center w-8 h-8 cursor-pointer transition ${
-            currentPage === 1
-              ? "text-gray-400 cursor-not-allowed"
-              : "hover:underline text-gray-700"
-          }`}
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </div>
-
-        {[...Array(totalPages)].map((_, i) => (
-          <div
-            key={i}
-            onClick={() => handlePageChange(i + 1)}
-            className={`w-8 h-8 text-xs md:text-sm flex items-center justify-center cursor-pointer transition ${
-              currentPage === i + 1
-                ? "bg-blue-600 text-white rounded-md"
-                : "text-gray-700 hover:underline"
-            }`}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center space-x-1 mt-6">
+          <button
+            onClick={handlePrev}
+            disabled={currentPage === 1}
+            className="p-2 rounded disabled:opacity-50"
           >
-            {i + 1}
-          </div>
-        ))}
-
-        <div
-          onClick={handleNext}
-          className={`flex items-center justify-center w-8 h-8 cursor-pointer transition ${
-            currentPage === totalPages
-              ? "text-gray-400 cursor-not-allowed"
-              : "hover:underline text-gray-700"
-          }`}
-        >
-          <ChevronRight className="w-4 h-4" />
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => handlePageChange(i + 1)}
+              className={`w-8 h-8 text-sm rounded ${currentPage === i + 1 ? "bg-blue-600 text-white" : "hover:bg-gray-100"}`}
+            >
+              {i + 1}
+            </button>
+          ))}
+          
+          <button
+            onClick={handleNext}
+            disabled={currentPage === totalPages}
+            className="p-2 rounded disabled:opacity-50"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 }

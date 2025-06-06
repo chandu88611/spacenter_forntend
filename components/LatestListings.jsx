@@ -29,7 +29,6 @@ const LatestListings = ({ listings = [] }) => {
       minute: "2-digit",
       hour12: true,
     });
-  console.log("GLARY    :::: ", listings);
   return (
     <div
       className="w-full relative overflow-visible"

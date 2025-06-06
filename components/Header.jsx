@@ -70,6 +70,17 @@ const Navbar = () => {
 
   const router = useRouter();
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [locationQuery, setLocationQuery] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log("i am",cityLocation)
+    if (searchQuery.trim() || cityLocation) {
+      router.push(`/listing?q=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(locationQuery || cityLocation)}`);
+    }
+  };
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -191,31 +202,35 @@ const Navbar = () => {
 
         {/* Search Input with Location Field (Hidden in Mobile) */}
         <div className="hidden lg:flex w-1/3">
-          <div className="flex w-full bg-gray-100 rounded-md overflow-hidden">
-            {/* Business Directory Search */}
-            <div className="flex items-center w-[70%] border-r border-gray-200">
-              <input
-                type="text"
-                placeholder="Find a business or service..."
-                className="w-full px-3 py-2 text-gray-700 focus:outline-none border-none placeholder:text-sm"
-              />
-            </div>
+              <form onSubmit={handleSearch} className="flex w-full bg-gray-100 rounded-md overflow-hidden">
+      {/* Business Directory Search */}
+      <div className="flex items-center w-[70%] border-r border-gray-200">
+        <input
+          type="text"
+          placeholder="Find a business or service..."
+          className="w-full px-3 py-2 text-gray-700 focus:outline-none border-none placeholder:text-sm"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
 
-            {/* Location Input */}
-            <div className="flex items-center w-[55%]">
-              <input
-                type="text"
-                placeholder="Bangalore, Karnataka"
-                className="w-full px-3 py-2 text-gray-700 focus:outline-none border-none placeholder:text-sm"
-              />
-              <TbCurrentLocation size={18} className="text-blue-500 mr-4" />
-            </div>
+      {/* Location Input */}
+      <div className="flex items-center w-[55%]">
+        <input
+          type="text"
+          placeholder={cityLocation}
+          className="w-full px-3 py-2 text-gray-700 focus:outline-none border-none placeholder:text-sm"
+          value={locationQuery}
+          onChange={(e) => setLocationQuery(e.target.value)}
+        />
+        <TbCurrentLocation size={18} className="text-blue-500 mr-4" />
+      </div>
 
-            {/* Search Button */}
-            <button className="px-3 bg-blue-600 text-white">
-              <FiSearch size={18} />
-            </button>
-          </div>
+      {/* Search Button */}
+      <button type="submit" className="px-3 bg-blue-600 text-white">
+        <FiSearch size={18} />
+      </button>
+    </form>
         </div>
         <LocationDetails>
           <button
@@ -415,6 +430,7 @@ const Navbar = () => {
         setOpen={setOpenCity}
         categories={cities}
         setCityLocation={setCityLocation}
+        handleSearch={() => handleSearch({ preventDefault: () => {} })}
       />
     </nav>
   );

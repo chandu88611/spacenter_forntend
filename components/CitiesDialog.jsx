@@ -18,6 +18,7 @@ export default function CitiesDialog({
   setOpen,
   categories,
   setCityLocation,
+  handleSearch
 }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -29,6 +30,7 @@ export default function CitiesDialog({
   const handleCityClick = (cityName) => {
     console.log("Selected City:", cityName);
     setCityLocation(cityName);
+    handleSearch()
     handleClose();
   };
 
