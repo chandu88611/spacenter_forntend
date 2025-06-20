@@ -2,7 +2,7 @@
 
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import { ChevronDown, Filter } from "lucide-react";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { FiInfo } from "react-icons/fi";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 import MapMarker from "@/components/BusinessMap";
@@ -11,12 +11,12 @@ import BusinessList from "@/components/BusinessList";
 import { useSearchParams } from 'next/navigation';
 import { useGetAllBusinessesQuery } from "@/redux/services/businessApi";
 
-function Page() {
+// Move the main component logic to a separate component that can be wrapped in Suspense
+function ListingContent() {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('q') || '';
   const locationParam = searchParams.get('location') || 'Bangalore, KA';
   
-  // Ensure location is always a string
   const locationQuery = typeof locationParam === 'string' 
     ? locationParam 
     : locationParam?.city 
@@ -27,9 +27,8 @@ function Page() {
   const [filters, setFilters] = useState({});
   
   const type = searchParams.get('type') || 'Restaurants';
-  const category = type; // Using type as category since they seem related
+  const category = type;
 
-  // Fetch businesses using your API
   const { data: businessData, isLoading, error } = useGetAllBusinessesQuery({
     search: searchQuery,
     location: locationQuery,
@@ -53,10 +52,8 @@ function Page() {
       </div>
     );
   }
-
   return (
-    <div className="w-screen h-[calc(100vh-100px)] mt-[100px] grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-4 bg-white px-4 md:px-0">
-      {/* Left Column */}
+    <div className=" h-[calc(100vh-100px)] mt-[100px] grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-4 bg-white px-4 md:px-0">
       <div className="h-full overflow-y-auto pl-0 md:pl-12 md:pr-6 py-6 space-y-6 scrollbar-hidden">
         {/* Breadcrumb */}
         <div className="flex items-center space-x-1 mb-1 text-sm md:text-base">
@@ -76,7 +73,7 @@ function Page() {
         {/* Heading and Sort */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
           <h3 className="text-sm md:text-xs font-semibold text-gray-900">
-            Best {type} near {locationQuery} {/* Changed from location to locationQuery */}
+            Best {type} near {locationQuery}
           </h3>
 
           {/* Sort Dropdown */}
@@ -150,6 +147,14 @@ function Page() {
         </div>
       </div>
     </div>
+  );
+}
+
+function Page() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center h-[calc(100vh-100px)]">Loading search parameters...</div>}>
+      <ListingContent />
+    </Suspense>
   );
 }
 

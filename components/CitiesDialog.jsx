@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import {
   Dialog,
@@ -9,30 +10,41 @@ import {
   Box,
   Typography,
   useMediaQuery,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { FaMountainCity } from "react-icons/fa6";
+import { FaSearch } from "react-icons/fa";
 
 export default function CitiesDialog({
   open,
   setOpen,
   categories,
   setCityLocation,
-  handleSearch
+  handleSearch,
+  cityLocation
 }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [search, setSearch] = React.useState("");
+  const [selectedCity, setSelectedCity] = React.useState("");
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleCityClick = (cityName) => {
-    console.log("Selected City:", cityName);
-    setCityLocation(cityName);
-    handleSearch()
-    handleClose();
+    setCityLocation(cityName);  
+    setOpen(false);
   };
+
+  React.useEffect(() => {
+    if (cityLocation) {
+     
+      handleSearch();
+    }
+  }, [cityLocation]);
 
   const defaultCategories = [
     { name: "Bengaluru" },
@@ -56,6 +68,12 @@ export default function CitiesDialog({
   const citiesToDisplay =
     categories && categories.length > 0 ? categories : defaultCategories;
 
+  const filteredCities = citiesToDisplay
+    .filter((city) =>
+      city.name.toLowerCase().includes(search.trim().toLowerCase())
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <Dialog
       fullScreen={fullScreen}
@@ -70,8 +88,43 @@ export default function CitiesDialog({
       </DialogTitle>
 
       <DialogContent dividers>
+        <TextField
+          placeholder="Search city..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          variant="outlined"
+          size="small"
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <FaSearch size={14} color="#888" />
+              </InputAdornment>
+            ),
+            sx: {
+              borderRadius: 2,
+              backgroundColor: "#fff",
+              boxShadow: "0 1px 3px rgba(0, 0, 0, 0.08)",
+              fontSize: "0.9rem",
+            },
+          }}
+          sx={{
+            mb: 3,
+            "& .MuiOutlinedInput-root": {
+              paddingRight: "6px",
+              "&:hover fieldset": {
+                borderColor: "#aaa",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: theme.palette.primary.main,
+                boxShadow: `0 0 0 2px ${theme.palette.primary.light}`,
+              },
+            },
+          }}
+        />
+
         <Grid container spacing={2}>
-          {citiesToDisplay.map((city, index) => (
+          {filteredCities.map((city, index) => (
             <Grid item xs={6} sm={4} md={3} key={index}>
               <Box
                 onClick={() => handleCityClick(city.name)}

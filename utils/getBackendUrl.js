@@ -4,9 +4,10 @@ export const getBackendUrl = () => {
   // Check if the app is running on localhost or on a remote server
   if (window.location.hostname === "localhost") {
     // Local environment, use localhost
-    return "http://localhost:8001";
+    return "http://97.74.87.147:8001";
   } else {
     // Production environment, use your production server
-    return "https://97.74.87.147/api"; // Replace with your production URL
+    return "https://spacentresnearme.com/api"; // Replace with your production URL
+    // return "http://97.74.87.147:5000";
   }
 };

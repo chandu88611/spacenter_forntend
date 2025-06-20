@@ -1,6 +1,7 @@
+
 "use client";
-import { useState, useEffect, useRef } from "react";
-import { FiChevronDown, FiMenu, FiSearch, FiUser, FiX } from "react-icons/fi";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { FiChevronDown, FiMenu, FiSearch } from "react-icons/fi";
 import {
   Drawer,
   Box,
@@ -24,19 +25,20 @@ import {
   Instagram,
   Twitter,
 } from "@mui/icons-material";
-
 import { TbCurrentLocation } from "react-icons/tb";
 import {
   useGetAllCategoriesQuery,
   useGetAllCitiesQuery,
+  useGetAllBusinessesQuery,
 } from "../redux/services/businessApi";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IoLocationSharp } from "react-icons/io5";
-
-import { motion } from "framer-motion";
 import CitiesDialog from "./CitiesDialog";
+import Image from "next/image";
+import debounce from "lodash.debounce";
+import { getBackendUrl } from "@/utils/getBackendUrl";
+import { getIconComponent } from "@/utils/getReacticons";
 
 const LocationDetails = styled(Box)(({ theme }) => ({
   "&>button": {
@@ -44,7 +46,6 @@ const LocationDetails = styled(Box)(({ theme }) => ({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    alignContent: "center",
     padding: "5px",
     borderRadius: "5px",
     boxShadow: "0px 0px 5px rgba(0,0,0,0.5)",
@@ -52,126 +53,117 @@ const LocationDetails = styled(Box)(({ theme }) => ({
       marginLeft: "5px",
     },
   },
-  // [theme.breakpoints.down("md")]: {},
 }));
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
+  const router = useRouter();
   const [openDropdown, setOpenDropdown] = useState(null);
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const dropdownRef = useRef(null); // Reference for detecting outside clicks
+  const dropdownRef = useRef(null);
   const { data: categoryData } = useGetAllCategoriesQuery();
   const { data: citiesData } = useGetAllCitiesQuery();
-  const categories = categoryData?.data || [];
-  const cities = citiesData?.data || [];
   const [openCity, setOpenCity] = useState(false);
-  const [cityLocation, setCityLocation] = useState("Location");
+  const [cityLocation, setCityLocation] = useState("");
 
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams.get("q") || "";
+  const initialLocation = searchParams.get("location") || "";
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
+  const [locationQuery, setLocationQuery] = useState(initialLocation);
+  const [suggestions, setSuggestions] = useState([]);
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [locationQuery, setLocationQuery] = useState("");
+  const debouncedSearch = useCallback(
+    debounce((val) => {
+      setSearchQuery(val);
+    }, 300),
+    []
+  );
+
+  const { data: businessData } = useGetAllBusinessesQuery({
+    search: searchQuery,
+    location: locationQuery || cityLocation,
+  });
+
+  useEffect(() => {
+    console.log(businessData)
+    if (Array.isArray(businessData?.data?.data)) {
+      setSuggestions(businessData?.data?.data?.slice(0, 4));
+    }
+  }, [businessData]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("i am",cityLocation)
-    if (searchQuery.trim() || cityLocation) {
-      router.push(`/listing?q=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(locationQuery || cityLocation)}`);
-    }
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const toggleDrawer = (open) => () => {
-    setOpenDrawer(open);
-    if (!open) setOpenDropdown(null);
+    router.push(
+      `/listing?q=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(
+        locationQuery || cityLocation
+      )}`
+    );
   };
 
   const handleDropdown = (index) => {
     setOpenDropdown(openDropdown === index ? null : index);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenDropdown(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const menuItems = [
-    { name: "Home", link: "/" },
-    {
-      name: "Services",
-      submenu: categories.map((category) => {
-        const formattedName = category.name
-          .replace("-", " & ") // Replace - with ' & '
-          .split(" ") // Split into words
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-          .join(" "); // Join back with space
-
-        return {
-          name: formattedName,
-          link: `/listing/${category.name}`, // URL remains unchanged
-        };
-      }),
-    },
-    { name: "About", link: "/about" },
-    { name: "Blog", link: "/blog" },
-  ];
-
-  const handleOpen = (index) => {
-    setOpenDropdown(index);
-  };
-
   const handleClickOpenCity = () => {
-    console.log("ATTACK ", categories);
     setOpenCity(true);
   };
+
   const handleClose = () => {
     setOpenDropdown(null);
   };
+
   const isActive = (link) => {
-    if (!link) return false;
-    if (!router.pathname || typeof router.pathname !== "string") return false;
-    return router.pathname === link || router.pathname.startsWith(link + "/");
+    return router.pathname === link || router.pathname?.startsWith(link + "/");
   };
-  console.log("CITIES ::: ", cities);
+
+  const menuItems = [
+    { name: "Home", link: "/" },
+   {
+      name: "Services",
+      submenu:
+        categoryData?.data?.map((category) => {
+          const Icon = getIconComponent(category.iconName || "");
+          return {
+            name: category.name,
+            icon: Icon,
+            link: `/listing/${category.name}`,
+          };
+        }) || [],
+    },
+    // { name: "About", link: "/about" },
+    // { name: "Blog", link: "/blog" },
+  ];
+useEffect(() => {
+  const handleRouteChange = () => {
+    setSearchQuery("");
+    setSuggestions([]);
+  };
+
+  // Listen to changes
+  router.events?.on("routeChangeComplete", handleRouteChange);
+
+  return () => {
+    router.events?.off("routeChangeComplete", handleRouteChange);
+  };
+}, []);
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#0f336d] via-[#073d80] to-[#023fa0] text-white shadow-lg backdrop-blur-sm border-b border-white/10 transition-all duration-300">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#0f336d] via-[#073d80] to-[#023fa0] text-white shadow-lg">
       <div className="w-full px-6 py-4 flex items-center justify-between">
         <div className="text-2xl font-bold">Yelp Clone</div>
+
         <div className="hidden lg:flex space-x-6" ref={dropdownRef}>
           {menuItems.map((item, index) => (
             <div
               key={index}
               className="relative"
-              onMouseEnter={() => handleOpen(index)}
+              onMouseEnter={() => handleDropdown(index)}
               onMouseLeave={handleClose}
             >
               {item.submenu ? (
                 <>
-                  <button
-                    onClick={() => handleOpen(index)}
-                    className="flex items-center gap-1 text-white font-medium hover:text-gray-300"
-                  >
+                  <button className="flex items-center gap-1 text-white font-medium">
                     {item.name}
-                    <FiChevronDown
-                      className={openDropdown === index ? "rotate-180" : ""}
-                    />
+                    <FiChevronDown className={openDropdown === index ? "rotate-180" : ""} />
                   </button>
                   {openDropdown === index && (
                     <div className="absolute left-0 top-full bg-white text-gray-800 shadow-lg rounded-lg p-2 w-56 z-50">
@@ -179,20 +171,17 @@ const Navbar = () => {
                         <Link
                           key={subIndex}
                           href={sub.link}
-                          onClick={handleClose}
-                          className="block px-4 py-2 !text-gray-700 hover:!bg-gray-100 hover:text-black"
+                          className=" px-2 py-2 text-sm hover:bg-gray-100 flex gap-2"
                         >
-                          {sub.name}
+                            <span className="text-xl text-amber-500 ">{<sub.icon/>}</span>
+                         <span className="!text-black">{sub.name}</span>
                         </Link>
                       ))}
                     </div>
                   )}
                 </>
               ) : (
-                <Link
-                  href={item.link}
-                  className="text-white font-medium hover:text-gray-300"
-                >
+                <Link href={item.link} className="text-white font-medium">
                   {item.name}
                 </Link>
               )}
@@ -200,224 +189,167 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Search Input with Location Field (Hidden in Mobile) */}
-        <div className="hidden lg:flex w-1/3">
-              <form onSubmit={handleSearch} className="flex w-full bg-gray-100 rounded-md overflow-hidden">
-      {/* Business Directory Search */}
-      <div className="flex items-center w-[70%] border-r border-gray-200">
-        <input
-          type="text"
-          placeholder="Find a business or service..."
-          className="w-full px-3 py-2 text-gray-700 focus:outline-none border-none placeholder:text-sm"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
+        <div className="hidden lg:flex w-1/3 relative">
+          <form onSubmit={handleSearch} className="flex w-full bg-gray-100 rounded-md overflow-hidden">
+            <div className="flex items-center w-[90%] border-r border-gray-200">
+              <input
+                type="text"
+                placeholder="Find a business or service..."
+                className="w-full px-3 py-2 text-gray-700 placeholder:text-sm focus:outline-none"
+                onChange={(e) => debouncedSearch(e.target.value)}
+              />
+            </div>
+            {/* <div className="flex items-center w-[55%]">
+              <input
+                type="text"
+                placeholder={cityLocation}
+                className="w-full px-3 py-2 text-gray-700 placeholder:text-sm focus:outline-none"
+                value={locationQuery}
+                onChange={(e) => setLocationQuery(e.target.value)}
+              />
+              <TbCurrentLocation size={18} className="text-blue-500 mr-4" />
+            </div> */}
 
-      {/* Location Input */}
-      <div className="flex items-center w-[55%]">
-        <input
-          type="text"
-          placeholder={cityLocation}
-          className="w-full px-3 py-2 text-gray-700 focus:outline-none border-none placeholder:text-sm"
-          value={locationQuery}
-          onChange={(e) => setLocationQuery(e.target.value)}
-        />
-        <TbCurrentLocation size={18} className="text-blue-500 mr-4" />
-      </div>
+            <button type="submit" className="px-3 bg-blue-600 text-white w-[10%]">
+              <FiSearch size={18} />
+            </button>
+          </form>
 
-      {/* Search Button */}
-      <button type="submit" className="px-3 bg-blue-600 text-white">
-        <FiSearch size={18} />
-      </button>
-    </form>
+          {(searchQuery.length > 1  ) && suggestions.length > 0 && (
+        <div className="absolute top-full mt-2 bg-white text-black w-full rounded-xl shadow-xl z-50 overflow-hidden border border-gray-200">
+    {suggestions?.map((business) => (
+      <Link
+        key={business._id}
+         href={`/business/${business?.city}/${business?.businessName}/${business?.zip}/${business?.id}`}
+        // href={`/business/${business.slug}`}
+        className="flex items-center px-4 py-3 hover:bg-gray-50 transition duration-150 gap-4"
+      >
+        <img
+          src={`${getBackendUrl()}${business?.galleries?.[0]?.photoUrl || "/default.jpg"}`}
+          alt={business.businessName}
+         
+          className="rounded-lg object-cover flex-shrink-0 border h-18 w-18 border-gray-200"
+        />
+        <div className="flex flex-col">
+          <p className="font-semibold text-gray-800 text-sm">{business.businessName}</p>
+          <p className="text-xs text-gray-500">{business.city}</p>
+          {business.rating && (
+            <div className="flex items-center mt-1">
+              <span className="text-yellow-500 text-sm">⭐</span>
+              <span className="ml-1 text-xs font-medium text-gray-600">
+                {business.rating.toFixed(1)} / 5
+              </span>
+            </div>
+          )}
         </div>
+      </Link>
+    ))}
+  </div>
+          )}
+        </div>
+
         <LocationDetails>
-          <button
-            className="px-3 bg-blue-600 text-white"
-            onClick={() => handleClickOpenCity()}
-          >
+          <button className="px-3 bg-blue-600 text-white" onClick={handleClickOpenCity}>
             <IoLocationSharp size={18} />
             <Typography>{cityLocation}</Typography>
           </button>
         </LocationDetails>
+
         <Box sx={{ display: { xs: "block", lg: "none" } }}>
-          {/* Menu Icon */}
-          <IconButton onClick={toggleDrawer(true)} sx={{ color: "white" }}>
+          <IconButton onClick={() => setOpenDrawer(true)} sx={{ color: "white" }}>
             <MenuIcon />
           </IconButton>
-
-          {/* Drawer */}
-          <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer(false)}>
-            <Box
-              sx={{
-                width: 280,
-                height: "100%",
-                background:
-                  "linear-gradient(to right, #0f336d, #073d80, #023fa0)",
-                color: "white",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              {/* Top Close Button */}
+          <Drawer anchor="left" open={openDrawer} onClose={() => setOpenDrawer(false)}>
+            <Box sx={{ width: 280, background: "#023fa0", color: "white", height: "100%" }}>
               <Box display="flex" justifyContent="flex-end" p={2}>
-                <IconButton
-                  onClick={toggleDrawer(false)}
-                  sx={{ color: "white" }}
-                >
+                <IconButton onClick={() => setOpenDrawer(false)} sx={{ color: "white" }}>
                   <CloseIcon />
                 </IconButton>
               </Box>
+              <List>
+                {/* <ListItem button component={Link} href="#">
+                  <ListItemIcon sx={{ color: "white" }}>
+                    <AccountCircle />
+                  </ListItemIcon>
+                
+                </ListItem> */}
+                <Divider sx={{ borderColor: "rgba(255,255,255,0.2)", my: 1 }} />
 
-              {/* Main Nav */}
-              <Box flexGrow={1}>
-                <List>
-                  {/* Login / Signup */}
-                  <ListItem button component={Link} href="#">
-                    <ListItemIcon sx={{ color: "white" }}>
-                      <AccountCircle />
-                    </ListItemIcon>
-                    <ListItemText primary="Login / Signup" />
-                  </ListItem>
 
-                  <Divider
-                    sx={{ borderColor: "rgba(255,255,255,0.2)", my: 1 }}
-                  />
+     {menuItems.map((item, index) => (
+  <Box key={index}>
+    {item.submenu ? (
+      <>
+        <ListItem
+          button
+          onClick={() => handleDropdown(index)}
+          sx={{ px: 3, color: "white" }}
+        >
+          <ListItemText primary={item.name} />
+          {openDropdown === index ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
 
-                  {/* Nav Links */}
-                  {menuItems.map((item, index) => {
-                    const parentActive =
-                      isActive(item.link) ||
-                      (item.submenu &&
-                        item.submenu.some((si) => isActive(si.link)));
-
-                    return (
-                      <Box key={index}>
-                        {item.submenu ? (
-                          <>
-                            <ListItem
-                              button
-                              onClick={() => handleDropdown(index)}
-                              sx={{
-                                px: 3,
-                                color: parentActive
-                                  ? "#e3f2fd"
-                                  : "rgba(255,255,255,0.7)",
-                                bgcolor: parentActive
-                                  ? "rgba(255,255,255,0.1)"
-                                  : "transparent",
-                                fontWeight: parentActive ? "bold" : "normal",
-                                "&:hover": {
-                                  bgcolor: "rgba(255,255,255,0.15)",
-                                },
-                              }}
-                            >
-                              <ListItemText primary={item.name} />
-                              {openDropdown === index ? (
-                                <ExpandLess sx={{ color: "#e3f2fd" }} />
-                              ) : (
-                                <ExpandMore sx={{ color: "#e3f2fd" }} />
-                              )}
-                            </ListItem>
-
-                            <Collapse
-                              in={openDropdown === index}
-                              timeout="auto"
-                              unmountOnExit
-                            >
-                              <List
-                                component="div"
-                                disablePadding
-                                sx={{
-                                  bgcolor: "white",
-                                  borderLeft: "4px solid #0f336d",
-                                }}
-                              >
-                                {item.submenu.map((subItem, subIndex) => (
-                                  <ListItem
-                                    key={subIndex}
-                                    button
-                                    component={Link}
-                                    href={subItem.link}
-                                    onClick={() => {
-                                      toggleDrawer(false)();
-                                      handleDropdown(null);
-                                    }}
-                                    sx={{
-                                      pl: 4,
-                                      bgcolor: isActive(subItem.link)
-                                        ? "#e3f2fd"
-                                        : "white",
-                                      color: isActive(subItem.link)
-                                        ? "#0f336d"
-                                        : "gray",
-                                      fontWeight: isActive(subItem.link)
-                                        ? "bold"
-                                        : "normal",
-                                      "&:hover": { bgcolor: "#f5f5f5" },
-                                    }}
-                                  >
-                                    <ListItemText primary={subItem.name} />
-                                  </ListItem>
-                                ))}
-                              </List>
-                            </Collapse>
-                          </>
-                        ) : (
-                          <ListItem
-                            button
-                            component={Link}
-                            href={item.link}
-                            onClick={() => {
-                              toggleDrawer(false)();
-                              handleDropdown(null);
-                            }}
-                            sx={{
-                              color: isActive(item.link)
-                                ? "#e3f2fd"
-                                : "rgba(255,255,255,0.7)",
-                              bgcolor: isActive(item.link)
-                                ? "rgba(255,255,255,0.1)"
-                                : "transparent",
-                              px: 3,
-                              fontWeight: isActive(item.link)
-                                ? "bold"
-                                : "normal",
-                              "&:hover": { bgcolor: "rgba(255,255,255,0.15)" },
-                            }}
-                          >
-                            <ListItemText primary={item.name} />
-                          </ListItem>
-                        )}
-                      </Box>
-                    );
-                  })}
-                </List>
-              </Box>
-
-              {/* Bottom Social Links */}
-              <Box p={2} display="flex" justifyContent="center" gap={2}>
-                <IconButton
-                  href="https://facebook.com"
-                  target="_blank"
-                  sx={{ color: "white" }}
+        <Collapse in={openDropdown === index} timeout="auto" unmountOnExit>
+          <Box
+            sx={{
+              maxHeight: 200, // Adjust as needed
+              overflowY: "auto",
+              pr: 1,
+            }}
+          >
+            <List component="div" disablePadding>
+              {item.submenu.map((subItem, subIndex) => (
+                <ListItem
+                  key={subIndex}
+                  button
+                  component={Link}
+                  href={subItem.link}
+                  onClick={() => {
+                    setOpenDrawer(false);
+                    setOpenDropdown(null);
+                  }}
+                  sx={{
+                    pl: 4,
+                    color: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
                 >
+                  <span className="text-xl text-amber-400">{<subItem.icon/>}</span>
+                  <ListItemText primary={subItem.name} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </Collapse>
+      </>
+    ) : (
+      <ListItem
+        button
+        component={Link}
+        href={item.link}
+        onClick={() => {
+          setOpenDrawer(false);
+          setOpenDropdown(null);
+        }}
+        sx={{ px: 3, color: "white" }}
+      >
+        <ListItemText primary={item.name} />
+      </ListItem>
+    )}
+  </Box>
+))}
+
+              </List>
+              <Box p={2} display="flex" justifyContent="center" gap={2}>
+                <IconButton href="https://facebook.com" target="_blank" sx={{ color: "white" }}>
                   <Facebook />
                 </IconButton>
-                <IconButton
-                  href="https://twitter.com"
-                  target="_blank"
-                  sx={{ color: "white" }}
-                >
+                <IconButton href="https://twitter.com" target="_blank" sx={{ color: "white" }}>
                   <Twitter />
                 </IconButton>
-                <IconButton
-                  href="https://instagram.com"
-                  target="_blank"
-                  sx={{ color: "white" }}
-                >
+                <IconButton href="https://instagram.com" target="_blank" sx={{ color: "white" }}>
                   <Instagram />
                 </IconButton>
               </Box>
@@ -428,12 +360,17 @@ const Navbar = () => {
       <CitiesDialog
         open={openCity}
         setOpen={setOpenCity}
-        categories={cities}
+        categories={citiesData?.data || []}
         setCityLocation={setCityLocation}
         handleSearch={() => handleSearch({ preventDefault: () => {} })}
+              cityLocation={cityLocation}
       />
     </nav>
   );
 };
 
 export default Navbar;
+
+
+
+

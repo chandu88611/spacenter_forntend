@@ -1,5 +1,6 @@
 // app/listing/[category]/page.js
-
+ 
+import { Suspense } from "react";
 import ListingPage from "./ListingPage";
 
 export function generateStaticParams() {
@@ -7,5 +8,9 @@ export function generateStaticParams() {
 }
 
 export default function Page({ params }) {
-  return <ListingPage category={params.category} />;
+  return (
+  <Suspense fallback={<div>Loading...</div>}>
+
+    <ListingPage category={params.category} />;
+  </Suspense>)
 }

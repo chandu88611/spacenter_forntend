@@ -11,8 +11,8 @@ export const businessApi = createApi({
   endpoints: (builder) => ({
     // **1. Get All Businesses (With Pagination, Search, Filters)**
     getAllBusinesses: builder.query({
-      query: ({ page = 1, limit = 10, search = "", category = "" }) => ({
-        url: `businesses?page=${page}&limit=${limit}&search=${search}&category=${category}`,
+      query: ({ page = 1, limit = 10, search = "", category = "",location="" }) => ({
+        url: `businesses?page=${page}&limit=${limit}&search=${search}&category=${category}&location=${location}`,
         method: "GET",
       }),
       providesTags: ["Business"],

@@ -144,9 +144,9 @@ const LatestListings = ({ listings = [] }) => {
                       alt={listing.imageAltText || listing.businessName}
                       className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
                     />
-                    <div className="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white px-2 py-0.5 rounded text-xs font-semibold whitespace-nowrap">
-                      {listing.businessType || "Spa"}
-                    </div>
+                    {/* <div className="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white px-2 py-0.5 rounded text-xs font-semibold whitespace-nowrap">
+                      {listing?.categories[0]?.name || "Spa"}
+                    </div> */}
                   </div>
 
                   {/* Details Section */}
@@ -157,7 +157,7 @@ const LatestListings = ({ listings = [] }) => {
                       aria-label={`View ${listing?.businessName} details`}
                     >
                       <h4 className="text-lg font-semibold truncate">
-                        {listing.businessName}
+                        {listing.businessName.toUpperCase()}
                       </h4>
                     </a>
 

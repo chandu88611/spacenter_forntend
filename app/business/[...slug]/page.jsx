@@ -157,7 +157,7 @@ export default function Business({ params }) {
               <div className="row">
                 <div className="col-xl-8 col-lg-12 col-md-12 d-block mx-auto">
                   <div className="text-center mt-4 text-white">
-                    <h1 className="mb-2 text-white font-semibold">
+                    <h1 className="mb-2 text-white font-semibold capitalize">
                       {data?.data?.businessName}
                     </h1>
                     <div className="flex items-center justify-center space-x-2 md:space-x-3 mb-4">
@@ -314,7 +314,7 @@ export default function Business({ params }) {
                 {/* Card Body */}
                 <div className="card-body">
                   <div className="item-det mb-4">
-                    <a href="javascript:void(0)" className="text-dark">
+                    <a href="javascript:void(0)" className="text-dark capitalize">
                       <h3>{data?.data?.businessName}</h3>
                     </a>
                     <div className="d-md-flex mt-2">
@@ -566,9 +566,8 @@ export default function Business({ params }) {
                     </div>
                   </div>
                 </div>
-                <div className="border-t border-gray-300 bg-white p-4">
+                {/* <div className="border-t border-gray-300 bg-white p-4">
                   <div className="flex flex-wrap gap-1">
-                    {/* Share Link */}
                     <a
                       href="#"
                       className="flex items-center space-x-1 !bg-[#42aedf] border !border-[#42aedf] text-white hover:!bg-[#0284c7] px-3 py-2 rounded-md shadow transition"
@@ -577,7 +576,6 @@ export default function Business({ params }) {
                       <span>Share Ad</span>
                     </a>
 
-                    {/* Like Link */}
                     <a
                       href="#"
                       className="flex items-center space-x-1 !bg-[#ed477e] border !border-[#ed477e] text-white hover:!bg-[#c2185b] px-3 py-2 rounded-md shadow transition"
@@ -586,7 +584,6 @@ export default function Business({ params }) {
                       <span>678</span>
                     </a>
 
-                    {/* Print Link */}
                     <a
                       href="#"
                       className="flex items-center space-x-1 !bg-[#202588] border !border-[#202588] text-white hover:!bg-[#262549] px-3 py-2 rounded-md shadow transition"
@@ -595,7 +592,6 @@ export default function Business({ params }) {
                       <span>Print</span>
                     </a>
 
-                    {/* Report Link */}
                     <a
                       href="#"
                       className="flex items-center space-x-1 !bg-[#ef4444] border !border-[#ef4444] text-white hover:!bg-[#dc2626] px-3 py-2 rounded-md shadow transition"
@@ -606,7 +602,7 @@ export default function Business({ params }) {
                       <span>Report Abuse</span>
                     </a>
                   </div>
-                </div>
+                </div> */}
               </div>
               {/* <div className="max-w-5xl mx-auto p-4"> */}
               <div className="bg-white shadow-lg rounded-lg p-3 mb-1 overflow-hidden mt-4">
@@ -736,16 +732,16 @@ export default function Business({ params }) {
                   </div>
                 </div>
               </div>
-              <Reviews />
-              <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-                {/* Header */}
+              {/* <Reviews /> */}
+              {/* <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+           
                 <div className="border-b pb-4 mb-4">
                   <h3 className="text-xl font-semibold text-gray-800">
                     Add a Review
                   </h3>
                 </div>
 
-                {/* Body */}
+              
                 <div>
                   <p className="text-gray-600 mb-2">
                     Add Your Rating for the Business
@@ -755,9 +751,9 @@ export default function Business({ params }) {
                     Review
                   </h4>
 
-                  {/* Form */}
+               
                   <div className="space-y-4">
-                    {/* Name Input */}
+       
                     <div>
                       <input
                         type="text"
@@ -767,7 +763,7 @@ export default function Business({ params }) {
                       />
                     </div>
 
-                    {/* Email Input */}
+           
                     <div>
                       <input
                         type="email"
@@ -777,7 +773,7 @@ export default function Business({ params }) {
                       />
                     </div>
 
-                    {/* Textarea */}
+             
                     <div>
                       <textarea
                         name="example-textarea-input"
@@ -787,7 +783,7 @@ export default function Business({ params }) {
                       />
                     </div>
 
-                    {/* Submit Button */}
+                 
                     <button
                       type="button"
                       className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
@@ -796,25 +792,21 @@ export default function Business({ params }) {
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
 
-            {/* Right Side Profile Card */}
             <div className="col-xl-4 col-lg-4 col-md-12">
               <div className="max-w-1xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-                {/* Header Section */}
                 <div className="text-white border-b border-gray-200 py-4 px-4 text-left">
                   <h3 className="text-xl font-semibold">Company User</h3>
                 </div>
 
-                {/* Profile Section */}
                 <div className="flex flex-col items-center py-4 border-b border-gray-200">
                   <img
-                    src="/assets/images/other/logo.png"
+                    src="/assets/images/other/comp.png"
                     className="w-40 rounded-full shadow-md  object-cover"
                     alt="User"
                   />
-                  {/* <GiPlagueDoctorProfile /> */}
                   <a
                     href="userprofile.html"
                     className="mt-3 text-lg font-semibold !text-gray-900"
@@ -829,7 +821,6 @@ export default function Business({ params }) {
                   </small>
                 </div>
 
-                {/* Tabs Section */}
                 <div className="border-b">
                   <div className="flex">
                     <button
@@ -855,7 +846,6 @@ export default function Business({ params }) {
                   </div>
                 </div>
 
-                {/* Tab Content */}
                 <div className="p-4">
                   {activeTab === "contact" && (
                     <>
@@ -864,7 +854,6 @@ export default function Business({ params }) {
                           Contact Info
                         </h4>
                         <div className="space-y-3 border-b border-gray-200 mb-4">
-                          {/* Address */}
                           <div className="flex items-center space-x-3">
                             <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-200 text-blue-500">
                               <FaMapMarkerAlt className="w-4 h-4" />
@@ -874,7 +863,6 @@ export default function Business({ params }) {
                             </p>
                           </div>
 
-                          {/* Phone */}
                           <div className="flex items-center space-x-3">
                             <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-200 text-blue-600">
                               <FaPhoneAlt className="w-4 h-4" />
@@ -884,7 +872,6 @@ export default function Business({ params }) {
                             </p>
                           </div>
 
-                          {/* Email */}
                           <div className="flex items-center space-x-3">
                             <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-200 text-blue-600">
                               <FaEnvelope className="w-4 h-4" />
@@ -894,7 +881,6 @@ export default function Business({ params }) {
                             </p>
                           </div>
 
-                          {/* Website */}
                           <div className="flex items-center space-x-3 mb-4">
                             <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-200 text-blue-600">
                               <FaGlobe className="w-4 h-4" />
@@ -906,7 +892,6 @@ export default function Business({ params }) {
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        {/* Chat Button */}
                         <a
                           href="javascript:void(0)"
                           className="bg-blue-500 text-blue-600 px-4 py-2 rounded-md flex items-center justify-center gap-2 shadow-md hover:bg-blue-600 transition"
@@ -915,7 +900,6 @@ export default function Business({ params }) {
                           Chat
                         </a>
 
-                        {/* Contact Me Button */}
                         <a
                           href="javascript:void(0)"
                           className="bg-gray-600 text-blue-600 px-4 py-2 rounded-md flex items-center justify-center gap-2 shadow-md hover:bg-gray-700 transition"
@@ -926,7 +910,6 @@ export default function Business({ params }) {
                           Contact Me
                         </a>
 
-                        {/* All Listings Button */}
                         <a
                           href="javascript:void(0)"
                           className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md flex items-center justify-center gap-2 shadow-md hover:bg-gray-300 transition"

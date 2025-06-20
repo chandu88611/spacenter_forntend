@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -119,7 +119,9 @@ export default function Home() {
   }, [currentSlide, isPlaying]);
 
   return (
-    <>
+      <Suspense fallback={<div>Loading homepage...</div>}>
+
+    
       <section className="relative h-[90vh] w-full overflow-hidden">
         {slides.map((slide, index) => (
           <div
@@ -178,7 +180,7 @@ export default function Home() {
           </button>
         </div>
       </section>
-      <CategoriesSlider />
+     <CategoriesList />
       <section className="sptb bg-white ">
         <div className="container ">
           <div className="section-title center-block text-center">
@@ -204,7 +206,7 @@ export default function Home() {
           {/* <RecentActivity /> */}
         </div>
       </section>
-      <CategoriesList />
+    
       <section>
         <div
           className="about-1 cover-image sptb"
@@ -358,6 +360,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </>
+    
+      </Suspense>
   );
 }

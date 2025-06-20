@@ -10,6 +10,11 @@ const nextConfig = {
       dynamic: 30,
     },
   },
+  // Remove the 'server' field and use this instead:
+  env: {
+    HOST: '127.0.0.1',
+    PORT: '3000'
+  },
   async headers() {
     return [
       {
