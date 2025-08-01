@@ -161,7 +161,7 @@ useEffect(() => {
   };
 }, []);
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#1e245e] via-[#1e245e] to-[#1e245e] text-white shadow-lg mb-6">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#1e245e] via-[#1e245e] to-[#1e245e] text-white shadow-lg mb-4">
       <div className="w-full px-6 py-4 flex items-center justify-between">
         <div className="text-2xl font-bold">
 

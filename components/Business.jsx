@@ -142,7 +142,7 @@ export default function Business({ params }) {
   console.log("business   :::: ", business);
   return (
     <>
-      <div className="pattern-img">
+      <div className="pattern-img py-4">
         <div className="relative sptb-12 pattern2 bg-[#024588] bg-[url('/images/pattern.jpg')] bg-cover bg-blend-overlay">
           <div className="absolute inset-0 bg-[#04417f] opacity-80"></div>
           <div className="header-text1 mb-0">
