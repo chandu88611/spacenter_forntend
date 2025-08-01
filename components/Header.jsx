@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { FiChevronDown, FiMenu, FiSearch } from "react-icons/fi";
@@ -69,17 +68,17 @@ const Navbar = () => {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get("q") || "";
   const initialLocation = searchParams.get("location") || "";
- console.log(initialLocation)
+
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [locationQuery, setLocationQuery] = useState(initialLocation);
   const [suggestions, setSuggestions] = useState([]);
 
-
-  useEffect(()=>{
-if(initialLocation){
-  setCityLocation(initialLocation)
-}
-  },[initialLocation])
+  useEffect(() => {
+    if (initialLocation) {
+      setCityLocation(initialLocation);
+    }
+  }, [initialLocation]);
+  
   const debouncedSearch = useCallback(
     debounce((val) => {
       setSearchQuery(val);
@@ -91,13 +90,14 @@ if(initialLocation){
     q: searchQuery,
     // location: locationQuery || cityLocation,
   });
+
   // useGetAllBusinessesBySearchQuery({
   //   q: category,
   //   page,
   //   limit,
   // });
+
   useEffect(() => {
- 
     if (Array.isArray(businessData?.data?.data)) {
       setSuggestions(businessData?.data?.data?.slice(0, 4));
     }
@@ -105,11 +105,13 @@ if(initialLocation){
 
   const handleSearch = (e) => {
     e.preventDefault();
-    router.push(
-      `/search/${searchQuery}`
-    );
+    router.push(`/listing?location=${searchQuery}`);
   };
 
+    const handleSubmit = (e) => {
+    e.preventDefault();
+    router.push(`/search/${searchQuery}`);
+  };
   const handleDropdown = (index) => {
     setOpenDropdown(openDropdown === index ? null : index);
   };
@@ -125,15 +127,15 @@ if(initialLocation){
   const isActive = (link) => {
     return router.pathname === link || router.pathname?.startsWith(link + "/");
   };
-const pathname = usePathname();
+  const pathname = usePathname();
 
-useEffect(() => {
-  setSearchQuery('');
-  setSuggestions([]);
-}, [pathname])
+  useEffect(() => {
+    setSearchQuery("");
+    setSuggestions([]);
+  }, [pathname]);
   const menuItems = [
     { name: "Home", link: "/" },
-   {
+    {
       name: "Services",
       submenu:
         categoryData?.data?.map((category) => {
@@ -148,25 +150,24 @@ useEffect(() => {
     // { name: "About", link: "/about" },
     // { name: "Blog", link: "/blog" },
   ];
-useEffect(() => {
-  const handleRouteChange = () => {
-    setSearchQuery("");
-    setSuggestions([]);
-  };
- 
-  router.events?.on("routeChangeComplete", handleRouteChange);
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setSearchQuery("");
+      setSuggestions([]);
+    };
 
-  return () => {
-    router.events?.off("routeChangeComplete", handleRouteChange);
-  };
-}, []);
+    router.events?.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      router.events?.off("routeChangeComplete", handleRouteChange);
+    };
+  }, []);
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#1e245e] via-[#1e245e] to-[#1e245e] text-white shadow-lg mb-4">
       <div className="w-full px-6 py-4 flex items-center justify-between">
         <div className="text-2xl font-bold">
-
-          <img src="/logo.png" alt="" style={{width:"120px"}} />
-        </div> 
+          <img src="/logo.png" alt="" style={{ width: "120px" }} />
+        </div>
 
         <div className="hidden lg:flex space-x-6" ref={dropdownRef}>
           {menuItems.map((item, index) => (
@@ -180,7 +181,9 @@ useEffect(() => {
                 <>
                   <button className="flex items-center gap-1 text-white font-medium">
                     {item.name}
-                    <FiChevronDown className={openDropdown === index ? "rotate-180" : ""} />
+                    <FiChevronDown
+                      className={openDropdown === index ? "rotate-180" : ""}
+                    />
                   </button>
                   {openDropdown === index && (
                     <div className="absolute left-0 top-full bg-white text-gray-800 shadow-lg rounded-lg p-2 w-56 z-50">
@@ -190,8 +193,10 @@ useEffect(() => {
                           href={sub.link}
                           className=" px-2 py-2 text-sm hover:bg-gray-100 flex gap-2"
                         >
-                            <span className="text-xl text-amber-500 ">{<sub.icon/>}</span>
-                         <span className="!text-black">{sub.name}</span>
+                          <span className="text-xl text-amber-500 ">
+                            {<sub.icon />}
+                          </span>
+                          <span className="!text-black">{sub.name}</span>
                         </Link>
                       ))}
                     </div>
@@ -207,7 +212,10 @@ useEffect(() => {
         </div>
 
         <div className="absolute top-18 md:top-0 md:relative w-[95vw] transform left-2 md:w-1/3 ">
-          <form onSubmit={handleSearch} className="flex w-full bg-gray-100 rounded-md overflow-hidden p-1">
+          <form
+            onSubmit={handleSubmit}
+            className="flex w-full bg-gray-100 rounded-md overflow-hidden p-1"
+          >
             <div className="flex items-center w-[90%] border-r border-gray-200">
               <input
                 type="text"
@@ -216,64 +224,88 @@ useEffect(() => {
                 onChange={(e) => debouncedSearch(e.target.value)}
               />
             </div>
-     
 
-            <button type="submit" className=" bg-blue-600 text-white w-[12%] md:w-[11%] lg:w-[10%] h-6 md:h-10 rounded flex justify-center items-center">
-        
-
+            <button
+              type="submit"
+              className=" bg-blue-600 text-white w-[12%] md:w-[11%] lg:w-[10%] h-6 md:h-10 rounded flex justify-center items-center"
+            >
               <FiSearch size={18} />
-         
             </button>
           </form>
 
-          {(searchQuery.length > 1  ) && suggestions.length > 0 && (
-        <div className="absolute top-full mt-2 bg-white text-black w-full rounded-xl shadow-xl z-50 overflow-hidden border border-gray-200">
-    {suggestions?.map((business) => (
-      <Link
-        key={business._id}
-         href={`/business/${business?.city}/${business?.businessName}/${business?.zip}/${business?.id}`}
-        // href={`/business/${business.slug}`}
-        className="flex items-center px-4 py-2 hover:bg-gray-50 transition duration-150 gap-3"
-      >
-        <img
-          src={`${getBackendUrl()}${business?.galleries?.[0]?.photoUrl || "/default.jpg"}`}
-          alt={business.businessName}
-         
-          className="rounded-lg object-cover flex-shrink-0 border h-10 w-10 border-gray-200"
-        />
-        <div className="flex flex-col">
-          <p className="font-semibold text-gray-800 text-xs -mb-2">{business.businessName}</p>
-          <p className="text-xs text-gray-500">{business.city} , {business.area}</p>
-          {business.rating && (
-            <div className="flex items-center mt-1">
-              <span className="text-yellow-500 text-sm">⭐</span>
-              <span className="ml-1 text-xs font-medium text-gray-600">
-                {business.rating.toFixed(1)} / 5
-              </span>
+          {searchQuery.length > 1 && suggestions.length > 0 && (
+            <div className="absolute top-full mt-2 bg-white text-black w-full rounded-xl shadow-xl z-50 overflow-hidden border border-gray-200">
+              {suggestions?.map((business) => (
+                <Link
+                  key={business._id}
+                  href={`/business/${business?.city}/${business?.businessName}/${business?.zip}/${business?.id}`}
+                  // href={`/business/${business.slug}`}
+                  className="flex items-center px-4 py-2 hover:bg-gray-50 transition duration-150 gap-3"
+                >
+                  <img
+                    src={`${getBackendUrl()}${
+                      business?.galleries?.[0]?.photoUrl || "/default.jpg"
+                    }`}
+                    alt={business.businessName}
+                    className="rounded-lg object-cover flex-shrink-0 border h-10 w-10 border-gray-200"
+                  />
+                  <div className="flex flex-col">
+                    <p className="font-semibold text-gray-800 text-xs -mb-2">
+                      {business.businessName}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {business.city} , {business.area}
+                    </p>
+                    {business.rating && (
+                      <div className="flex items-center mt-1">
+                        <span className="text-yellow-500 text-sm">⭐</span>
+                        <span className="ml-1 text-xs font-medium text-gray-600">
+                          {business.rating.toFixed(1)} / 5
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              ))}
             </div>
-          )}
-        </div>
-      </Link>
-    ))}
-  </div>
           )}
         </div>
 
         <LocationDetails>
-          <button className="px-3 bg-blue-600 text-white" onClick={handleClickOpenCity}>
+          <button
+            className="px-3 bg-blue-600 text-white"
+            onClick={handleClickOpenCity}
+          >
             <IoLocationSharp size={18} />
             <Typography>{cityLocation}</Typography>
           </button>
         </LocationDetails>
 
         <Box sx={{ display: { xs: "block", lg: "none" } }}>
-          <IconButton onClick={() => setOpenDrawer(true)} sx={{ color: "white" }}>
+          <IconButton
+            onClick={() => setOpenDrawer(true)}
+            sx={{ color: "white" }}
+          >
             <MenuIcon />
           </IconButton>
-          <Drawer anchor="left" open={openDrawer} onClose={() => setOpenDrawer(false)}>
-            <Box sx={{ width: 280, background: "#023fa0", color: "white", height: "100%" }}>
+          <Drawer
+            anchor="left"
+            open={openDrawer}
+            onClose={() => setOpenDrawer(false)}
+          >
+            <Box
+              sx={{
+                width: 280,
+                background: "#023fa0",
+                color: "white",
+                height: "100%",
+              }}
+            >
               <Box display="flex" justifyContent="flex-end" p={2}>
-                <IconButton onClick={() => setOpenDrawer(false)} sx={{ color: "white" }}>
+                <IconButton
+                  onClick={() => setOpenDrawer(false)}
+                  sx={{ color: "white" }}
+                >
                   <CloseIcon />
                 </IconButton>
               </Box>
@@ -286,81 +318,101 @@ useEffect(() => {
                 </ListItem> */}
                 <Divider sx={{ borderColor: "rgba(255,255,255,0.2)", my: 1 }} />
 
+                {menuItems.map((item, index) => (
+                  <Box key={index}>
+                    {item.submenu ? (
+                      <>
+                        <ListItem
+                          button
+                          onClick={() => handleDropdown(index)}
+                          sx={{ px: 3, color: "white" }}
+                        >
+                          <ListItemText primary={item.name} />
+                          {openDropdown === index ? (
+                            <ExpandLess />
+                          ) : (
+                            <ExpandMore />
+                          )}
+                        </ListItem>
 
-     {menuItems.map((item, index) => (
-  <Box key={index}>
-    {item.submenu ? (
-      <>
-        <ListItem
-          button
-          onClick={() => handleDropdown(index)}
-          sx={{ px: 3, color: "white" }}
-        >
-          <ListItemText primary={item.name} />
-          {openDropdown === index ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-
-        <Collapse in={openDropdown === index} timeout="auto" unmountOnExit>
-          <Box
-            sx={{
-              maxHeight: 200, // Adjust as needed
-              overflowY: "auto",
-              pr: 1,
-            }}
-          >
-            <List component="div" disablePadding>
-              {item.submenu.map((subItem, subIndex) => (
-                <ListItem
-                  key={subIndex}
-                  button
-                  component={Link}
-                  href={subItem.link}
-                  onClick={() => {
-                    setOpenDrawer(false);
-                    setOpenDropdown(null);
-                  }}
-                  sx={{
-                    pl: 4,
-                    color: "white",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                  }}
-                >
-                  <span className="text-xl text-amber-400">{<subItem.icon/>}</span>
-                  <ListItemText primary={subItem.name} />
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        </Collapse>
-      </>
-    ) : (
-      <ListItem
-        button
-        component={Link}
-        href={item.link}
-        onClick={() => {
-          setOpenDrawer(false);
-          setOpenDropdown(null);
-        }}
-        sx={{ px: 3, color: "white" }}
-      >
-        <ListItemText primary={item.name} />
-      </ListItem>
-    )}
-  </Box>
-))}
-
+                        <Collapse
+                          in={openDropdown === index}
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          <Box
+                            sx={{
+                              maxHeight: 200, // Adjust as needed
+                              overflowY: "auto",
+                              pr: 1,
+                            }}
+                          >
+                            <List component="div" disablePadding>
+                              {item.submenu.map((subItem, subIndex) => (
+                                <ListItem
+                                  key={subIndex}
+                                  button
+                                  component={Link}
+                                  href={subItem.link}
+                                  onClick={() => {
+                                    setOpenDrawer(false);
+                                    setOpenDropdown(null);
+                                  }}
+                                  sx={{
+                                    pl: 4,
+                                    color: "white",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <span className="text-xl text-amber-400">
+                                    {<subItem.icon />}
+                                  </span>
+                                  <ListItemText primary={subItem.name} />
+                                </ListItem>
+                              ))}
+                            </List>
+                          </Box>
+                        </Collapse>
+                      </>
+                    ) : (
+                      <ListItem
+                        button
+                        component={Link}
+                        href={item.link}
+                        onClick={() => {
+                          setOpenDrawer(false);
+                          setOpenDropdown(null);
+                        }}
+                        sx={{ px: 3, color: "white" }}
+                      >
+                        <ListItemText primary={item.name} />
+                      </ListItem>
+                    )}
+                  </Box>
+                ))}
               </List>
               <Box p={2} display="flex" justifyContent="center" gap={2}>
-                <IconButton href="https://facebook.com" target="_blank" sx={{ color: "white" }}>
+                <IconButton
+                  href="https://facebook.com"
+                  target="_blank"
+                  sx={{ color: "white" }}
+                >
                   <Facebook />
                 </IconButton>
-                <IconButton href="https://twitter.com" target="_blank" sx={{ color: "white" }}>
+                <IconButton
+                  href="https://twitter.com"
+                  target="_blank"
+                  sx={{ color: "white" }}
+                >
                   <Twitter />
                 </IconButton>
-                <IconButton href="https://instagram.com" target="_blank" sx={{ color: "white" }}>
+                <IconButton
+                  href="https://instagram.com"
+                  target="_blank"
+                  sx={{ color: "white" }}
+                >
                   <Instagram />
                 </IconButton>
               </Box>
@@ -374,14 +426,10 @@ useEffect(() => {
         categories={citiesData?.data || []}
         setCityLocation={setCityLocation}
         handleSearch={() => handleSearch({ preventDefault: () => {} })}
-              cityLocation={cityLocation}
+        cityLocation={cityLocation}
       />
     </nav>
   );
 };
 
 export default Navbar;
-
-
-
-
