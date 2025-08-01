@@ -59,7 +59,7 @@ import { GiPlagueDoctorProfile } from "react-icons/gi";
 import { FaXTwitter } from "react-icons/fa6";
 
 import { Metadata } from 'next';
-import { useGetBusinessByIdQuery } from "@/redux/services/businessApi";
+import { useGetBusinessByIdQuery, useGetRelatedBusinessesQuery } from "@/redux/services/businessApi";
 
 export default function Business({ params }) {
   const [city, businessName, zip, id] = params.slug;
@@ -72,6 +72,7 @@ export default function Business({ params }) {
  
  
   const { data, isLoading, error } = useGetBusinessByIdQuery(id);
+  const { data:relatedPosts, isLoading:relatedPostsLoading, error:relatedError } = useGetRelatedBusinessesQuery(id);
   const business = data?.data;
   const [activeTab, setActiveTab] = useState("contact");
   const keywords = ["Study", "Education", "Coaching", "University", "Classes"];
@@ -274,17 +275,17 @@ export default function Business({ params }) {
         <div className="container mx-auto">
           <div className="page-header">
             <h4 className="text-lg font-semibold text-gray-800">
-              {business?.businessType}
+              {business?.categories[0]?.name}
             </h4>
             <nav className="mt-2">
               <ol className="flex items-center space-x-2 text-sm text-gray-600">
                 <li>
-                  <a href="javascript:void(0)" className="hover:text-blue-500">
+                  <a href="/" className="hover:text-blue-500">
                     Home
                   </a>
                 </li>
                 <li>/</li>
-                <li className="text-blue-500 font-medium">Business</li>
+                <li className="text-blue-500 font-medium">{business?.businessName}</li>
               </ol>
             </nav>
           </div>
@@ -303,7 +304,6 @@ export default function Business({ params }) {
                     Featured
                   </div>
                 </div>
-                {/* Card Body */}
                 <div className="card-body">
                   <div className="item-det mb-4">
                     <a href="javascript:void(0)" className="text-dark capitalize">
@@ -359,28 +359,21 @@ export default function Business({ params }) {
                     Overview
                   </h3>
                 </div>
-
-                {/* Card Body */}
                 <div className="p-6 text-gray-700">
-                  {/* Description */}
                   <p className="text-black">{data?.data?.description}</p>
                   <p className="mt-4 text-black">
                     {decodeAndStripHtml(data?.data?.overview || "")}
-                  </p>
-
-                  {/* Business Details Section */}
-
+                  </p> 
                   <h4 className="text-lg font-semibold mt-6 mb-4 text-black">
-                    Business Details
-                  </h4>
+                      Business Details
+                  </h4>  
                   <div className="grid md:grid-cols-2 gap-4 border-b border-gray-200 pb-4">
-                    {/* Company Name */}
                     <div className="flex items-center space-x-3">
                       <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-200">
                         <FaBuilding className="text-gray-500 text-lg" />
                       </div>
                       <span className="text-black">
-                        {data?.data?.businessName}
+                        {data?.data?.businessName||"N/A"}
                       </span>
                     </div>
 
@@ -391,7 +384,7 @@ export default function Business({ params }) {
                       </div>
 
                       <span className="text-black">
-                        {data?.data?.businessType}
+                        {data?.data?.businessType||"N/A"}
                       </span>
                     </div>
 
@@ -402,7 +395,7 @@ export default function Business({ params }) {
                       </div>
 
                       <span className="text-black">
-                        Established: {data?.data?.establishedYear}
+                        Established: {data?.data?.establishedYear||"N/A"}
                       </span>
                     </div>
 
@@ -413,7 +406,7 @@ export default function Business({ params }) {
                       </div>
 
                       <span className="text-black">
-                        Employees: {data?.data?.employeeCount}+
+                        Employees: {data?.data?.employeeCount||"N/A"}
                       </span>
                     </div>
                   </div>
@@ -434,7 +427,7 @@ export default function Business({ params }) {
                       >
                         {data?.data?.address1}, {data?.data?.address2},
                         <br />
-                        {data?.data?.city},{data?.data?.country}{" "}
+                        {data?.data?.city},{data?.data?.country}
                       </a>
                     </div>
 
@@ -447,7 +440,7 @@ export default function Business({ params }) {
                         href="mailto:spruko123@gmail.com"
                         className="text-black hover:text-blue-600 transition duration-200"
                       >
-                        {data?.data?.email}
+                        {data?.data?.email||"N/A"}
                       </a>
                     </div>
 
@@ -460,7 +453,7 @@ export default function Business({ params }) {
                         href="tel:+123456789"
                         className="text-black hover:text-blue-600 transition duration-200"
                       >
-                        {data?.data?.phone}
+                        {data?.data?.phone||"N/A"}
                       </a>
                     </div>
 
@@ -480,11 +473,11 @@ export default function Business({ params }) {
                               /^www\./,
                               ""
                             )}`
-                          : ""}
+                          : "N/A"}
                       </a>
                     </div>
                   </div>
-                  <h4 className="text-lg font-semibold mt-6 mb-4 text-black">
+                  {/* <h4 className="text-lg font-semibold mt-6 mb-4 text-black">
                     More Business Info
                   </h4>
                   <div className="overflow-x-auto">
@@ -542,7 +535,7 @@ export default function Business({ params }) {
                         </tr>
                       </tbody>
                     </table>
-                  </div>
+                  </div> */}
 
                   {/* Business ID Section */}
                   <div className="mt-4 pt-4 pb-4 px-5 border-b border-gray-300">
@@ -551,7 +544,7 @@ export default function Business({ params }) {
                         Business ID: <strong>#8256358</strong>
                       </span>
                       <span>
-                        Posted By{" "}
+                        Posted By
                         <strong className="text-black">Individual</strong> /
                         21st Dec 2019
                       </span>
@@ -597,194 +590,94 @@ export default function Business({ params }) {
                 </div> */}
               </div>
               {/* <div className="max-w-5xl mx-auto p-4"> */}
-              <div className="bg-white shadow-lg rounded-lg p-3 mb-1 overflow-hidden mt-4">
-                <h3 className="mt-5 mb-4 text-xl font-semibold">
-                  Related Posts
-                </h3>
-                <div className="flex gap-4 bg-white p-1">
-                  {/* Card 1 */}
-                  <div className="relative w-[350px] shrink-0 bg-white shadow-md rounded-lg overflow-hidden">
-                    {/* Ribbon */}
-                    <div className="absolute top-14 -left-4 bg-gray-600 text-white text-xs px-4 py-1 z-10 transform -rotate-45 origin-top-left">
-                      Featured
-                    </div>
+           
+              {relatedPostsLoading ? (
+  <p>Loading related posts...</p>
+) : relatedPosts?.data?.length ? (
+  <div className="bg-white shadow-lg rounded-lg p-3 mb-1 overflow-hidden mt-4">
+    <h3 className="mt-5 mb-4 text-xl font-semibold">Related Posts</h3>
+    <div className="flex gap-4 overflow-x-auto">
+      {relatedPosts.data.map((item) => (
+           <a
+                      href={`/business/${item?.city}/${item?.businessName}/${item?.zip}/${item?.id}`}>
 
-                    {/* Image */}
-                    <div className="relative w-full h-58 overflow-hidden">
-                      <img
-                        src="/images/products/sp9.jpg"
-                        alt="img"
-                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 hover:brightness-50"
-                      />
-                      <div className="absolute bottom-3 left-3 bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded-md z-10">
-                        Beauty & Spa
-                      </div>
-                    </div>
-                    {/* Icons */}
-                    <div className="absolute top-2 right-2 flex gap-2 z-10">
-                      <button className="bg-black  bg-opacity-70 rounded-full p-1 shadow">
-                        <CiHeart className="text-white" />
-                      </button>
-                      <button className="bg-black  bg-opacity-70 rounded-full p-1 shadow">
-                        <FaPencilAlt className="text-white" />
-                      </button>
-                    </div>
+        <div
+          key={item?.id}
+          className="relative w-[350px] shrink-0 bg-white shadow-md rounded-lg overflow-hidden"
+        >
+          {/* Ribbon */}
+          <div className="absolute top-14 -left-4 bg-gray-600 text-white text-xs px-4 py-1 z-10 transform -rotate-45 origin-top-left">
+            Featured
+          </div>
 
-                    {/* Content */}
-                    <div className="p-4 mb-2">
-                      <div className="text-gray-500 text-sm">
-                        <StarRating />
-                      </div>
-                      <h4 className="text-lg font-semibold text-gray-800 mb-4 mt-2  flex items-center">
-                        Goozer Beauty & Spa
-                        <span className="inline-flex items-center justify-center ml-2 w-4 h-4 bg-green-500 text-white text-[10px] rounded-full">
-                          ✓
-                        </span>
-                      </h4>
-                      {/* Row and Column Alignment */}
-                      <div className="grid grid-cols-2 gap-2 text-sm text-gray-500">
-                        <div className="flex items-center">
-                          <IoLocationOutline className="mr-2" />
-                          New York
-                        </div>
-                        <div className="flex items-center">
-                          <SlCalender className="mr-2" />2 hours ago
-                        </div>
-                        <div className="flex items-center">
-                          <CiUser className="mr-2" />
-                          Clara Pixley
-                        </div>
-                        <div className="flex items-center">
-                          <FaPhoneAlt className="mr-2" />
-                          256-654-6859{" "}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+          {/* Image */}
+          <div className="relative w-full h-58 overflow-hidden">
+            <img
+              src={
+                item.galleries?.[0]?.photoUrl
+                  ? `${getBackendUrl()}${item.galleries[0].photoUrl}`
+                  : "/images/default.jpg"
+              }
+              alt={item.businessName}
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 hover:brightness-50"
+            />
+            <div className="absolute bottom-3 left-3 bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded-md z-10">
+              {item.categories?.[0]?.name || "Business"}
+            </div>
+          </div>
 
-                  {/* Card 2 */}
-                  <div className="relative w-[360px] shrink-0 bg-white shadow-md rounded-lg overflow-hidden">
-                    {/* Ribbon */}
-                    <div className="absolute top-16 -left-4 bg-red-600 text-white text-xs px-4 py-1 z-10 transform -rotate-45 origin-top-left">
-                      Negotiable
-                    </div>
+          {/* Icons */}
+          <div className="absolute top-2 right-2 flex gap-2 z-10">
+            <button className="bg-black bg-opacity-70 rounded-full p-1 shadow">
+              <CiHeart className="text-white" />
+            </button>
+            <button className="bg-black bg-opacity-70 rounded-full p-1 shadow">
+              <FaPencilAlt className="text-white" />
+            </button>
+          </div>
 
-                    {/* Image */}
-                    <div className="relative w-full h-58 overflow-hidden">
-                      <img
-                        src="/images/products/restaurant-banner.jpg"
-                        alt="img"
-                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 hover:brightness-50"
-                      />
-                      <div className="absolute bottom-3 left-3 bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded-md z-10">
-                        Restaurant
-                      </div>
-                    </div>
-
-                    {/* Icons */}
-                    <div className="absolute top-2 right-2 flex gap-2 z-10">
-                      <button className="bg-black  bg-opacity-70 rounded-full p-1 shadow">
-                        <CiHeart className="text-white" />
-                      </button>
-                      <button className="bg-black  bg-opacity-70 rounded-full p-1 shadow">
-                        <FaPencilAlt className="text-white" />
-                      </button>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4">
-                      <div className="text-gray-500 text-sm">
-                        <StarRating />
-                      </div>
-                      <h4 className="text-lg font-semibold text-gray-800 mb-4 mt-2 flex items-center">
-                        Spicy Restaurant
-                        <span className="inline-flex items-center justify-center ml-2 w-4 h-4 bg-green-500 text-white text-[10px] rounded-full">
-                          ✓
-                        </span>
-                      </h4>
-                      {/* Row and Column Alignment */}
-                      <div className="grid grid-cols-2 gap-2 text-sm text-gray-500">
-                        <div className="flex items-center">
-                          <IoLocationOutline className="mr-2" />
-                          Los Angeles
-                        </div>
-                        <div className="flex items-center">
-                          <SlCalender className="mr-2" />5 hours ago
-                        </div>
-                        <div className="flex items-center">
-                          <CiUser className="mr-2" />
-                          Sally Peake
-                        </div>
-                        <div className="flex items-center">
-                          <FaPhoneAlt className="mr-2" />
-                          567 987 608
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          {/* Content */}
+          <div className="p-4 mb-2">
+            <div className="text-gray-500 text-sm">
+              <StarRating rating={item.averageRating} />
+            </div>
+            <h4 className="text-lg font-semibold text-gray-800 mb-4 mt-2 flex items-center">
+              {item.businessName}
+              <span className="inline-flex items-center justify-center ml-2 w-4 h-4 bg-green-500 text-white text-[10px] rounded-full">
+                ✓
+              </span>
+            </h4>
+            <div className="grid grid-cols-2 gap-2 text-sm text-gray-500">
+              <div className="flex items-center">
+                <IoLocationOutline className="mr-2" />
+                {item.city}
               </div>
+              <div className="flex items-center">
+                <SlCalender className="mr-2" /> Recently
+              </div>
+              <div className="flex items-center">
+                <CiUser className="mr-2" />
+                {item.owner?.fullName || "Owner"}
+              </div>
+              <div className="flex items-center">
+                <FaPhoneAlt className="mr-2" />
+                {item.phone || "N/A"}
+              </div>
+            </div>
+          </div>
+        </div>
+                      </a>
+      ))}
+    </div>
+  </div>
+) : (
+  <p>No related posts found.</p>
+)}
+
               {/* <Reviews /> */}
-              {/* <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-           
-                <div className="border-b pb-4 mb-4">
-                  <h3 className="text-xl font-semibold text-gray-800">
-                    Add a Review
-                  </h3>
-                </div>
 
-              
-                <div>
-                  <p className="text-gray-600 mb-2">
-                    Add Your Rating for the Business
-                  </p>
-                  <StarRating />
-                  <h4 className="text-lg font-medium text-gray-700 mb-2 mt-4">
-                    Review
-                  </h4>
 
-               
-                  <div className="space-y-4">
-       
-                    <div>
-                      <input
-                        type="text"
-                        id="name1"
-                        placeholder="Your Name"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-gray-500 transition placeholder-gray-500"
-                      />
-                    </div>
 
-           
-                    <div>
-                      <input
-                        type="email"
-                        id="email"
-                        placeholder="Email Address"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-gray-500 transition placeholder-gray-500"
-                      />
-                    </div>
-
-             
-                    <div>
-                      <textarea
-                        name="example-textarea-input"
-                        rows={6}
-                        placeholder="Write Review"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-gray-500 transition placeholder-gray-500"
-                      />
-                    </div>
-
-                 
-                    <button
-                      type="button"
-                      className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
-                    >
-                      Send Reply
-                    </button>
-                  </div>
-                </div>
-              </div> */}
             </div>
 
             <div className="col-xl-4 col-lg-4 col-md-12">
@@ -913,47 +806,9 @@ export default function Business({ params }) {
                     </>
                   )}
 
-                  {/* {activeTab === "timings" && (
-                    <div>
-                      <h4 className="text-xl font-semibold mb-4">
-                        Business Hours
-                      </h4>
-                      <table className="w-full border-collapse border border-gray-300">
-                        <thead>
-                          <tr className="bg-gray-100">
-                            <th className="border border-gray-300 px-4 py-2 text-left">
-                              Day
-                            </th>
-                            <th className="border border-gray-300 px-4 py-2 text-left">
-                              Opening Hours
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {[
-                            ["Monday", "9:00 AM - 6:00 PM"],
-                            ["Tuesday", "9:00 AM - 6:00 PM"],
-                            ["Wednesday", "9:00 AM - 6:00 PM"],
-                            ["Thursday", "9:00 AM - 6:00 PM"],
-                            ["Friday", "9:00 AM - 6:00 PM"],
-                            ["Saturday", "10:00 AM - 4:00 PM"],
-                            ["Sunday", "Closed"],
-                          ].map(([day, time]) => (
-                            <tr key={day}>
-                              <td className="border border-gray-300 px-4 py-2">
-                                {day}
-                              </td>
-                              <td className="border border-gray-300 px-4 py-2">
-                                {time}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )} */}
+                 
                   {activeTab === "timings" &&
-                    data?.data?.operatingHours?.timings && (
+                    data?.data?.operatingHours && (
                       <div>
                         <h4 className="text-xl font-semibold mb-4">
                           Business Hours
@@ -970,44 +825,22 @@ export default function Business({ params }) {
                             </tr>
                           </thead>
                           <tbody>
-                            {Object.entries(
-                              data.data.operatingHours.timings
-                            ).map(([day, { open, close }]) => {
-                              const openTime = new Date(
-                                open
-                              ).toLocaleTimeString("en-US", {
-                                hour: "numeric",
-                                minute: "2-digit",
-                                hour12: true,
-                              });
-                              const closeTime = new Date(
-                                close
-                              ).toLocaleTimeString("en-US", {
-                                hour: "numeric",
-                                minute: "2-digit",
-                                hour12: true,
-                              });
+                      {Object.entries(data.data.operatingHours).map(([day, { open, close }]) => {
+  const openTime = open ? `${open} ${+open.split(":")[0] >= 12 ? "PM" : "AM"}` : "N/A";
+  const closeTime = close ? `${close} ${+close.split(":")[0] >= 12 ? "PM" : "AM"}` : "N/A";
 
-                              // Check if the current day is a holiday
-                              const isHoliday = data?.data?.holiday?.some(
-                                (holiday) =>
-                                  holiday.name.toLowerCase() ===
-                                    day.toLowerCase() && holiday.isClosed
-                              );
+  return (
+    <tr key={day}>
+      <td className="border border-gray-300 px-4 py-2 capitalize">
+        {day}
+      </td>
+      <td className="border border-gray-300 px-4 py-2">
+        {open && close ? `${openTime} - ${closeTime}` : "Closed"}
+      </td>
+    </tr>
+  );
+})}
 
-                              return (
-                                <tr key={day}>
-                                  <td className="border border-gray-300 px-4 py-2 capitalize">
-                                    {day}
-                                  </td>
-                                  <td className="border border-gray-300 px-4 py-2">
-                                    {isHoliday
-                                      ? "Closed"
-                                      : `${openTime} - ${closeTime}`}
-                                  </td>
-                                </tr>
-                              );
-                            })}
                           </tbody>
                         </table>
                       </div>
@@ -1057,115 +890,67 @@ export default function Business({ params }) {
                   </a>
                 </div>
               </div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="max-w-lg mx-auto bg-white shadow-lg rounded-lg mt-4 overflow-hidden"
-              >
-                {/* Header Section */}
-                <div className="text-white py-4 px-6 text-left border -b border-gray-200">
-                  <h3 className="text-lg font-semibold">Keywords</h3>
-                </div>
+             {business?.services?.length > 0 && (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="max-w-lg mx-auto bg-white shadow-lg rounded-lg mt-4 overflow-hidden"
+  >
+    <div className="text-white py-4 px-6 text-left border-b border-gray-200">
+      <h3 className="text-lg font-semibold text-black">Services</h3>
+    </div>
+    
+        <div className="p-4">
+  <div className="flex flex-wrap gap-3">
+    {business.services.map((service, idx) => (
+      <span
+        key={idx}
+        className="px-4 py-1 rounded-full bg-blue-100 text-blue-800 text-sm shadow-sm hover:bg-blue-200 transition"
+      >
+        {typeof service === "string" ? service : service?.name}
+      </span>
+    ))}
+  </div>
+</div>
 
-                {/* Body Section with Staggered Animation */}
-                <div className="p-6">
-                  <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    variants={{
-                      visible: { transition: { staggerChildren: 0.3 } },
-                    }}
-                    className="flex flex-wrap gap-2"
-                  >
-                    {keywords.map((tag, index) => (
-                      <motion.span
-                        key={index}
-                        className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-blue-500 hover:text-white transition duration-300"
-                        variants={{
-                          hidden: { opacity: 0, x: -20 },
-                          visible: {
-                            opacity: 1,
-                            x: 0,
-                            transition: { duration: 0.5 },
-                          },
-                        }}
-                      >
-                        {tag}
-                      </motion.span>
-                    ))}
-                  </motion.div>
-                </div>
-              </motion.div>
+   
+  </motion.div>
+)}
+{business?.amenities?.length > 0 && (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="max-w-lg mx-auto bg-white shadow-lg rounded-lg mt-4 overflow-hidden"
+  >
+    <div className="text-white py-4 px-6 text-left border-b border-gray-200">
+      <h3 className="text-lg font-semibold text-black">Amenities</h3>
+    </div>
+  <div className="p-4">
+  <div className="flex flex-wrap gap-3">
+    {business.amenities.map((item, index) => (
+      <span
+        key={index}
+        className="px-4 py-1 rounded-full bg-green-100 text-green-800 text-sm shadow-sm hover:bg-green-200 transition"
+      >
+        {item.name}
+      </span>
+    ))}
+  </div>
+</div>
+
+  </motion.div>
+)}
+
+            
               {/* <div className="max-w-lg mx-auto bg-white shadow-sm mt-4 rounded-lg overflow-hidden">
-                {/* Header */}
-              {/* <div className="text-white border-b border-gray-200 py-4 px-6 text-left">
-                  <h3 className="text-lg font-semibold">Listing Owner</h3>
-                </div> */}
-
-              {/* Profile Section */}
-              {/* <div className="flex flex-col items-center border-b border-gray-200 py-4">
-                  <img
-                    src="../assets/images/faces/female/13.jpg"
-                    className="w-32 h-32 rounded-full  shadow-md"
-                    alt="User"
-                  />
-                  <a
-                    href="userprofile.html"
-                    className="mt-3 text-lg font-semibold text-gray-900"
-                  >
-                    Lilly Jones
-                  </a>
-                  <span className="text-gray-500">Listing Owner</span> */}
-
-              {/* Social Icons */}
-              {/* <div className="flex gap-3 mt-4">
-                    {[
-                      FaFacebookF,
-                      FaTwitter,
-                      FaGoogle,
-                      FaDribbble,
-                      FaPinterest,
-                    ].map((Icon, index) => (
-                      <a
-                        key={index}
-                        href="javascript:void(0)"
-                        className="w-6 h-6 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-500 transition shadow-md"
-                      >
-                        <Icon className="w-4 h-4" />
-                      </a>
-                    ))}
-                  </div>
-                </div> */}
-
-              {/* Footer */}
-              {/* <div className="py-4 flex justify-center gap-3">
-                  <a
-                    href="javascript:void(0)"
-                    className="px-4 py-1.5 bg-gray-200 text-gray-700 rounded-lg flex items-center gap-2 hover:bg-gray-300 transition text-sm shadow-md"
-                  >
-                    <FaPhone className="w-4 h-4" />
-                    Contact Me
-                  </a>
-
-                  <a
-                    href="javascript:void(0)"
-                    className="px-4 py-1.5 bg-gray-200 text-gray-700 rounded-lg flex items-center gap-2 hover:bg-gray-300 transition text-sm shadow-md"
-                  >
-                    <FaEye className="w-4 h-4" />
-                    All Listings
-                  </a>
-                </div>
-              </div> */}
-              <div className="max-w-lg mx-auto bg-white shadow-sm mt-4 rounded-lg overflow-hidden">
-                {/* Header Section */}
                 <div className="py-3 px-6 text-left border-b border-gray-200">
                   <h3 className="text-lg font-semibold">
                     Details Shares Through
                   </h3>
                 </div>
 
-                {/* Card Body */}
                 <div className="p-6 flex justify-center gap-3">
                   {[
                     {
@@ -1203,158 +988,45 @@ export default function Business({ params }) {
                     </a>
                   ))}
                 </div>
-              </div>
-              {/* <div className="max-w-lg mx-auto bg-white shadow-sm mt-4 rounded-lg overflow-hidden"> */}
-              {/* Card Header */}
-              {/* <div className="bg-gray-100 px-5 py-3 border-b border-gray-200">
-                  <h3 className="text-lg font-semibold text-gray-700">
-                    Search Listings
-                  </h3>
-                </div> */}
-
-              {/* Card Body */}
-
-              {/* <div className="max-w-lg mx-auto bg-white mt-4 rounded-lg overflow-visible p-5"> */}
-              {/* Search Input */}
-              {/* <div className="relative w-full max-w-xs" ref={dropdownRef}> */}
-              {/* Search Input */}
-              {/* <div className="relative mb-4">
-                      <input
-                        type="text"
-                        placeholder="What are you looking for?"
-                        className="w-full px-4 py-2 border rounded-full bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                      />
-                      <button className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-600 transition">
-                        <FaSearch className="w-5 h-5" />
-                      </button>
-                    </div> */}
-
-              {/* Dropdown Button */}
-              {/* <button
-                      onClick={handleDropdownClick}
-                      className="w-full flex items-center justify-between px-4 py-2 border rounded-full border-gray-300  bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition overflow-hidden"
-                    >
-                      <span>{selected}</span>
-                      <FaChevronDown
-                        className={`w-4 h-4 transition-transform ${
-                          isOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button> */}
-
-              {/* Dropdown List (with Search Bar) */}
-              {/* {isOpen && ( */}
-              {/* // <div className="absolute left-0 top-full w-full bg-white border border-gray-300 shadow-lg z-50 rounded-lg"> */}
-              {/* 🔍 Search Input for Filtering */}
-              {/* <div className="p-2 border-b">
-                          <input
-                            type="text"
-                            placeholder="Search..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                          /> */}
-              {/* </div> */}
-
-              {/* Dropdown Items */}
-              {/* <ul className="max-h-60 overflow-y-auto">
-                          {filteredCategories.length > 0 ? (
-                            filteredCategories.map((category, index) => (
-                              <li
-                                key={index}
-                                onMouseDown={() =>
-                                  handleCategorySelect(category)
-                                }
-                                className="px-4 py-2 cursor-pointer hover:bg-blue-100 transition"
-                              >
-                                {category}
-                              </li>
-                            ))
-                          ) : (
-                            <li className="px-4 py-2 text-gray-500">
-                              No results found
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    )}
-                  </div> */}
-
-              {/* Search Button (Now Always Visible) */}
-              {/* <button className="px-4 py-2 bg-blue-500 mt-2 text-white rounded-full hover:bg-blue-600 transition">
-                    Search
-                  </button> */}
-              {/* </div> */}
-              {/* </div> */}
-              <div className="max-w-lg mx-auto bg-white shadow-sm mt-4 rounded-lg overflow-hidden">
-                <div className="py-3 px-3 text-left border-b border-gray-200">
-                  <h3 className="text-lg font-semibold">
-                    Recent Business Post
-                  </h3>
-                </div>
-                <div className="flex mt-4 p-3">
-                  {/* Added flex container */}
-                  <div className="relative w-[350px] shrink-0 bg-white border rounded-lg overflow-hidden">
-                    {/* Ribbon */}
-                    <div className="absolute top-14 -left-4 bg-gray-600 text-white text-xs px-4 py-1 z-10 transform -rotate-45 origin-top-left">
-                      Featured
-                    </div>
-
-                    {/* Image */}
-                    <div className="relative w-full h-58 overflow-hidden">
-                      <img
-                        src="/images/products/sp9.jpg"
-                        alt="img"
-                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 hover:brightness-50"
-                      />
-                      <div className="absolute bottom-3 left-3 bg-black bg-opacity-60 text-white text-sm px-3 py-1 rounded-md z-10">
-                        Beauty & Spa
-                      </div>
-                    </div>
-                    {/* Icons */}
-                    <div className="absolute top-2 right-2 flex gap-2 z-10">
-                      <button className="bg-black  bg-opacity-70 rounded-full p-1 shadow">
-                        <CiHeart className="text-white" />
-                      </button>
-                      <button className="bg-black  bg-opacity-70 rounded-full p-1 shadow">
-                        <FaPencilAlt className="text-white" />
-                      </button>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-4 mb-2">
-                      <div className="text-gray-500 text-sm">
-                        <StarRating />
-                      </div>
-                      <h4 className="text-lg font-semibold text-gray-800 mb-4 mt-2  flex items-center">
-                        Goozer Beauty & Spa
-                        <span className="inline-flex items-center justify-center ml-2 w-4 h-4 bg-green-500 text-white text-[10px] rounded-full">
-                          ✓
-                        </span>
-                      </h4>
-                      {/* Row and Column Alignment */}
-                      <div className="grid grid-cols-2 gap-2 text-sm text-gray-500">
-                        <div className="flex items-center">
-                          <IoLocationOutline className="mr-2" />
-                          New York
-                        </div>
-                        <div className="flex items-center">
-                          <SlCalender className="mr-2" />2 hours ago
-                        </div>
-                        <div className="flex items-center">
-                          <CiUser className="mr-2" />
-                          Clara Pixley
-                        </div>
-                        <div className="flex items-center">
-                          <FaPhoneAlt className="mr-2" />
-                          256-654-6859
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </div> */}
+              
             </div>
+{data?.data?.reviews?.length > 0 && (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="max-w-lg mx-auto bg-white shadow-lg rounded-lg mt-4 overflow-hidden m-2"
+  >
+    <div className="text-white py-4 px-6 text-left border-b border-gray-200">
+      <h3 className="text-lg font-semibold text-black">Customer Reviews</h3>
+    </div>
+
+    <div className="p-4 space-y-4">
+      {data.data.reviews.map((review) => (
+        <div
+          key={review.id}
+          className="border border-gray-200 rounded-md p-3 shadow-sm hover:shadow-md transition"
+        >
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="font-semibold text-sm text-gray-800">{review.username}</h4>
+            <div className="text-yellow-500 font-semibold text-sm">
+              ⭐ {parseFloat(review.rating).toFixed(1)} / 5
+            </div>
+          </div>
+          <p className="text-gray-700 text-sm">{review.reviewText}</p>
+          <p className="text-xs text-gray-400 mt-1">
+            {new Date(review.createdAt).toLocaleDateString("en-IN", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </p>
+        </div>
+      ))}
+    </div>
+  </motion.div>
+)}
           </div>
         </div>
       </section>

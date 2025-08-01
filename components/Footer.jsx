@@ -1,3 +1,4 @@
+"use client"
 import { Input, Button } from "antd";
 import {
   MailOutlined,
@@ -23,8 +24,11 @@ import {
   SiPaypal,
 } from "react-icons/si";
 import { FaFax } from "react-icons/fa"; // Importing fax icon
+import { useGetAllCategoriesQuery } from "@/redux/services/businessApi";
 
 export default function Footer() {
+
+  const { data: categoryData } = useGetAllCategoriesQuery();
   return (
     <footer className="bg-gray-900 text-gray-400 text-sm">
       {/* Main Footer Grid */}
@@ -35,7 +39,7 @@ export default function Footer() {
             className="text-white font-semibold mb-4"
             style={{ fontSize: "20px" }}
           >
-            Yelp Clone
+         <img src="/logo.png" alt="" style={{width:"200px"}} />
           </h3>
           <p>
             Discover local businesses, restaurants, spas, gyms, and more with
@@ -51,23 +55,15 @@ export default function Footer() {
           >
             Categories
           </h3>
+          
           <div className="flex flex-wrap gap-2">
-            {[
-              "Spa",
-              "Restaurants",
-              "Salons",
-              "Clinics",
-              "Gyms",
-              "Shops",
-              "Hotels",
-              "Hospitals",
-            ].map((category) => (
+            {categoryData?.data?.map((category) => (
               <button
                 key={category}
                 className="inline-flex items-center justify-center border border-gray-600 rounded-full px-3 py-1 text-xs truncate hover:bg-blue-600 hover:text-white transition"
                 style={{ borderRadius: "12px", whiteSpace: "nowrap" }}
               >
-                {category}
+                {category?.name}
               </button>
             ))}
           </div>
@@ -85,11 +81,10 @@ export default function Footer() {
           <ul className="space-y-2">
             {[
               "Luxury Spa & Wellness",
-              "Top Restaurants",
-              "Premium Salons",
-              "24/7 Medical Clinics",
-              "Fitness & Yoga Centers",
-              "Pet Care Services",
+           "Categories list section",
+"Popular listing section",
+"Listing categories"
+
             ].map((listing) => (
               <li
                 key={listing}

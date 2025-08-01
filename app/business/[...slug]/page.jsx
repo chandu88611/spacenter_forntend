@@ -17,10 +17,10 @@ export async function generateMetadata({ params }) {
   }
 
   const { data: business } = await res.json();
-console.log(business)
+ console.log(business)
   return {
-    title: business.businessName,
-    description: `${business.businessName} - ${business.businessType} in ${business.city}, ${business.country}. Contact: ${business.phone}`,
+    title: `${business.businessName}-${business?.area} ,${business.city}, ${business.country}`,
+    description: business.description,
     openGraph: {
       title: business.businessName,
       description: business.description || '',

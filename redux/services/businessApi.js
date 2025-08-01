@@ -11,12 +11,21 @@ export const businessApi = createApi({
   endpoints: (builder) => ({
     // **1. Get All Businesses (With Pagination, Search, Filters)**
     getAllBusinesses: builder.query({
-      query: ({ page = 1, limit = 10, search = "", category = "",location="" }) => ({
+      query: ({ page = 1, limit = 6, search = "", category = "",location="" }) => ({
         url: `businesses?page=${page}&limit=${limit}&search=${search}&category=${category}&location=${location}`,
         method: "GET",
       }),
       providesTags: ["Business"],
     }),
+
+// **14. Get Related Businesses by Business ID**
+getRelatedBusinesses: builder.query({
+  query: (businessId) => ({
+    url: `businesses/related/${businessId}`,
+    method: "GET",
+  }),
+  providesTags: ["Business"],
+}),
 
     // **2. Get Single Business By ID**
     getBusinessById: builder.query({
@@ -94,13 +103,14 @@ export const businessApi = createApi({
       invalidatesTags: ["Business"],
     }),
     // 10. Get all businesses by category
-    getAllBusinessesByCategory: builder.query({
-      query: ({ category = "" }) => ({
-        url: `businesses/category?category=${category}`,
-        method: "GET",
-      }),
-      providesTags: ["Business"],
-    }),
+getAllBusinessesByCategory: builder.query({
+  query: ({ category = "", page = 1, limit = 5}) => ({
+    url: `businesses/category?category=${encodeURIComponent(category)}&page=${page}&limit=${limit}`,
+    method: "GET",
+  }),
+  providesTags: ["Business"],
+}),
+
     // **11. Get Latest Business**
     getLatestBusinesses: builder.query({
       query: () => ({
@@ -131,6 +141,7 @@ export const businessApi = createApi({
 });
 
 export const {
+  useGetRelatedBusinessesQuery,
   useGetAllBusinessesQuery,
   useGetBusinessByIdQuery,
   useCreateBusinessMutation,

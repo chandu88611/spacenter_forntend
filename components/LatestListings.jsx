@@ -23,12 +23,15 @@ const LatestListings = ({ listings = [] }) => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
-  const formatTime = (timeStr) =>
-    new Date(timeStr).toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
+ const formatTime = (timeStr) =>
+  timeStr
+    ? new Date(`1970-01-01T${timeStr}:00`).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      })
+    : "N/A";
+
   return (
     <div
       className="w-full relative overflow-visible"
@@ -100,15 +103,14 @@ const LatestListings = ({ listings = [] }) => {
       >
         {listings.map((listing) => {
           const { operatingHours } = listing || {};
-          const timings = operatingHours?.timings || {};
-          const currentDay = new Date()
-            .toLocaleDateString("en-US", {
-              weekday: "long",
-            })
-            .toLowerCase();
-          const today = timings?.[currentDay];
+          const timings = operatingHours || {};
+         const currentDay = new Date().toLocaleDateString("en-US", {
+  weekday: "long",
+});
+const today = timings?.[currentDay];  
 
-          const statusInfo = getOperatingStatus(timings);
+
+          const statusInfo = getOperatingStatus(today);
           const isOpen = statusInfo.status === "Open";
 
           const fromTime = today?.open ? formatTime(today.open) : "N/A";

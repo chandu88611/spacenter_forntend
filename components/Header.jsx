@@ -32,7 +32,7 @@ import {
   useGetAllBusinessesQuery,
 } from "../redux/services/businessApi";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IoLocationSharp } from "react-icons/io5";
 import CitiesDialog from "./CitiesDialog";
 import Image from "next/image";
@@ -68,10 +68,17 @@ const Navbar = () => {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get("q") || "";
   const initialLocation = searchParams.get("location") || "";
+ console.log(initialLocation)
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [locationQuery, setLocationQuery] = useState(initialLocation);
   const [suggestions, setSuggestions] = useState([]);
 
+
+  useEffect(()=>{
+if(initialLocation){
+  setCityLocation(initialLocation)
+}
+  },[initialLocation])
   const debouncedSearch = useCallback(
     debounce((val) => {
       setSearchQuery(val);
@@ -85,7 +92,7 @@ const Navbar = () => {
   });
 
   useEffect(() => {
-    console.log(businessData)
+ 
     if (Array.isArray(businessData?.data?.data)) {
       setSuggestions(businessData?.data?.data?.slice(0, 4));
     }
@@ -115,7 +122,12 @@ const Navbar = () => {
   const isActive = (link) => {
     return router.pathname === link || router.pathname?.startsWith(link + "/");
   };
+const pathname = usePathname();
 
+useEffect(() => {
+  setSearchQuery('');
+  setSuggestions([]);
+}, [pathname])
   const menuItems = [
     { name: "Home", link: "/" },
    {
@@ -149,7 +161,10 @@ useEffect(() => {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#1e245e] via-[#1e245e] to-[#1e245e] text-white shadow-lg">
       <div className="w-full px-6 py-4 flex items-center justify-between">
-        <div className="text-2xl font-bold">Yelp Clone</div>
+        <div className="text-2xl font-bold">
+
+          <img src="/logo.png" alt="" style={{width:"120px"}} />
+        </div> 
 
         <div className="hidden lg:flex space-x-6" ref={dropdownRef}>
           {menuItems.map((item, index) => (
@@ -199,16 +214,7 @@ useEffect(() => {
                 onChange={(e) => debouncedSearch(e.target.value)}
               />
             </div>
-            {/* <div className="flex items-center w-[55%]">
-              <input
-                type="text"
-                placeholder={cityLocation}
-                className="w-full px-3 py-2 text-gray-700 placeholder:text-sm focus:outline-none"
-                value={locationQuery}
-                onChange={(e) => setLocationQuery(e.target.value)}
-              />
-              <TbCurrentLocation size={18} className="text-blue-500 mr-4" />
-            </div> */}
+     
 
             <button type="submit" className="px-3 bg-blue-600 text-white w-[10%]">
               <FiSearch size={18} />

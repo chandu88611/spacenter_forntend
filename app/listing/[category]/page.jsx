@@ -8,6 +8,7 @@ export function generateStaticParams() {
 }
 
 export default function Page({ params }) {
+  console.log(params.category)
   return (
   <Suspense fallback={<div>Loading...</div>}>
 
