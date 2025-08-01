@@ -30,6 +30,7 @@ import {
   useGetAllCategoriesQuery,
   useGetAllCitiesQuery,
   useGetAllBusinessesQuery,
+  useGetAllBusinessesBySearchQuery,
 } from "../redux/services/businessApi";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -86,11 +87,15 @@ if(initialLocation){
     []
   );
 
-  const { data: businessData } = useGetAllBusinessesQuery({
-    search: searchQuery,
-    location: locationQuery || cityLocation,
+  const { data: businessData } = useGetAllBusinessesBySearchQuery({
+    q: searchQuery,
+    // location: locationQuery || cityLocation,
   });
-
+  // useGetAllBusinessesBySearchQuery({
+  //   q: category,
+  //   page,
+  //   limit,
+  // });
   useEffect(() => {
  
     if (Array.isArray(businessData?.data?.data)) {
@@ -101,9 +106,7 @@ if(initialLocation){
   const handleSearch = (e) => {
     e.preventDefault();
     router.push(
-      `/listing?q=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(
-        locationQuery || cityLocation
-      )}`
+      `/search/${searchQuery}`
     );
   };
 
@@ -204,20 +207,23 @@ useEffect(() => {
           ))}
         </div>
 
-        <div className="hidden lg:flex w-1/3 relative">
-          <form onSubmit={handleSearch} className="flex w-full bg-gray-100 rounded-md overflow-hidden">
+        <div className="absolute top-18 md:top-0 md:relative w-full left-0 md:w-1/3 ">
+          <form onSubmit={handleSearch} className="flex w-full bg-gray-100 rounded-md overflow-hidden p-1">
             <div className="flex items-center w-[90%] border-r border-gray-200">
               <input
                 type="text"
                 placeholder="Find a business or service..."
-                className="w-full px-3 py-2 text-gray-700 placeholder:text-sm focus:outline-none"
+                className="w-full px-3  py-0 md:py-2 text-gray-700 placeholder:text-sm focus:outline-none"
                 onChange={(e) => debouncedSearch(e.target.value)}
               />
             </div>
      
 
-            <button type="submit" className="px-3 bg-blue-600 text-white w-[10%]">
+            <button type="submit" className=" bg-blue-600 text-white w-[12%] md:w-[11%] lg:w-[10%] h-6 md:h-10 rounded flex justify-center items-center">
+        
+
               <FiSearch size={18} />
+         
             </button>
           </form>
 
@@ -228,17 +234,17 @@ useEffect(() => {
         key={business._id}
          href={`/business/${business?.city}/${business?.businessName}/${business?.zip}/${business?.id}`}
         // href={`/business/${business.slug}`}
-        className="flex items-center px-4 py-3 hover:bg-gray-50 transition duration-150 gap-4"
+        className="flex items-center px-4 py-2 hover:bg-gray-50 transition duration-150 gap-3"
       >
         <img
           src={`${getBackendUrl()}${business?.galleries?.[0]?.photoUrl || "/default.jpg"}`}
           alt={business.businessName}
          
-          className="rounded-lg object-cover flex-shrink-0 border h-18 w-18 border-gray-200"
+          className="rounded-lg object-cover flex-shrink-0 border h-10 w-10 border-gray-200"
         />
         <div className="flex flex-col">
-          <p className="font-semibold text-gray-800 text-sm">{business.businessName}</p>
-          <p className="text-xs text-gray-500">{business.city}</p>
+          <p className="font-semibold text-gray-800 text-xs -mb-2">{business.businessName}</p>
+          <p className="text-xs text-gray-500">{business.city} , {business.area}</p>
           {business.rating && (
             <div className="flex items-center mt-1">
               <span className="text-yellow-500 text-sm">⭐</span>

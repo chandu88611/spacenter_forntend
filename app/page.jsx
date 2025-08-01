@@ -138,15 +138,15 @@ export default function Home() {
             }}
           >
             <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-start pt-56 md:pt-40 items-start text-left  text-white pl-12 md:pl-80 pr-10">
-              <h1 className="text-3xl md:text-5xl font-extrabold leading-tight mb-6 text-white">
+              <h1 className="text-2xl md:text-5xl font-extrabold leading-tight mb-6 text-white">
                 {slide.title}
               </h1>
               <a
-                href="/search"
+                href={`/search/${slide.searchText}`}
                 className="flex items-center gap-3 px-3 py-2 border border-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
               >
                 <FiSearch className="w-5 h-5 text-blue-600" />
-                <span>{slide.searchText}</span>
+                <span className="text-[7px] md:text-xs">{slide.searchText}</span>
               </a>
             </div>
           </div>

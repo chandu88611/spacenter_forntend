@@ -6,7 +6,7 @@ import { ChevronDown } from "lucide-react";
 import { FiInfo } from "react-icons/fi";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
 
-import { useGetAllBusinessesByCategoryQuery } from "../../../redux/services/businessApi";
+import { useGetAllBusinessesByCategoryQuery, useGetAllBusinessesBySearchQuery } from "../../../redux/services/businessApi";
 
 import MapMarker from "@/components/BusinessMap";
 import FilterPanel from "@/components/FilterPanel";
@@ -24,7 +24,7 @@ export default function ListingPage({ category }) {
 
  const { data, isLoading, error, refetch } =
   useGetAllBusinessesBySearchQuery({
-    q: searchText,
+    q: category,
     page,
     limit,
   });
