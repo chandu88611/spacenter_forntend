@@ -183,7 +183,8 @@ export default function Home() {
       </section>
      <CategoriesList />
       <section className="sptb bg-white ">
-        <div className="mx-auto md:container ">
+        <div className="w-[95vw] max-w-full mx-auto px-4 md:container">
+
           <div className="section-title center-block text-center">
             <h2>Latest Listings</h2>
             <p>
