@@ -65,28 +65,29 @@ export default function Home() {
     message: "",
   });
 
-  const slides = [
-    {
-      image: "/images/hero/business1.jpg",
-      title: "Top Restaurants Near You",
-      searchText: "Seafood, Biryani, Fast Food",
-    },
-    {
-      image: "/images/hero/business2.jpg",
-      title: "Reliable Car Services",
-      searchText: "Repair, Maintenance, Auto Parts",
-    },
-    {
-      image: "/images/hero/business3.jpg",
-      title: "Best Salons & Spas",
-      searchText: "Haircuts, Facials, Massage",
-    },
-    {
-      image: "/images/hero/business4.jpg",
-      title: "Premium Gyms Nearby",
-      searchText: "Yoga, Cardio, Strength",
-    },
-  ];
+ const slides = [
+  {
+    image: "/images/hero/business3.jpg",
+    title: "Top Hair Saloons Near You",
+    searchText: "Haircut, Hair Styling, Hair Color, Beard Trim",
+  },
+  {
+    image: "/images/listing/b4.jpg",
+    title: "Top Nail Saloons Near You",
+    searchText: "Manicure, Pedicure, Nail Art, Gel Nails",
+  },
+  {
+    image: "/images/listing/b1.jpg",
+    title: "Premium Spa Near You",
+    searchText: "Massage, Body Scrub, Steam Bath, Aromatherapy",
+  },
+  {
+    image: "/images/products/sp9.jpg",
+    title: "Best Celebrity Makeup Artist Near You",
+    searchText: "Bridal Makeup, Party Makeup, Hair Styling, Airbrush",
+  },
+];
+
 
   const text = "uns in all Market";
   const period = 100;

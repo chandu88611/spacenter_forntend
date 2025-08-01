@@ -110,6 +110,15 @@ getAllBusinessesByCategory: builder.query({
   }),
   providesTags: ["Business"],
 }),
+getAllBusinessesBySearch: builder.query({
+  query: ({ q = "", page = 1, limit = 5 }) => ({
+    url: `businesses/search?q=${encodeURIComponent(q)}&page=${page}&limit=${limit}`,
+    method: "GET",
+  }),
+  providesTags: ["Business"],
+}),
+
+
 
     // **11. Get Latest Business**
     getLatestBusinesses: builder.query({
@@ -142,6 +151,7 @@ getAllBusinessesByCategory: builder.query({
 
 export const {
   useGetRelatedBusinessesQuery,
+  useGetAllBusinessesBySearchQuery,
   useGetAllBusinessesQuery,
   useGetBusinessByIdQuery,
   useCreateBusinessMutation,
