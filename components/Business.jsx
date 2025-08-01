@@ -139,7 +139,7 @@ export default function Business({ params }) {
     tempDiv.innerHTML = decoded;
     return tempDiv.textContent || "";
   }
-  console.log("business   :::: ", business);
+ 
   return (
     <>
       <div className="pattern-img py-4">
