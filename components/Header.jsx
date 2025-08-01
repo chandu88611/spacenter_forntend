@@ -162,7 +162,7 @@ useEffect(() => {
   };
 }, []);
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#1e245e] via-[#1e245e] to-[#1e245e] text-white shadow-lg">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-[#1e245e] via-[#1e245e] to-[#1e245e] text-white shadow-lg mb-4">
       <div className="w-full px-6 py-4 flex items-center justify-between">
         <div className="text-2xl font-bold">
 
@@ -207,7 +207,7 @@ useEffect(() => {
           ))}
         </div>
 
-        <div className="absolute top-18 md:top-0 md:relative w-full left-0 md:w-1/3 ">
+        <div className="absolute top-18 md:top-0 md:relative w-[95vw] transform left-2 md:w-1/3 ">
           <form onSubmit={handleSearch} className="flex w-full bg-gray-100 rounded-md overflow-hidden p-1">
             <div className="flex items-center w-[90%] border-r border-gray-200">
               <input
